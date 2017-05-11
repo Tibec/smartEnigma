@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 using System.Text;
+using UnityEngine.UI;
 
 public enum NetworkStatus
 {
@@ -107,6 +108,7 @@ public class NetworkManager : MonoBehaviour
             StatusPointer.color = new Color(1, 0, 0, 1);
             StatusPointer.text = "Off";
         }
+
     }
 
     private void OnDeletedPlayer(NetworkConnection conn)
