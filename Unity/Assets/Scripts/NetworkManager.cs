@@ -5,68 +5,125 @@ using UnityEngine.Networking;
 using System;
 using System.Text;
 
+public enum NetworkStatus
+{
+    Offline = 0,
+    Starting = 1,
+    Online = 2,
+    Stopping = 3 
+}
+
 public class NetworkManager : MonoBehaviour
 {
 
-    public bool isAtStartup = true;
-    List<NetworkClient> myClient;
+    public NetworkStatus Status;
+    public MyServer Server { get; private set; }
+    public UILabel StatusPointer;
+
+    public int PlayerLimit;
+
+    private PlayerMgr playerMgr;
+
+    public NetworkManager()
+    {
+        PlayerLimit = 4;
+        Server = new MyServer();
+        Status = NetworkStatus.Offline;
+
+    }
 
     private void Awake()
     {
         DontDestroyOnLoad(this);
+
+        if (StatusPointer != null)
+        {
+            StatusPointer.color = new Color(1, 0, 0, 1);
+            StatusPointer.text = "Off";
+        }
+
+        playerMgr = GetComponent<PlayerMgr>();
+        if (playerMgr == null)
+            Debug.Log("NetworkMgr: Cannot found the playermgr !");
     }
 
     void Update()
     {
-        if (isAtStartup)
-        {
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                SetupServer();
-            }
-        }
-    }
-
-    void OnGUI()
-    {
-        if (isAtStartup)
-        {
-            GUI.Label(new Rect(2, 10, 150, 100), "Appuyer S pour démarrer le serveur");
-
-        }
+        Server.Update();
     }
 
     // Create a server and listen on a port
     public void SetupServer()
     {
-        isAtStartup = false;
-        NetworkServer.SetNetworkConnectionClass<MyConnection>();
-        NetworkServer.useWebSockets = true;
-        if (NetworkServer.Listen(1337))
-            Debug.Log("Ecoute localhost:1337");
+        if (Status != NetworkStatus.Offline)
+        {
+            Debug.Log("SetupServer: Server already started !");
+            return;
+        }
+        Status = NetworkStatus.Starting;
+
+        Server.useWebSockets = true;
+        if (Server.Listen("localhost", 80))
+        {
+            Debug.Log("SetupServer: Server started on " + "localhost:80");
+            Server.OnConnectionOpened += OnNewPlayer;
+            Server.OnConnectionClosed += OnDeletedPlayer;
+            Server.OnMessageReceived += OnNewMessage;
+
+            Status = NetworkStatus.Online;
+
+            if (StatusPointer != null)
+            {
+                StatusPointer.color = new Color(0, 1, 0, 1);
+                StatusPointer.text = "On";
+            }
+        }
         else
-            Debug.Log("Couldn't open server :/");
-        NetworkServer.RegisterHandler(MsgType.Connect, OnNewClient);
-
+        {
+            Debug.Log("SetupServer: An error happened while trying to start the server.");
+        }
     }
 
-    // client function
-    public void OnNewClient(NetworkMessage netMsg)
+    public void StopServer()
     {
-        Debug.Log("Connection received !");
-        string hello = "hello";
-        netMsg.conn.SendBytes(Encoding.ASCII.GetBytes(hello), hello.Length, 0);
-        Debug.Log(netMsg.conn.GetType().ToString());
+        if (Status != NetworkStatus.Online)
+        {
+            Debug.Log("StopServer: Server already stopped !");
+            return;
+        }
+        Status = NetworkStatus.Stopping;
+
+        Server.Stop();
+
+        Server.OnConnectionOpened -= OnNewPlayer;
+        Server.OnConnectionClosed -= OnDeletedPlayer;
+        Server.OnMessageReceived -= OnNewMessage;
+
+        Debug.Log("StopServer: Server stopped !");
+
+        Status = NetworkStatus.Offline;
+        if (StatusPointer != null)
+        {
+            StatusPointer.color = new Color(1, 0, 0, 1);
+            StatusPointer.text = "Off";
+        }
     }
 
+    private void OnDeletedPlayer(NetworkConnection conn)
+    {
+        Debug.Log("Player disconnected " + conn.address);
+    }
+
+    private void OnNewPlayer(NetworkConnection conn)
+    {
+        Debug.Log("A new player from " + conn.address);
+        playerMgr.AddPlayer(conn);
+    }
+
+    private void OnNewMessage(NetworkConnection conn, Message mess)
+    {
+        playerMgr.NewMessage(conn, mess);
+    }
 }
 
-class MyConnection : NetworkConnection
-{
-    public override void TransportRecieve(byte[] bytes, int numBytes, int channelId)
-    {
-        Debug.Log("Données recu :");
-        Debug.Log(Encoding.ASCII.GetString(bytes));
-    }
 
-}
