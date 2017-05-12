@@ -22,6 +22,7 @@ public class Player : MonoBehaviour {
     public bool continousAction;
     private bool continousActionActive;
     public Buttons InputTest;
+    public bool enableKeyboard = false;
     [Space(25)]
     // Test things
 
@@ -51,6 +52,18 @@ public class Player : MonoBehaviour {
     void FixedUpdate ()
     {
         // input test
+        if(enableKeyboard)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+                Jump();
+            if (Input.GetKey(KeyCode.Q))
+                dir = Direction.Left;
+            else if (Input.GetKey (KeyCode.D))
+                dir = Direction.Right;
+            else
+                dir = Direction.None;
+        }
+
         if (singleAction || continousAction)
         {
             if(continousAction)
@@ -79,7 +92,7 @@ public class Player : MonoBehaviour {
 
         if(dir != Direction.None)
         {
-            Vector2 velocity = new Vector2((dir == Direction.Right ? -1 : 1) * moveSpeed, body.velocity.y);
+            Vector2 velocity = new Vector2((dir == Direction.Left ? -1 : 1) * moveSpeed, body.velocity.y);
             body.velocity = velocity;
         }
 
