@@ -11,9 +11,13 @@ public class Message {
 
     }
 
-    public virtual string Serialize(string data)
+    public virtual string Serialize()
     {
         return "";
     }
 
+    public string Pack()
+    {
+        return Id + "|" + Serialize();
+    }
 }

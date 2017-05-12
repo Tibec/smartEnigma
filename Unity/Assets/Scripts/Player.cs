@@ -5,16 +5,16 @@ using UnityEngine.Networking;
 
 public class Player : MonoBehaviour {
 
-    public NetworkConnection Socket { get; private set; }
+    public Connection Socket { get; set; }
+    public string Username { get; set; }
     public bool Connected { get; set; }
-    public Player(NetworkConnection conn)
-    {
-        Socket = conn;
-    }
+    public string Key { get; set; }
+
+    private SpriteRenderer sprite;
 
 	// Use this for initialization
 	void Start () {
-		
+        sprite = GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -24,6 +24,18 @@ public class Player : MonoBehaviour {
 
     public void ReceiveMessage(Message mess)
     {
-        Debug.Log("I received the message :" + mess.Id);
+        if(mess is ButtonPressedMessage)
+        {
+            ButtonPressedMessage m = (ButtonPressedMessage)mess;
+
+            if (m.ButtonId == Buttons.A)
+            {
+                sprite.color = Random.ColorHSV();
+            }
+        }
+        else if(mess is ButtonReleasedMessage)
+        {
+
+        }
     }
 }

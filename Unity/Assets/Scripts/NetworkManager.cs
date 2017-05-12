@@ -18,19 +18,20 @@ public class NetworkManager : MonoBehaviour
 {
 
     public NetworkStatus Status;
-    public MyServer Server { get; private set; }
+    public Server Server { get; private set; }
     public UILabel StatusPointer;
 
     public int PlayerLimit;
 
     private PlayerMgr playerMgr;
+    private List<Connection> lobby;
 
     public NetworkManager()
     {
         PlayerLimit = 4;
-        Server = new MyServer();
+        Server = new Server();
         Status = NetworkStatus.Offline;
-
+        lobby = new List<Connection>();
     }
 
     private void Awake()
@@ -111,20 +112,79 @@ public class NetworkManager : MonoBehaviour
 
     }
 
-    private void OnDeletedPlayer(NetworkConnection conn)
+    private void OnDeletedPlayer(Connection conn)
     {
-        Debug.Log("Player disconnected " + conn.address);
+        Debug.Log("Player disconnected");
+        if(lobby.Contains(conn))
+        {
+            Debug.Log("He has been removed from the lobby");
+            lobby.Remove(conn);
+        }
+        else
+        {
+            playerMgr.PlayerDisconnected(conn);
+        }
     }
 
-    private void OnNewPlayer(NetworkConnection conn)
+    private void OnNewPlayer(Connection conn)
     {
-        Debug.Log("A new player from " + conn.address);
-        playerMgr.AddPlayer(conn);
+        Debug.Log("A new player from " + conn.address + " has been added to the lobby");
+        lobby.Add(conn);
+        //playerMgr.AddPlayer(conn);
     }
 
-    private void OnNewMessage(NetworkConnection conn, Message mess)
+    private void OnNewMessage(Connection conn, Message mess)
     {
-        playerMgr.NewMessage(conn, mess);
+        if (lobby.Contains(conn))
+        {
+            if(mess is HelloAgainMessage) // handle reconnection
+            {
+                Player p = playerMgr.TryReconnect(((HelloAgainMessage)mess).Key);
+                if (p != null)
+                {
+                    p.Socket = conn;
+                    conn.SendMessage(new LoginSuccessMessage());
+                    lobby.Remove(conn);
+                    Debug.Log("Player " + p.Username + " successfully reconnected");
+                }
+                else
+                    SendLoginError(conn, LoginErrors.InvalidKey);
+            }
+            else if(mess is HelloMessage) // new client
+            { 
+                if(playerMgr.Players.Count < PlayerLimit) // Check player limit
+                {
+                    if (playerMgr.Players.TrueForAll(p => p.Username != ((HelloMessage)mess).Username))  // Check player name
+                    {
+                        //TODO: Verifier si le jeu a démarrer
+                        string key = playerMgr.AddPlayer(conn, ((HelloMessage)mess).Username);
+                        lobby.Remove(conn);
+                        conn.SendMessage(new LoginSuccessMessage(key));
+                        Debug.Log("Player " + ((HelloMessage)mess).Username + " is now logged in");
+                    }
+                    else
+                        SendLoginError(conn, LoginErrors.LoginAlreadyUsed);
+                }
+                else
+                    SendLoginError(conn, LoginErrors.ServerFull);
+            }
+            else
+            {
+                Debug.Log("Received the message : " + mess + " during authentification. Ignored.");
+            }
+        }
+        else
+        {
+            playerMgr.NewMessage(conn, mess);
+        }
+    }
+
+    private void SendLoginError(Connection conn, LoginErrors error)
+    {
+        LoginErrorMessage err = new LoginErrorMessage();
+        err.ErrorCode = error;
+        conn.SendMessage(err);
+        conn.Disconnect();
     }
 }
 

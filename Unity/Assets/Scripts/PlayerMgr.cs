@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -6,6 +7,7 @@ using UnityEngine.Networking;
 public class PlayerMgr : MonoBehaviour {
 
     public List<Player> Players;
+    public GameObject PlayerPrefab;
 
 	void Start ()
     {
@@ -17,23 +19,28 @@ public class PlayerMgr : MonoBehaviour {
 		
 	}
 
-    public void AddPlayer(NetworkConnection conn)
+    public string AddPlayer(Connection conn, string username)
     {
-        Player p = new Player(conn);
+        Player p = Instantiate(PlayerPrefab, new Vector3(-1+ Players.Count,0,0), new Quaternion()).GetComponent<Player>();
+        p.Socket = conn;
+        p.Username = username;
+        p.Key = Utils.RandomString(20);
         Players.Add(p);
+
+        return p.Key;
     }
 
-    public void PlayerDisconnected(NetworkConnection conn)
+    public void PlayerDisconnected(Connection conn)
     {
         GetPlayerByConnection(conn).Connected = false;
     }
 
-    public void NewMessage(NetworkConnection conn, Message mess)
+    public void NewMessage(Connection conn, Message mess)
     {
         GetPlayerByConnection(conn).ReceiveMessage(mess);
     }
 
-    private Player GetPlayerByConnection(NetworkConnection conn)
+    private Player GetPlayerByConnection(Connection conn)
     {
         foreach (Player p in Players)
         {
@@ -43,5 +50,10 @@ public class PlayerMgr : MonoBehaviour {
             }
         }
         return null;
+    }
+
+    public Player TryReconnect(string key)
+    {
+        return Players.Find(p => p.Key == key);
     }
 }
