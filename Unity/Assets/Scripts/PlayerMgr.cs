@@ -19,13 +19,16 @@ public class PlayerMgr : MonoBehaviour {
 		
 	}
 
+
     public string AddPlayer(Connection conn, string username)
     {
         Player p = Instantiate(PlayerPrefab, new Vector3(-1+ Players.Count,0,0), new Quaternion()).GetComponent<Player>();
+        p.Coloration = UnityEngine.Random.ColorHSV();
         p.Socket = conn;
         p.Username = username;
         p.Key = Utils.RandomString(20);
         Players.Add(p);
+
 
         return p.Key;
     }
