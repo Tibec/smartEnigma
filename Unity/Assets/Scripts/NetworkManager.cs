@@ -181,6 +181,7 @@ public class NetworkManager : MonoBehaviour
 
     private void SendLoginError(Connection conn, LoginErrors error)
     {
+        Debug.LogError("Authentification refused. Reason : " + error.ToString());
         LoginErrorMessage err = new LoginErrorMessage();
         err.ErrorCode = error;
         conn.SendMessage(err);

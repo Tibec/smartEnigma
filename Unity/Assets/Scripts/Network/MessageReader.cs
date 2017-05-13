@@ -16,6 +16,7 @@ public class MessageReader {
     {
         rawData = message;
         Parse();
+        Debug.Log("Reception de :" + rawData);
     }
 
     private void Parse()
