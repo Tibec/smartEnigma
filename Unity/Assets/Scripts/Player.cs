@@ -30,22 +30,14 @@ public class Player : MonoBehaviour {
         controller = GetComponent<PlayerController>();
     }
 
-    // Jump input must treated here for some reasons ...
     private void Update()
-    {
-        if (enableKeyboard)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-                controller.Jump();
-        }
-    }
-    // Update is called once per frame
-    void FixedUpdate ()
     {
         // input test
         if (enableKeyboard)
         {
-            if (Input.GetKey(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Space))
+                controller.Jump();
+            else if (Input.GetKey(KeyCode.Q))
                 controller.Move(PlayerDirection.Left);
             else if (Input.GetKey(KeyCode.D))
                 controller.Move(PlayerDirection.Right);
@@ -57,7 +49,7 @@ public class Player : MonoBehaviour {
 
         if (singleAction || continousAction)
         {
-            if(continousAction)
+            if (continousAction)
                 continousActionActive = true;
 
             ButtonPressedMessage m = new ButtonPressedMessage();
@@ -81,9 +73,8 @@ public class Player : MonoBehaviour {
         }
         // end test
 
-	}
 
-
+    }
 
     public void ReceiveMessage(Message mess)
     {

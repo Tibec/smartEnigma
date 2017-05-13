@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     public LayerMask groundMask;
     private Transform groundCheck;    // A position marking where to check if the player is grounded.
-    const float groundedRadius = .1f; // Radius of the overlap circle to determine if grounded
+    const float groundedRadius = .01f; // Radius of the overlap circle to determine if grounded
 
     // Movement data
     public int jumpCount = 2;
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 4f;
     private PlayerDirection wantedDirection = PlayerDirection.None;
     private bool jumpInProgress = false;
-    private bool isGrounded;
+    public bool isGrounded;
     // Animation
     private const string kStandAnim = "Standing";
     private const string kWalkAnim = "Walking";
@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
         //m_CeilingCheck = transform.Find("CeilingCheck");
     }
 
+    // physics
     void FixedUpdate()
     {
 
@@ -50,13 +51,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    //input
     void Update ()
     {
         CheckGrounded();
         UpdateAnimation();
-
-        if (!isGrounded && jumpInProgress)
-            jumpInProgress = false;
         
         if (isGrounded && wantedDirection == PlayerDirection.None && !jumpInProgress)
         {
@@ -105,20 +104,23 @@ public class PlayerController : MonoBehaviour
     private void CheckGrounded()
     {
         isGrounded = false;
-        if (jumpInProgress)
-            return;
 
         // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
         // This can be done using layers instead but Sample Assets will not overwrite your project settings.
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, groundedRadius, groundMask);
         for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].gameObject != gameObject)
+            if (colliders[i].gameObject != gameObject && !jumpInProgress)
                 isGrounded = true;
         }
 
+        if (!isGrounded && jumpInProgress)
+            jumpInProgress = false;
+
         if (isGrounded)
+        {
             remainingJump = jumpCount;
+        }
     }
 
     public void Move(PlayerDirection dir)
