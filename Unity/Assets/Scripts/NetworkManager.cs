@@ -65,7 +65,7 @@ public class NetworkManager : MonoBehaviour
         Status = NetworkStatus.Starting;
 
         Server.useWebSockets = true;
-        if (Server.Listen("localhost", 80))
+        if (Server.Listen(80))
         {
             Debug.Log("SetupServer: Server started on " + "localhost:80");
             Server.OnConnectionOpened += OnNewPlayer;
