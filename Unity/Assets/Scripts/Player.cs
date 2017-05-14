@@ -87,6 +87,9 @@ public class Player : MonoBehaviour {
                 case Buttons.A:
                     controller.Jump();
                     break;
+                case Buttons.Joystick:
+                    controller.Move(TranslateJoystickInput(m.Extra1, m.Extra2));
+                    break;
                 case Buttons.DPadLeft:
                     controller.Move(PlayerDirection.Left);
                     break;
@@ -111,6 +114,7 @@ public class Player : MonoBehaviour {
                 case Buttons.DPadRight:
                 case Buttons.DPadDown:
                 case Buttons.DPadUp:
+                case Buttons.Joystick:
                     controller.Move(PlayerDirection.None);
                     break;
             }
@@ -118,4 +122,22 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private PlayerDirection TranslateJoystickInput(int extra1, int extra2)
+    {
+        const int left = 180;
+        const int right = 0;
+        const int up =  90;
+        const int down = 270;
+
+        if (extra1 < 30 || extra1 > 330)
+            return PlayerDirection.Right;
+        else if (extra1 < left + 30 || extra1 > left - 30)
+            return PlayerDirection.Left;
+        else if (extra1 <= down + 30 || extra1 >= down - 30)
+            return PlayerDirection.Down;
+        else if (extra1 <= up + 30 || extra1 >= up - 30)
+            return PlayerDirection.Up;
+        else
+            return PlayerDirection.None;
+    }
 }
