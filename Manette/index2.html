@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="utf-8">    
+        <meta name="viewport" content="width=device-width", initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no,minimal-ui>
+
+        <link rel="stylesheet" type="text/css" href="mystyle.css">    
+        <title>Controller</title>  
+
+
+  </head>
+
+  <body>
+
+        <script src="joystick/dist/nipplejs.js" charset="utf-8"></script>    
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script> 
+        <script src="utility2.js" defer></script> 
+
+        <div id="connexionScreen">
+            Connexion mode  
+            <!-- l'ecran de connexion peut apparaitre en format portrait et paysage -->
+            IP :<input type="text" id="url" /><br>
+            <br>
+            Nom du joueur : <input type="text" id="name" /><br>
+            <button id="connect">Connect</button>
+
+        </div>
+
+        <div id="portraitScreen" style="display:none">
+            Portrait mode     
+            Change to landscape mode, please.
+        </div>
+
+
+        <div id="landscapeScreen" style="display:none" >            
+            <div id="left"></div>
+
+            <div id="B1">
+                <span class='video-game-button'>A</span>             
+            </div>
+
+            <div id="B2">              
+                <span class='video-game-button'>B</span>              
+            </div>
+
+        </div>   
+
+  </body>
+
+</html>
