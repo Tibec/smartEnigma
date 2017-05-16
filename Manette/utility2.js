@@ -11,11 +11,11 @@ var i=0;
 
 ////// LISTENER //////////////////////////
 
-$(document).on('touchstart ', '#button-a', handleA);
-$(document).on('touchstart ', '#button-a', handleA);
+$(document).on('touchstart', '#button-a', handleA);
+$(document).on('click', '#button-a', handleA);
 
-$(document).on('touchstart ', '#button-b', handleB);
-$(document).on('touchstart ', '#button-b', handleB);
+$(document).on('click', '#button-b', handleB);
+$(document).on('touchstart', '#button-b', handleB);
 
 function handleA() {
        		console.log("qqun appuye sur le bouton A !"+i);
@@ -459,4 +459,4 @@ else
 
 }   
 
-}
+});
