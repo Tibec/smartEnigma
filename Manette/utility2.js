@@ -64,6 +64,15 @@ $(document).ready(function () {
 });  
 */
 
+var joystick = nipplejs.create({
+	zone: document.getElementById('joystick'),
+	color: 'white',
+	size: 100,
+	mode: 'static',
+	position: {left: '30%', bottom: '30%'}			
+	});
+
+
 //listener qui detecte les evenements du joystick
 joystick.on('end move', function (evt, data) {
 

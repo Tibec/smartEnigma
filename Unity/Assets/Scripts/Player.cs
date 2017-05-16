@@ -131,11 +131,11 @@ public class Player : MonoBehaviour {
 
         if (extra1 < 30 || extra1 > 330)
             return PlayerDirection.Right;
-        else if (extra1 < left + 30 || extra1 > left - 30)
+        else if (extra1 < left + 30 && extra1 > left - 30)
             return PlayerDirection.Left;
-        else if (extra1 <= down + 30 || extra1 >= down - 30)
+        else if (extra1 <= down + 30 && extra1 >= down - 30)
             return PlayerDirection.Down;
-        else if (extra1 <= up + 30 || extra1 >= up - 30)
+        else if (extra1 <= up + 30 && extra1 >= up - 30)
             return PlayerDirection.Up;
         else
             return PlayerDirection.None;
