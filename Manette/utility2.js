@@ -12,9 +12,11 @@ var i=0;
 ////// LISTENER //////////////////////////
 
 
-$("#button-b").on('click touchstart', '#button-a', handleA);
+$("#button-a").on('touchstart', handleA);
+$("#button-a").on('click', handleA);
 
-$("#button-b").on('click touchstart', '#button-b', handleB);
+$("#button-b").on('touchstart', handleB);
+$("#button-b").on('click', handleB);
 
 function handleA() {
        		console.log("qqun appuye sur le bouton A !"+i);
