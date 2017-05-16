@@ -11,11 +11,10 @@ var i=0;
 
 ////// LISTENER //////////////////////////
 
-$(document).on('touchstart', '#button-a', handleA);
-$(document).on('click', '#button-a', handleA);
 
-$(document).on('click', '#button-b', handleB);
-$(document).on('touchstart', '#button-b', handleB);
+$("#button-b").on('click touchstart', '#button-a', handleA);
+
+$("#button-b").on('click touchstart', '#button-b', handleB);
 
 function handleA() {
        		console.log("qqun appuye sur le bouton A !"+i);
@@ -23,7 +22,7 @@ function handleA() {
 }
 
 function handleB() {
-       		console.log("qqun appuye sur le bouton A !"+i);
+       		console.log("qqun appuye sur le bouton B !"+i);
         	sendMsg ("110", "2;0;0");
 }
 
@@ -69,7 +68,7 @@ var joystick = nipplejs.create({
 	color: 'white',
 	size: 100,
 	mode: 'static',
-	position: {left: '30%', bottom: '30%'}			
+	position: {left: '50%', bottom: '50%'}			
 	});
 
 

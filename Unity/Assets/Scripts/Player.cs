@@ -84,7 +84,7 @@ public class Player : MonoBehaviour {
 
             switch (m.ButtonId)
             {
-                case Buttons.A:
+                case Buttons.B:
                     controller.Jump();
                     break;
                 case Buttons.Joystick:
