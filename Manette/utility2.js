@@ -1,3 +1,5 @@
+$(document).ready(function () {
+
 
 //////  VARIABLES GLOBALES ///////////////
 var isConnected =0;
@@ -9,29 +11,22 @@ var i=0;
 
 ////// LISTENER //////////////////////////
 
+$(document).on('touchstart ', '#button-a', handleA);
+$(document).on('touchstart ', '#button-a', handleA);
 
-//listener qui detecte pression sur A
-$(function() {
-    $("body").click(function(e) {
-        if (e.target.id == "button-a" || $(e.target).parents("#button-a").size()) { 
-            i++;
+$(document).on('touchstart ', '#button-b', handleB);
+$(document).on('touchstart ', '#button-b', handleB);
+
+function handleA() {
        		console.log("qqun appuye sur le bouton A !"+i);
         	sendMsg ("110", "1;0;0");
-        } 
-    });
-})
+}
 
-
-//listener qui detecte pression sur B
-$(function() {
-    $("body").click(function(e) {
-        if (e.target.id == "button-b" || $(e.target).parents("#button-b").size()) { 
-            i++;
-       		console.log("qqun appuye sur le bouton B !"+i);
+function handleB() {
+       		console.log("qqun appuye sur le bouton A !"+i);
         	sendMsg ("110", "2;0;0");
-        } 
-    });
-})
+}
+
 
 /*
 $(document).on('click', '#button-b', function () {
@@ -463,3 +458,5 @@ else
 	setVisible("interfaceScreen");
 
 }   
+
+}
