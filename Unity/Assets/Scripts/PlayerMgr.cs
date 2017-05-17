@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 public class PlayerMgr : MonoBehaviour {
 
     public List<Player> Players;
+    public List<RuntimeAnimatorController> PlayersForms;
     public GameObject PlayerPrefab;
 
 	void Start ()
@@ -27,6 +28,7 @@ public class PlayerMgr : MonoBehaviour {
         p.Socket = conn;
         p.Username = username;
         p.Key = Utils.RandomString(20);
+        p.GetComponent<Animator>().runtimeAnimatorController = PlayersForms[Players.Count];
         Players.Add(p);
 
 
