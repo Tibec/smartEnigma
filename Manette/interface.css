@@ -124,6 +124,7 @@ html, body {
 	position: absolute;
 	bottom: 5%;
 	left: 5%;
+	cursor: pointer;
 
 }
 #button-b {
@@ -135,6 +136,7 @@ html, body {
 	position: absolute;
 	top: 5%;
 	right: 5%;
+	cursor: pointer;
 }
 
 

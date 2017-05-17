@@ -1,3 +1,5 @@
+$(document).ready(function () {
+
 
 //////  VARIABLES GLOBALES ///////////////
 var isConnected =0;
@@ -9,63 +11,107 @@ var i=0;
 
 ////// LISTENER //////////////////////////
 
-//detecte un changement d'orientation
-window.addEventListener("orientationchange", function(e) {       
-    
-    if(isConnected)
-    {
-    	setHidden("connexionScreen");
-		if(isPortraitMode())
-		{
-			setVisible("portraitScreen");		
-			setHidden("landscapeScreen");
-		}
-		else
-		{
-			//landscape mode
-			setVisible("landscapeScreen");
-			setHidden("portraitScreen");
-		}
-    }
-    
-        
-});
+
+$("#button-a").on('touchstart', handleA);
+//$("#button-a").on('click', handleA);
+
+$("#button-b").on('touchstart', handleB);
+//$("#button-b").on('click', handleB);
+
+function handleA() {
+       		console.log("qqun appuye sur le bouton A !"+i);
+        	sendMsg ("110", "1;0;0");
+}
+
+function handleB() {
+       		console.log("qqun appuye sur le bouton B !"+i);
+        	sendMsg ("110", "2;0;0");
+}
+
 
 /*
-$("#B2").click(function (){
-	i++;
-    console.log("qqun appuye sur le bouton B !"+i);
-    sendMsg ("110", "2;0;0");
-});
-
-
-
-$("#B1").click(function (){
-	i++;
-    console.log("qqun appuye sur le bouton A !"+i);
-    sendMsg ("110", "1;0;0");
-});
-*/
+$(document).on('click', '#button-b', function () {
+    	i++;
+        console.log("qqun appuye sur le bouton B !"+i);
+        sendMsg ("110", "2;0;0");
+        return false;
+    });
+    */
+/*
+ $(document).on('click', '#button-a', function () {
+    	i++;
+        console.log("qqun appuye sur le bouton A !"+i);
+        sendMsg ("110", "1;0;0");
+        return false;
+    });
 
 $(document).ready(function () {
-    $(document).on('click', '#B2', function () {
+    $(document).on('click', '#button-b', function () {
     	i++;
         console.log("qqun appuye sur le bouton B !"+i);
         sendMsg ("110", "2;0;0");
         return false;
     });
 });  
-
+*/
+/*
 $(document).ready(function () {
-    $(document).on('click', '#B1', function () {
+    $(document).on('click', '#button-a', function () {
     	i++;
         console.log("qqun appuye sur le bouton A !"+i);
         sendMsg ("110", "1;0;0");
         return false;
     });
 });  
+*/
+
+var joystick = nipplejs.create({
+	zone: document.getElementById('joystick'),
+	color: 'white',
+	size: 100,
+	mode: 'static',
+	position: {left: '50%', bottom: '50%'}			
+	});
 
 
+//listener qui detecte les evenements du joystick
+joystick.on('end move', function (evt, data) {
+
+            if (evt.type === 'move'){
+
+            	//envoie des nouvelles valeurs au serveur
+            	//envoie de l'angle et de la force
+
+            	var intDegree = Math.round(data.angle.degree);
+            	var intForce = Math.round(data.force);
+
+                console.log("valeur de l'angle : "+intDegree);
+                console.log("valeur de la force : "+intForce);
+                sendMsg ("110", "3;"+intDegree+";"+intForce);
+
+            }
+            else if(evt.type === 'end'){
+                console.log("le joystick a ete lache");
+
+                //previent le serveur que le joystick a ete lache
+                sendMsg ("111", "3");
+
+            }
+
+            return false;
+   
+        });
+
+//joystick.off('event', handler);
+
+//no scroll
+document.body.addEventListener('touchmove', function(event) {
+  event.preventDefault();
+}, false); 
+
+
+
+/*
 //ultime no scroll
 document.ontouchmove = function(event){
     event.preventDefault();
@@ -80,16 +126,9 @@ window.addEventListener("load",function() {
 		window.scrollTo(0, 1);
 	}, 0);
 });
+*/
 
 //////  FONCTIONS ///////////////////////
-
-//test si on est en mode portrait
-function isPortraitMode()
-{
-	return window.matchMedia("(orientation: portrait)").matches;
-}
-
-
 
 //met a jour showConnexionScreen (1 : ecran doit s'afficher. 0 : ecran ne doit pas s'afficher)
 function updateShowConnexionScreen(newVal)
@@ -99,11 +138,13 @@ function updateShowConnexionScreen(newVal)
 	{
 		//montre ecran de connexion
 		setVisible("connexionScreen");
+		setHidden("interfaceScreen");
 	}
 	else
 	{
 		//cache ecran de connexion
 		setHidden("connexionScreen");
+		setVisible("connexionScreen");
 	}
 }
 
@@ -123,13 +164,19 @@ function setHidden(idName)
 //creation du joystick (avec listener)
 function createJoystick()
 {
-	 var joystick = nipplejs.create({
-            zone: document.getElementById('left'),
-            mode: 'static',
-            position: { left: '50%', top: '50%' },
-            color: 'black',
-            size: 150
-        });
+
+	/*
+	var joystick = nipplejs.create({
+			zone: document.getElementById('joystick'),
+			color: 'white',
+			size: 100,
+	        mode: 'static',
+			position: {left: '30%', bottom: '30%'}
+			
+		});
+	
+*/
+	
        console.log("joystick");
        joystick.on('end move', function (evt, data) {
 
@@ -326,19 +373,6 @@ function setSocket(sock)
     socket=sock;
 }
 
-/*
-function createButton(context, func){
-    var button = document.createElement("input");
-    var name=$("#name").val();
-    button.type = "button";
-    button.value = "Send message";
-    button.onclick = function(){
-      socket.send("100|"+name);
-      createJoystick();
-    };
-    context.appendChild(button);
-}
-*/
 
 function createReconnexionButton(context, func)
 {
@@ -394,23 +428,16 @@ function connexion()
 		{
 
 			socket.send("100|"+name);
-     		createJoystick();
+     		
+			setConnected();
 
-     		/*
-			createButton(document.body, function(){
-		    highlight(this.parentNode.childNodes[1]);
-		    });
-		    */
+			//attente des messages
+			waitMsg();
 
-		setConnected();
+			//declenchement du listener qui agit en cas de deconnexion au serveur
+			listenerSendMessageWhenDisconnect();
 
-		//attente des messages
-		waitMsg();
-
-		//declenchement du listener qui agit en cas de deconnexion au serveur
-		listenerSendMessageWhenDisconnect();
-
-		alert("CONNECTED");   
+			alert("CONNECTED");   
 		 
 		}   
 	    
@@ -421,47 +448,25 @@ function setConnected()
 {
   	isConnected=1;
   	setHidden("connexionScreen");
-
-  	if(isPortraitMode())
-	{
-		setVisible("portraitScreen");		
-		setHidden("landscapeScreen");
-	}
-	else
-	{
-		//landscape mode
-		setVisible("landscapeScreen");
-		setHidden("portraitScreen");	
-	}
-
+  	setVisible("interfaceScreen");
 }
 
 
 ///// MAIN //////////////////
 
+
 if (isConnected == 0)
 {	
 	setVisible("connexionScreen");
-	console.log("passe");
-	setHidden("portraitScreen");
-    setHidden("landscapeScreen");
+	setHidden("interfaceScreen");
 	connexion();      
            
 }
 else
-{
-	console.log("pas connecte");
+{	
 	setHidden("connexionScreen");
-	if(isPortraitMode())
-	{
-		setVisible("portraitScreen");		
-		setHidden("landscapeScreen");
-	}
-	else
-	{
-		//landscape mode
-		setVisible("landscapeScreen");
-		setHidden("portraitScreen");
-	}
+	setVisible("interfaceScreen");
 
 }   
+
+});
