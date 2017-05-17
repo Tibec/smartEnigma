@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">-->
+   <!-- <meta id="viewport" name="viewport" content="initial-scale=1.0; user-scalable=0; minimum-scale=1.0; maximum-scale=1.0" />-->
+    <meta name="viewport" content="width=device-width", initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no,minimal-ui>
+
+    <link rel="stylesheet" type="text/css" href="mystyle.css">    
+    <title>Controller</title>  
+
+
+  </head>
+
+  <body>
+    <div id="left"></div>
+    <div id="B1">
+
+        <span class='video-game-button'>A</span>            
+            
+    </div>
+
+    <div id="B2">
+            
+        <span class='video-game-button'>B</span>
+            
+    </div>
+
+       
+    <script src="joystick/dist/nipplejs.js" charset="utf-8"></script>
+    
+
+      <br>
+     IP :<input type="text" id="url" /><br>
+     <br>
+     Nom du joueur : <input type="text" id="name" /><br>
+     <button id="connect">Connect</button>
+
+    <script type='text/javascript'>
+            var socket;
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>       
+
+
+    <script src="msg.js" defer></script>    
+
+
+    <script src="utility.js" defer></script> 
+
+    <script src="controller.js" defer></script>
+
+    <!-- ajout -->
+    
+
+    <!-- fin ajout -->
+
+  </body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">-->
+   <!-- <meta id="viewport" name="viewport" content="initial-scale=1.0; user-scalable=0; minimum-scale=1.0; maximum-scale=1.0" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no,minimal-ui>
+
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <title>Controller</title>
+
+  
+
+    <!-- Inline scripts are forbidden in Firefox OS apps (CSP restrictions),
+         so we use a script file. -->
+
+    <div id="portrait">
+    	Please turn your phone to landscape mode. 
+
+    </div>
+
+
+    <div id="landscape">
+    	<!--landscape mode.-->
+    	<div id="connectionPage">
+    		connexion page
+		    <input type="text" id="url" />
+		    <button id="connect">Connect</button>
+
+		    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>		    
+	    
+		    <!-- <script src="app.js" defer></script> -->
+		    <script src="utility.js" defer></script> 
+	    </div>
+
+	    <div id="controllerPage">
+	    	<!--controller page-->
+	    	<canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3; margin: 0 auto;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+	    		
+	    	<script src="controller.js" defer></script> 
+	    </div>
+
+    </div>
+
+    
+
+
+
+       
+
+
+  </head>
+
+  <body>
+
+  </body>
+
+</html>

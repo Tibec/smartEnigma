@@ -1,0 +1,153 @@
+html, body {
+	margin:0;
+	padding:0;
+	background-color: #434343;
+	overflow: hidden;
+	color:white;
+	height:100%;
+	width:100%;
+}
+
+#menu {
+	width:100%;
+	text-align:center;
+}
+
+#menu button {
+	 border: 3px solid white;
+	 border-radius: 10px;
+	 height:50px;
+     background-color: #434343;
+	 color:white;
+	 padding:5px;
+	 min-width : 120px;
+	 width: 30%;
+	 font-family: Tahoma, serif;
+	 margin:2%;
+	 font-size: 125%;
+}
+
+#control-area {
+/*	background-color:#ff0000; */
+	display:inline-block;
+}
+
+#message-popup {
+	 border: 3px solid white;
+	 border-radius: 10px;
+     background-color: #434343;
+	 color:white;
+	 font-family: Tahoma, serif;
+	 font-size: 125%;
+	 z-index:50;
+	 position:absolute;
+	 padding:2%;
+}
+
+.hide {
+	display:none;
+}
+
+@media (orientation:landscape) {
+	.btn-space {
+		width:30%;
+		display:inline-block;
+	}
+	
+	#joystick {
+		position: absolute;
+		left: 14%;
+		bottom: 30%;
+		height: 30%;
+		width: 15%;
+	}
+	#buttons {
+		position: absolute;
+		width: 50%;
+		bottom: 10%;
+		right: 2%;
+		height: 50%;
+	}
+	
+	#message-popup {
+		top: 15%;
+		left: 25%;
+		width: 45%;
+		height: 20%;
+	}
+}
+
+@media (orientation:portrait) {
+	.btn-space {
+		display:none;
+	}
+	
+	#joystick {
+		position: absolute;
+		left: 20%;
+		bottom: 10%;
+		height: 30%;
+		width: 15%;
+	}
+
+	#menu button {
+		 width: 45%;
+	}
+	
+	#buttons {
+		position: absolute;
+		width: 50%;
+		bottom: 10%;
+		right: 2%;
+		height: 20%;
+	}
+	
+	#message-popup {
+		top:20%;
+		height:30%;
+		margin:0 5%;
+        width: 84%;
+	}
+
+}
+
+#joystick {
+
+}
+
+#button-a {
+	background: url('images/aBtn.png') no-repeat;
+	height: 50%;
+	width: 50%;
+	display: inline-block;
+	background-size:contain;
+	position: absolute;
+	bottom: 5%;
+	left: 5%;
+	cursor: pointer;
+
+}
+#button-b {
+	background: url('images/bBtn.png') no-repeat;
+	height: 50%;
+	width: 50%;
+	display: inline-block;
+	background-size:contain;
+	position: absolute;
+	top: 5%;
+	right: 5%;
+	cursor: pointer;
+}
+
+
+#button-a:active  {
+	background: url('images/aBtnP.png') no-repeat;
+	background-size:contain;
+	display: inline-block;
+}
+#button-b:active {
+	background: url('images/bBtnP.png') no-repeat ;
+	background-size:contain;
+	display: inline-block;
+}
+
