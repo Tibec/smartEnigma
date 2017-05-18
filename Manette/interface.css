@@ -56,8 +56,8 @@ html, body {
 	
 	#joystick {
 		position: absolute;
-		left: 20%;
-		bottom: 10%;
+		left: 14%;
+		bottom: 30%;
 		height: 30%;
 		width: 15%;
 	}
@@ -84,8 +84,8 @@ html, body {
 	
 	#joystick {
 		position: absolute;
-		left: 25%;
-		bottom: -10%;
+		left: 20%;
+		bottom: 10%;
 		height: 30%;
 		width: 15%;
 	}
