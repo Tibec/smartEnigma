@@ -11,6 +11,20 @@ var i=0;
 
 ////// LISTENER //////////////////////////
 
+$(document).on("keydown", function(evt) {
+	if(evt.key == " ")
+	{
+		pressB();
+	}	
+});
+
+$(document).on("keyup", function(evt) {
+	if(evt.key == " ")
+	{
+		releaseB();
+	}	
+});
+
 
 $("#button-a").on('touchstart', pressA);
 $("#button-a").on('touchend', releaseA);
@@ -63,7 +77,8 @@ var joystick = new VirtualJoystick({
 	}, 1/30 * 1000);	
 	*/
 //listener qui detecte les evenements du joystick
-$(document.body).on("touchstart touchmove", function(){
+
+$(joystick._container).on("moved", function(){
 	console.log("joystick bouger");
 	var dx = joystick.deltaX();
 	var dy = joystick.deltaY();
@@ -77,7 +92,7 @@ $(document.body).on("touchstart touchmove", function(){
 
 });
 
-$(document.body).on("touchend", function(){
+$(joystick._container).on("released", function(){
 	console.log("joystick laché");
 	sendMsg ("111", "3");
 
@@ -113,13 +128,15 @@ joystick.on('end move', function (evt, data) {
 //joystick.off('event', handler);
 
 //no scroll
+
+
 document.body.addEventListener('touchmove', function(event) {
   event.preventDefault();
 }, false); 
 
 
 
-/*
+
 //ultime no scroll
 document.ontouchmove = function(event){
     event.preventDefault();
@@ -134,11 +151,12 @@ window.addEventListener("load",function() {
 		window.scrollTo(0, 1);
 	}, 0);
 });
-*/
 
 //////  FONCTIONS ///////////////////////
 
 //met a jour showConnexionScreen (1 : ecran doit s'afficher. 0 : ecran ne doit pas s'afficher)
+
+
 function updateShowConnexionScreen(newVal)
 {
 	showConnexionScreen=newVal
@@ -168,49 +186,6 @@ function setHidden(idName)
   	document.getElementById(idName).style.display = 'none';
 }
 
-
-//creation du joystick (avec listener)
-function createJoystick()
-{
-
-	/*
-	var joystick = nipplejs.create({
-			zone: document.getElementById('joystick'),
-			color: 'white',
-			size: 100,
-	        mode: 'static',
-			position: {left: '30%', bottom: '30%'}
-			
-		});
-	
-*/
-	
-       console.log("joystick");
-       joystick.on('end move', function (evt, data) {
-
-            if (evt.type === 'move'){
-
-            	//envoie des nouvelles valeurs au serveur
-            	//envoie de l'angle et de la force
-
-            	var intDegree = Math.round(data.angle.degree);
-            	var intForce = Math.round(data.force);
-
-                console.log("valeur de l'angle : "+intDegree);
-                console.log("valeur de la force : "+intForce);
-                sendMsg ("110", "3;"+intDegree+";"+intForce);
-
-            }
-            else if(evt.type === 'end'){
-                console.log("le joystick a ete lache");
-
-                //previent le serveur que le joystick a ete lache
-                sendMsg ("111", "3");
-
-            }
-   
-        });
-}
 
 //creation d'un cookie
 function setCookie(cname, cvalue, exdays) {
@@ -359,14 +334,14 @@ function waitMsg (){
 
 	socket.addEventListener('message', function (event) {    
 
-    var reader = new FileReader();
-	reader.onload = function() {    
-   		handleMessage(reader.result);
-	}
-	reader.readAsText(event.data);	
-});
-
+		var reader = new FileReader();
+		reader.onload = function() {    
+			handleMessage(reader.result);
+		}
+		reader.readAsText(event.data);	
+	});
 }
+
 
 
 //envoie des messages

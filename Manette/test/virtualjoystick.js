@@ -166,10 +166,14 @@ VirtualJoystick.prototype._onUp	= function()
 	
 		this._baseX	= this._baseY	= 0;
 	}
+	
+	this._container.dispatchEvent(new Event('released'));
 }
 
 VirtualJoystick.prototype._onDown	= function(x, y)
 {
+	this._container.dispatchEvent(new Event('moved'));
+
 	this._basePosX = this._container.getBoundingClientRect().left - document.body.getBoundingClientRect().left;
 	this._basePosY = this._container.getBoundingClientRect().top - document.body.getBoundingClientRect().top;
 
@@ -204,6 +208,7 @@ VirtualJoystick.prototype._onDown	= function(x, y)
 
 VirtualJoystick.prototype._onMove	= function(x, y)
 {
+	this._container.dispatchEvent(new Event('moved'));
 	if( this._pressed === true ){
 		this._stickX	= x - this._basePosX;
 		this._stickY	= y - this._basePosY;
