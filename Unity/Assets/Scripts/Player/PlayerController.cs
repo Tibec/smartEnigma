@@ -186,6 +186,7 @@ public class PlayerController : MonoBehaviour
             }
             else if ( // Handling multiple jump
                 GetActionState(eControllerActions.Jump) &&
+                GetIfActionHasChanged(eControllerActions.Jump) && //NOTE: if not commented, player needs to release and press jump to jump
                 m_usedMidAirJump < m_midAirJumpCount &&
                 !IsGrounded) 
             {

@@ -12,11 +12,11 @@ var i=0;
 ////// LISTENER //////////////////////////
 
 
-$("#button-a").on('touchstart mousedown', pressA);
-$("#button-a").on('mouseup touchend', releaseA);
+$("#button-a").on('touchstart', pressA);
+$("#button-a").on('touchend', releaseA);
 
-$("#button-b").on('touchstart mousedown', pressB);
-$("#button-b").on('mouseup touchend', releaseB);
+$("#button-b").on('touchstart', pressB);
+$("#button-b").on('touchend', releaseB);
 
 function pressA() {
        		console.log("BtnA:Pressed");
@@ -63,12 +63,12 @@ var joystick = new VirtualJoystick({
 	}, 1/30 * 1000);	
 	*/
 //listener qui detecte les evenements du joystick
-$(joystick._stickEl).on("touchstart touchmove mousedown mousemove", function(){
+$(document.body).on("touchstart touchmove", function(){
 	console.log("joystick bouger");
 	var dx = joystick.deltaX();
 	var dy = joystick.deltaY();
 	
-	var angle = Math.atan2(-dy,dx) * 180/Math.PI + 360;
+	var angle = (Math.atan2(-dy,dx) * 180/Math.PI + 360) % 360;
 	var force = Math.sqrt( (dx * dx) + (dy * dy) );
 	angle = Math.round(angle);
 	force = Math.round(force);
@@ -77,7 +77,7 @@ $(joystick._stickEl).on("touchstart touchmove mousedown mousemove", function(){
 
 });
 
-$(joystick._stickEl).on("touchend mouseup", function(){
+$(document.body).on("touchend", function(){
 	console.log("joystick laché");
 	sendMsg ("111", "3");
 

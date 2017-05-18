@@ -170,6 +170,10 @@ VirtualJoystick.prototype._onUp	= function()
 
 VirtualJoystick.prototype._onDown	= function(x, y)
 {
+	this._basePosX = this._container.getBoundingClientRect().left - document.body.getBoundingClientRect().left;
+	this._basePosY = this._container.getBoundingClientRect().top - document.body.getBoundingClientRect().top;
+
+	
 	this._pressed	= true; 
 	if(this._stationaryBase == false){
 		this._baseX	= x;

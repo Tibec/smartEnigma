@@ -84,7 +84,6 @@ public class Player : MonoBehaviour {
                     controller.SetActionState(eControllerActions.Jump, true);
                     break;
                 case Buttons.Joystick:
-                    controller.SetActionState(eControllerActions.Jump, false);
                     controller.SetActionState(eControllerActions.Left, false);
                     controller.SetActionState(eControllerActions.Right, false);
                     controller.SetActionState(eControllerActions.Down, false);
@@ -117,12 +116,13 @@ public class Player : MonoBehaviour {
                 case Buttons.DPadDown:
                 case Buttons.DPadUp:
                 case Buttons.Joystick:
-                case Buttons.B:
-                    controller.SetActionState(eControllerActions.Jump, false);
                     controller.SetActionState(eControllerActions.Left, false);
                     controller.SetActionState(eControllerActions.Right, false);
                     controller.SetActionState(eControllerActions.Down, false);
                     controller.SetActionState(eControllerActions.Up, false);
+                    break;
+                case Buttons.B:
+                    controller.SetActionState(eControllerActions.Jump, false);
                     break;
             }
 
