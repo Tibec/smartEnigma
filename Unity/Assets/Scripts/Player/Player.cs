@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CreativeSpore.SmartColliders;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,12 +23,12 @@ public class Player : MonoBehaviour {
     public Buttons InputTest;
     public bool enableKeyboard = false;
 
-    private PlayerController controller;
+    private PlatformCharacterController controller;
 
     // Use this for initialization
     void Awake () {
         sprite = GetComponent<SpriteRenderer>();
-        controller = GetComponent<PlayerController>();
+        controller = GetComponent<PlatformCharacterController>();
     }
 
     private void Update()
@@ -35,16 +36,11 @@ public class Player : MonoBehaviour {
         // input test
         if (enableKeyboard)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-                controller.Jump();
-            else if (Input.GetKey(KeyCode.Q))
-                controller.Move(PlayerDirection.Left);
-            else if (Input.GetKey(KeyCode.D))
-                controller.Move(PlayerDirection.Right);
-            else if (Input.GetKey(KeyCode.S))
-                controller.Move(PlayerDirection.Down);
-            else
-                controller.Move(PlayerDirection.None);
+            controller.SetActionState(eControllerActions.Jump, Input.GetKeyDown(KeyCode.Space));
+            controller.SetActionState(eControllerActions.Left, Input.GetKey(KeyCode.Q));
+            controller.SetActionState(eControllerActions.Right, Input.GetKey(KeyCode.D));
+            controller.SetActionState(eControllerActions.Down, Input.GetKey(KeyCode.S));
+            controller.SetActionState(eControllerActions.Up, Input.GetKey(KeyCode.Z));
         }
 
         if (singleAction || continousAction)
@@ -81,28 +77,34 @@ public class Player : MonoBehaviour {
         if(mess is ButtonPressedMessage)
         {
             ButtonPressedMessage m = (ButtonPressedMessage)mess;
-
+            
             switch (m.ButtonId)
             {
                 case Buttons.B:
-                    controller.Jump();
+                    controller.SetActionState(eControllerActions.Jump, true);
                     break;
                 case Buttons.Joystick:
-                    controller.Move(TranslateJoystickInput(m.Extra1, m.Extra2));
+                    controller.SetActionState(eControllerActions.Jump, false);
+                    controller.SetActionState(eControllerActions.Left, false);
+                    controller.SetActionState(eControllerActions.Right, false);
+                    controller.SetActionState(eControllerActions.Down, false);
+                    controller.SetActionState(eControllerActions.Up, false);
+                    controller.SetActionState(TranslateJoystickInput(m.Extra1, m.Extra2), true);
                     break;
                 case Buttons.DPadLeft:
-                    controller.Move(PlayerDirection.Left);
+                    controller.SetActionState(eControllerActions.Left, true);
                     break;
                 case Buttons.DPadRight:
-                    controller.Move(PlayerDirection.Right);
+                    controller.SetActionState(eControllerActions.Right, true);
                     break;
                 case Buttons.DPadDown:
-                    controller.Move(PlayerDirection.Down);
+                    controller.SetActionState(eControllerActions.Down, true);
                     break;
                 case Buttons.DPadUp:
-                    controller.Move(PlayerDirection.Up);
+                    controller.SetActionState(eControllerActions.Up, true);
                     break;
             }
+            
         }
         else if(mess is ButtonReleasedMessage)
         {
@@ -115,14 +117,19 @@ public class Player : MonoBehaviour {
                 case Buttons.DPadDown:
                 case Buttons.DPadUp:
                 case Buttons.Joystick:
-                    controller.Move(PlayerDirection.None);
+                case Buttons.B:
+                    controller.SetActionState(eControllerActions.Jump, false);
+                    controller.SetActionState(eControllerActions.Left, false);
+                    controller.SetActionState(eControllerActions.Right, false);
+                    controller.SetActionState(eControllerActions.Down, false);
+                    controller.SetActionState(eControllerActions.Up, false);
                     break;
             }
 
         }
     }
 
-    private PlayerDirection TranslateJoystickInput(int extra1, int extra2)
+    private eControllerActions TranslateJoystickInput(int extra1, int extra2)
     {
         const int left = 180;
         const int right = 0;
@@ -130,14 +137,14 @@ public class Player : MonoBehaviour {
         const int down = 270;
 
         if (extra1 < 30 || extra1 > 330)
-            return PlayerDirection.Right;
+            return eControllerActions.Right;
         else if (extra1 < left + 30 && extra1 > left - 30)
-            return PlayerDirection.Left;
+            return eControllerActions.Left;
         else if (extra1 <= down + 30 && extra1 >= down - 30)
-            return PlayerDirection.Down;
+            return eControllerActions.Down;
         else if (extra1 <= up + 30 && extra1 >= up - 30)
-            return PlayerDirection.Up;
+            return eControllerActions.Up;
         else
-            return PlayerDirection.None;
+            return eControllerActions.None;
     }
 }

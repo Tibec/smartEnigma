@@ -23,15 +23,13 @@ public class PlayerMgr : MonoBehaviour {
 
     public string AddPlayer(Connection conn, string username)
     {
-        Player p = Instantiate(PlayerPrefab, new Vector3(-1+ Players.Count,0,0), new Quaternion()).GetComponent<Player>();
-        p.Coloration = UnityEngine.Random.ColorHSV();
+        Player p = Instantiate(PlayerPrefab, new Vector3(-1+ Players.Count,0,-1), new Quaternion()).GetComponent<Player>();
+       // p.Coloration = UnityEngine.Random.ColorHSV();
         p.Socket = conn;
         p.Username = username;
         p.Key = Utils.RandomString(20);
         p.GetComponent<Animator>().runtimeAnimatorController = PlayersForms[Players.Count];
         Players.Add(p);
-
-
         return p.Key;
     }
 
