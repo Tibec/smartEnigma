@@ -23,12 +23,12 @@ public class Player : MonoBehaviour {
     public Buttons InputTest;
     public bool enableKeyboard = false;
 
-    private PlatformCharacterController controller;
+    private PlayerController controller;
 
     // Use this for initialization
     void Awake () {
         sprite = GetComponent<SpriteRenderer>();
-        controller = GetComponent<PlatformCharacterController>();
+        controller = GetComponent<PlayerController>();
     }
 
     private void Update()

@@ -9,12 +9,12 @@ namespace CreativeSpore.SmartColliders
     {
         public enum eState
         {
-            Stand,
-            Walk,
-            Jump,
-            Fall,
-            Climb,
-            ClimbStand,
+            Idle,
+            Walking,
+            Jumping,
+            Falling,
+            Climbing,
+            ClimbingIdle,
             Dying,
         }
 
@@ -31,8 +31,8 @@ namespace CreativeSpore.SmartColliders
         /// </summary>
         public bool IsSpriteFacingRight = true;
 
-        private eState m_state = eState.Stand;
-        private eState m_nextState = eState.Stand;
+        private eState m_state = eState.Idle;
+        private eState m_nextState = eState.Idle;
 
         private PlatformCharacterController m_platformCtrl;
         private Animator m_animator;
@@ -48,7 +48,7 @@ namespace CreativeSpore.SmartColliders
             if (m_animator != null)
             {
                 m_animator.ResetTrigger(prevState.ToString()); //NOTE: be sure the last trigger is the one used in the animator
-                m_animator.Play(newState.ToString());
+                m_animator.SetTrigger(newState.ToString());
             }
         }
 
@@ -79,15 +79,15 @@ namespace CreativeSpore.SmartColliders
             {
                 m_nextState = m_platformCtrl.GetActionState(
                     eControllerActions.Left | eControllerActions.Right | 
-                    eControllerActions.Up | eControllerActions.Down) ? eState.Climb : eState.ClimbStand;
+                    eControllerActions.Up | eControllerActions.Down) ? eState.Climbing : eState.ClimbingIdle;
             }
             else if(m_platformCtrl.IsGrounded)
             {
-                m_nextState = m_platformCtrl.GetActionState(eControllerActions.Left | eControllerActions.Right) ? eState.Walk : eState.Stand;              
+                m_nextState = m_platformCtrl.GetActionState(eControllerActions.Left | eControllerActions.Right) ? eState.Walking : eState.Idle;              
             }
             else
             {
-                m_nextState = m_platformCtrl.PlatformCharacterPhysics.VSpeed > 0f ? eState.Jump: eState.Fall;
+                m_nextState = m_platformCtrl.PlatformCharacterPhysics.VSpeed > 0f ? eState.Jumping: eState.Falling;
             }
         }
 
