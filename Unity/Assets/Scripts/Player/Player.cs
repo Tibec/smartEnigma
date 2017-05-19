@@ -42,7 +42,7 @@ public class Player : MonoBehaviour {
             controller.SetActionState(eControllerActions.Right, Input.GetKey(KeyCode.D));
             controller.SetActionState(eControllerActions.Down, Input.GetKey(KeyCode.S));
             controller.SetActionState(eControllerActions.Up, Input.GetKey(KeyCode.Z));
-            if(Input.GetKey(KeyCode.A))
+            if(Input.GetKeyDown(KeyCode.A))
                 Interact();
 
         }

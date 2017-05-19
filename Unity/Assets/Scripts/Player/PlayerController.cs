@@ -471,7 +471,8 @@ public class PlayerController : MonoBehaviour
 
         if (GetActionState(eControllerActions.Right)) fHorAxis += m_horSpeedScale;
         if (GetActionState(eControllerActions.Left)) fHorAxis -= m_horSpeedScale;
-        if (GetActionState(eControllerActions.Up)) fVerAxis += m_verSpeedScale;
+        if (GetActionState(eControllerActions.Up))
+            fVerAxis += m_verSpeedScale;
         if (GetActionState(eControllerActions.Down)) fVerAxis -= m_verSpeedScale;
         if (m_isClimbing)
         {
