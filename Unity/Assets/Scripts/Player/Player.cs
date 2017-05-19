@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
     public Color Coloration { get { return sprite.color; } set { sprite.color = value; } }
 
     private SpriteRenderer sprite;
+    private GameElement nearestInteraction;
 
     // Test things
     [Header("Debug")]
@@ -41,6 +42,9 @@ public class Player : MonoBehaviour {
             controller.SetActionState(eControllerActions.Right, Input.GetKey(KeyCode.D));
             controller.SetActionState(eControllerActions.Down, Input.GetKey(KeyCode.S));
             controller.SetActionState(eControllerActions.Up, Input.GetKey(KeyCode.Z));
+            if(Input.GetKey(KeyCode.A))
+                Interact();
+
         }
 
         if (singleAction || continousAction)
@@ -83,6 +87,9 @@ public class Player : MonoBehaviour {
                 case Buttons.B:
                     controller.SetActionState(eControllerActions.Jump, true);
                     break;
+                case Buttons.A:
+                    Interact();
+                    break;
                 case Buttons.Joystick:
                     controller.SetActionState(eControllerActions.Left, false);
                     controller.SetActionState(eControllerActions.Right, false);
@@ -124,8 +131,18 @@ public class Player : MonoBehaviour {
                 case Buttons.B:
                     controller.SetActionState(eControllerActions.Jump, false);
                     break;
+                case Buttons.A:
+                    break;
             }
 
+        }
+    }
+
+    private void Interact()
+    {
+        if(nearestInteraction != null)
+        {
+            nearestInteraction.Interact(this);
         }
     }
 
@@ -146,5 +163,24 @@ public class Player : MonoBehaviour {
             return eControllerActions.Up;
         else
             return eControllerActions.None;
+    }
+
+    public void SetInteraction(GameElement e)
+    {
+        Debug.Log("Player notified for interaction");
+        if (nearestInteraction == null)
+            nearestInteraction = e;
+        else
+        {
+            if (Vector3.Distance(e.transform.position, transform.position) < Vector3.Distance(e.transform.position, transform.position))
+                nearestInteraction = e;
+
+        }
+    }
+
+    public void RemoveInteraction(GameElement e)
+    {
+        if (nearestInteraction == e)
+            nearestInteraction = null;
     }
 }
