@@ -208,8 +208,8 @@ VirtualJoystick.prototype._onDown	= function(x, y)
 
 VirtualJoystick.prototype._onMove	= function(x, y)
 {
-	this._container.dispatchEvent(new Event('moved'));
 	if( this._pressed === true ){
+		this._container.dispatchEvent(new Event('moved'));
 		this._stickX	= x - this._basePosX;
 		this._stickY	= y - this._basePosY;
 		
