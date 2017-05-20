@@ -6,8 +6,9 @@ public class InteractableElement : GameElement
 {
     public InteractableElementBehaviour controller;
     // Use this for initialization
-    void Start()
+    protected override void Start()
     {
+        base.Start();
     }
 
     // Update is called once per frame
@@ -35,6 +36,22 @@ public class InteractableElement : GameElement
             return true;
 
         return controller.CanInteract(this);
+    }
+
+    protected override void PlayerTriggerEnter(Player p)
+    {
+        if (controller == null)
+            return;
+
+        controller.PlayerEnterTrigger(this, p);
+    }
+
+    protected override void PlayerTriggerExit(Player p)
+    {
+        if (controller == null)
+            return;
+
+        controller.PlayerExitTrigger(this, p);
     }
 
 }

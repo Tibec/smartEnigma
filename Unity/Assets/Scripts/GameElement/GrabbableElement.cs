@@ -10,10 +10,12 @@ public class GrabbableElement : GameElement
     protected Player owner;
     public float LaunchAngle;
     public float LauncheForce;
-    
+
     // Use this for initialization
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         body = GetComponent<Rigidbody2D>();
         Assert.IsNotNull(body, "A GrabbableElement must have a Rigidbody2D !");
 

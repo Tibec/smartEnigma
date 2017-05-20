@@ -10,7 +10,7 @@ public class GameElement : MonoBehaviour {
     protected Collider2D triggerArea; 
 
 	// Use this for initialization
-	void Start () {
+	protected virtual void Start () {
         Collider2D[] colliders = GetComponents<Collider2D>();	
         foreach(Collider2D c in colliders)
             if (c.isTrigger)
@@ -35,6 +35,7 @@ public class GameElement : MonoBehaviour {
         {
             if(!string.IsNullOrEmpty(InteractText))
             {
+                PlayerTriggerEnter(player);
                 player.SetInteraction(this);
             }
         }
@@ -47,8 +48,19 @@ public class GameElement : MonoBehaviour {
         {
             if (!string.IsNullOrEmpty(InteractText))
             {
+                PlayerTriggerExit(player);
                 player.RemoveInteraction(this);
             }
         }
+    }
+
+    protected virtual void PlayerTriggerEnter(Player p)
+    {
+
+    }
+
+    protected virtual void PlayerTriggerExit(Player p)
+    {
+
     }
 }

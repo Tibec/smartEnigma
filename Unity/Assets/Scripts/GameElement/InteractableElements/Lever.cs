@@ -14,9 +14,11 @@ public class Lever : InteractableElement
     private TileData tiledata;
     public List<uint> TileId = new List<uint>();
     public bool DualStateOnly = false;
-    
+
     // Use this for initialization
-    void Start () {
+    protected override void Start()
+    {
+        base.Start();
         tiledata = GetComponent<TileData>();
         Assert.IsNotNull(tiledata, "A lever require a TileData component!");
         currentState = (eLeverState)tiledata.Tile.paramContainer.GetIntParam("state");

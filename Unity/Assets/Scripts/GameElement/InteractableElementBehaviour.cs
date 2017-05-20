@@ -12,4 +12,14 @@ public class InteractableElementBehaviour : MonoBehaviour {
     {
         return true;
     }
+
+    public virtual bool PlayerEnterTrigger(InteractableElement ie, Player p)
+    {
+        return true;
+    }
+
+    public virtual bool PlayerExitTrigger(InteractableElement ie, Player p)
+    {
+        return true;
+    }
 }
