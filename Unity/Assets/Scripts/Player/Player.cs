@@ -138,6 +138,11 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void SendGameTip(string origin, string content)
+    {
+        Socket.SendMessage(new GameTipSentMessage(origin, content));
+    }
+
     private void Interact()
     {
         if(nearestInteraction != null)

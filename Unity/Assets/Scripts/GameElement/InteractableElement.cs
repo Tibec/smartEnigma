@@ -4,27 +4,37 @@ using UnityEngine;
 
 public class InteractableElement : GameElement
 {
-    public GameObject notifyTarget;
+    public InteractableElementBehaviour controller;
     // Use this for initialization
     void Start()
     {
     }
 
-// Update is called once per frame
-void Update()
+    // Update is called once per frame
+    void Update()
     {
 
     }
 
     public override void Interact(Player p)
     {
-        if (notifyTarget == null)
+
+    }
+
+    protected void NotifyController()
+    {
+        if (controller == null)
             return;
-        InteractableElementBehaviour[] callbacks = notifyTarget.GetComponents<InteractableElementBehaviour>();
-        foreach(var callback in callbacks)
-        {
-            callback.OnInteraction(p);
-        }
+
+        controller.OnInteraction(this);
+    }
+
+    protected bool InteractionAllowed()
+    {
+        if (controller == null)
+            return true;
+
+        return controller.CanInteract(this);
     }
 
 }

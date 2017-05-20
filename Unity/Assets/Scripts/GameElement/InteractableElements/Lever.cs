@@ -29,14 +29,12 @@ public class Lever : InteractableElement
 
     public override void Interact(Player p)
     {
-        NotifyTarget();
-        ChangeState();
-    }
-
-    private void NotifyTarget()
-    {
-        if(notifyTarget != null)
-            notifyTarget.SendMessage("LeverActionned", this, SendMessageOptions.DontRequireReceiver);
+        if(InteractionAllowed())
+        {
+            NotifyController();
+            ChangeState();
+            p.SendGameTip("Levier", "Tu m'as actionner !");
+        }
     }
 
     private void ChangeState()
