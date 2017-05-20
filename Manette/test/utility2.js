@@ -16,12 +16,40 @@ $(document).on("keydown", function(evt) {
 	{
 		pressB();
 	}	
+	if(evt.key == "a")
+	{
+		pressA();
+	}	
+	if(evt.key == "z")
+	{
+		sendMsg ("110", "3;90;10");
+	}	
+	if(evt.key == "d")
+	{
+		sendMsg ("110", "3;0;10");
+	}	
+	if(evt.key == "q")
+	{
+		sendMsg ("110", "3;180;10");
+	}	
+	if(evt.key == "s")
+	{
+		sendMsg ("110", "3;270;10");
+	}	
 });
 
 $(document).on("keyup", function(evt) {
 	if(evt.key == " ")
 	{
 		releaseB();
+	}	
+	if(evt.key == "a")
+	{
+		releaseA();
+	}	
+	if(evt.key == "z" || evt.key == "q" || evt.key == "s" || evt.key == "d")
+	{
+		sendMsg ("111", "3");
 	}	
 });
 
