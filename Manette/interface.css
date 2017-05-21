@@ -75,12 +75,12 @@ html, body {
 }
 
 #button_close {
-    display:block;
-    float:right;
-    width:30px;
-    height:29px;
-    background:url(http://www.htmlgoodies.com/img/registrationwelcome/close_icon.png) no-repeat center center;
-
+display: block;
+float: right;
+width: 43px;
+height: 43px;
+background: url(./images/closeBtn.png) no-repeat center center;
+background-size: 60px;
 }
 
 .hide {
