@@ -9,8 +9,9 @@ public class PlayerMgr : MonoBehaviour {
     public List<Player> Players;
     public List<RuntimeAnimatorController> PlayersForms;
     public GameObject PlayerPrefab;
+    public UILabel PlayerNamePrefab;
 
-	void Start ()
+    void Start ()
     {
         DontDestroyOnLoad(this);
 	}
@@ -30,6 +31,13 @@ public class PlayerMgr : MonoBehaviour {
         p.Key = Utils.RandomString(20);
         p.GetComponent<Animator>().runtimeAnimatorController = PlayersForms[Players.Count];
         Players.Add(p);
+
+        UILabel i = (UILabel)Instantiate(PlayerNamePrefab);
+        i.text = username;
+
+        i.SetAnchor(p.transform.GetChild(0).gameObject, 0, 0, 0, 150);
+       // i.SetDimensions
+
         return p.Key;
     }
 
