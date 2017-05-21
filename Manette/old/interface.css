@@ -27,24 +27,6 @@ html, body {
 	 font-size: 125%;
 }
 
-
-#menuScreen button {
-	text-align:center;
-	 border: 3px solid white;
-	 border-radius: 10px;
-	 height:50px;
-     background-color: #434343;
-	 color:white;
-	 padding:5px;
-	 min-width : 120px;
-	 width: 94%;
-	 font-family: Tahoma, serif;
-	 margin:3%;
-	 font-size: 125%;
-	 
-}
-
-
 #control-area {
 /*	background-color:#ff0000; */
 	display:inline-block;
@@ -62,27 +44,6 @@ html, body {
 	 padding:2%;
 }
 
-#menuScreen {
-	 border: 3px solid white;
-	 border-radius: 10px;
-     background-color: #434343;
-	 color:white;
-	 font-family: Tahoma, serif;
-	 font-size: 125%;
-	 z-index:50;
-	 position:absolute;
-	 padding:2%;
-}
-
-#button_close {
-    display:block;
-    float:right;
-    width:30px;
-    height:29px;
-    background:url(http://www.htmlgoodies.com/img/registrationwelcome/close_icon.png) no-repeat center center;
-
-}
-
 .hide {
 	display:none;
 }
@@ -95,8 +56,8 @@ html, body {
 	
 	#joystick {
 		position: absolute;
-		left: 20%;
-		bottom: 10%;
+		left: 14%;
+		bottom: 30%;
 		height: 30%;
 		width: 15%;
 	}
@@ -114,13 +75,6 @@ html, body {
 		width: 45%;
 		height: 20%;
 	}
-
-	#menuScreen {
-		top: 10%;
-		left: 10%;
-		width: 75%;
-		height: 70%;
-	}
 }
 
 @media (orientation:portrait) {
@@ -130,8 +84,8 @@ html, body {
 	
 	#joystick {
 		position: absolute;
-		left: 25%;
-		bottom: -10%;
+		left: 20%;
+		bottom: 10%;
 		height: 30%;
 		width: 15%;
 	}
@@ -153,13 +107,6 @@ html, body {
 		height:30%;
 		margin:0 5%;
         width: 84%;
-	}
-
-	#menuScreen {
-		top: 10%;
-		left: 10%;
-		width: 75%;
-		height: 50%;
 	}
 
 }

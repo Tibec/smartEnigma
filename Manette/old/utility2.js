@@ -7,169 +7,74 @@ var connexionKey=0;
 var showConnexionScreen=1;//l'ecran de connexion doit s'afficher au demarrage
 var url='';
 var i=0;
-var messageArray = new Array();
 
 
 ////// LISTENER //////////////////////////
 
 
-$(document).on("keydown", function(evt) {
-	if(evt.key == "m")
-	{
-		pressMenu();
-	}	
-});
+$("#button-a").on('touchstart', handleA);
+//$("#button-a").on('click', handleA);
 
-$(document).on("keydown", function(evt) {
-	if(evt.key == "i")
-	{
-		pressInventory();
-	}	
-});
+$("#button-b").on('touchstart', handleB);
+//$("#button-b").on('click', handleB);
 
-$(document).on("keydown", function(evt) {
-	if(evt.key == " ")
-	{
-		pressB();
-	}	
-	if(evt.key == "a")
-	{
-		pressA();
-	}	
-	if(evt.key == "z")
-	{
-		sendMsg ("110", "3;90;10");
-	}	
-	if(evt.key == "d")
-	{
-		sendMsg ("110", "3;0;10");
-	}	
-	if(evt.key == "q")
-	{
-		sendMsg ("110", "3;180;10");
-	}	
-	if(evt.key == "s")
-	{
-		sendMsg ("110", "3;270;10");
-	}	
-	if(evt.key== "c")
-	{
-		pressClose();
-	}
-});
-
-$(document).on("keyup", function(evt) {
-	if(evt.key == " ")
-	{
-		releaseB();
-	}	
-	if(evt.key == "a")
-	{
-		releaseA();
-	}	
-	if(evt.key == "z" || evt.key == "q" || evt.key == "s" || evt.key == "d")
-	{
-		sendMsg ("111", "3");
-	}	
-});
-
-$("#button_close").on('touchstart', pressClose);
-
-$("#button_menu").on('touchstart', pressMenu);
-$("#button_inventory").on('touchstart', pressInventory);
-
-function pressClose() {
-       		console.log("button_close pressed");       		
-       		 $("#menuScreen").slideUp();
-
-        	
-}
-
-function pressMenu() {
-       		console.log("button_menu pressed");       		
-       		 $("#menuScreen").slideDown();
-
-        	
-}
-
-function pressInventory() {
-       		console.log("button_inventory pressed");
-        	
-}
-
-
-$("#button-a").on('touchstart', pressA);
-$("#button-a").on('touchend', releaseA);
-
-$("#button-b").on('touchstart', pressB);
-$("#button-b").on('touchend', releaseB);
-
-function pressA() {
-       		console.log("BtnA:Pressed");
+function handleA() {
+       		console.log("qqun appuye sur le bouton A !"+i);
         	sendMsg ("110", "1;0;0");
 }
 
-function releaseA() {
-       		console.log("BtnA:Released");
-        	sendMsg ("111", "1");
-}
-
-function pressB() {
-       		console.log("BtnB:Pressed");
+function handleB() {
+       		console.log("qqun appuye sur le bouton B !"+i);
         	sendMsg ("110", "2;0;0");
 }
-function releaseB() {
-       		console.log("BtnB:Released");
-        	sendMsg ("111", "2");
-}
 
 
-
-
-var joystick = new VirtualJoystick({
-		mouseSupport	: true,
-		stationaryBase	: true,
-		baseX		: 0,
-		baseY		: 0,
-		//limitStickTravel: true,
-		stickRadius: 150, 
-		container : document.getElementById("joystick-item"), 
-		strokeStyle	: 'white' 
-	});
-	/*
-	setInterval(function(){
-		var outputEl	= document.getElementById('result');
-		outputEl.innerHTML	= '<b>Result:</b> '
-			+ ' dx:'+joystick.deltaX()
-			+ ' dy:'+joystick.deltaY()
-			+ (joystick.right()	? ' right'	: '')
-			+ (joystick.up()	? ' up'		: '')
-			+ (joystick.left()	? ' left'	: '')
-			+ (joystick.down()	? ' down' 	: '')	
-	}, 1/30 * 1000);	
-	*/
-//listener qui detecte les evenements du joystick
-
-$(joystick._container).on("moved", function(){
-	console.log("joystick bouger");
-	var dx = joystick.deltaX();
-	var dy = joystick.deltaY();
-	
-	var angle = (Math.atan2(-dy,dx) * 180/Math.PI + 360) % 360;
-	var force = Math.sqrt( (dx * dx) + (dy * dy) );
-	angle = Math.round(angle);
-	force = Math.round(force);
-	
-	sendMsg ("110", "3;"+angle+";"+force);
-
-});
-
-$(joystick._container).on("released", function(){
-	console.log("joystick laché");
-	sendMsg ("111", "3");
-
-});
 /*
+$(document).on('click', '#button-b', function () {
+    	i++;
+        console.log("qqun appuye sur le bouton B !"+i);
+        sendMsg ("110", "2;0;0");
+        return false;
+    });
+    */
+/*
+ $(document).on('click', '#button-a', function () {
+    	i++;
+        console.log("qqun appuye sur le bouton A !"+i);
+        sendMsg ("110", "1;0;0");
+        return false;
+    });
+
+$(document).ready(function () {
+    $(document).on('click', '#button-b', function () {
+    	i++;
+        console.log("qqun appuye sur le bouton B !"+i);
+        sendMsg ("110", "2;0;0");
+        return false;
+    });
+});  
+*/
+/*
+$(document).ready(function () {
+    $(document).on('click', '#button-a', function () {
+    	i++;
+        console.log("qqun appuye sur le bouton A !"+i);
+        sendMsg ("110", "1;0;0");
+        return false;
+    });
+});  
+*/
+
+var joystick = nipplejs.create({
+	zone: document.getElementById('joystick'),
+	color: 'white',
+	size: 100,
+	mode: 'static',
+	position: {left: '50%', bottom: '50%'}			
+	});
+
+
+//listener qui detecte les evenements du joystick
 joystick.on('end move', function (evt, data) {
 
             if (evt.type === 'move'){
@@ -196,19 +101,17 @@ joystick.on('end move', function (evt, data) {
             return false;
    
         });
-*/
+
 //joystick.off('event', handler);
 
 //no scroll
-
-
 document.body.addEventListener('touchmove', function(event) {
   event.preventDefault();
 }, false); 
 
 
 
-
+/*
 //ultime no scroll
 document.ontouchmove = function(event){
     event.preventDefault();
@@ -223,13 +126,11 @@ window.addEventListener("load",function() {
 		window.scrollTo(0, 1);
 	}, 0);
 });
-
+*/
 
 //////  FONCTIONS ///////////////////////
 
 //met a jour showConnexionScreen (1 : ecran doit s'afficher. 0 : ecran ne doit pas s'afficher)
-
-
 function updateShowConnexionScreen(newVal)
 {
 	showConnexionScreen=newVal
@@ -259,6 +160,49 @@ function setHidden(idName)
   	document.getElementById(idName).style.display = 'none';
 }
 
+
+//creation du joystick (avec listener)
+function createJoystick()
+{
+
+	/*
+	var joystick = nipplejs.create({
+			zone: document.getElementById('joystick'),
+			color: 'white',
+			size: 100,
+	        mode: 'static',
+			position: {left: '30%', bottom: '30%'}
+			
+		});
+	
+*/
+	
+       console.log("joystick");
+       joystick.on('end move', function (evt, data) {
+
+            if (evt.type === 'move'){
+
+            	//envoie des nouvelles valeurs au serveur
+            	//envoie de l'angle et de la force
+
+            	var intDegree = Math.round(data.angle.degree);
+            	var intForce = Math.round(data.force);
+
+                console.log("valeur de l'angle : "+intDegree);
+                console.log("valeur de la force : "+intForce);
+                sendMsg ("110", "3;"+intDegree+";"+intForce);
+
+            }
+            else if(evt.type === 'end'){
+                console.log("le joystick a ete lache");
+
+                //previent le serveur que le joystick a ete lache
+                sendMsg ("111", "3");
+
+            }
+   
+        });
+}
 
 //creation d'un cookie
 function setCookie(cname, cvalue, exdays) {
@@ -339,8 +283,8 @@ function handleMessage (message) {
 	var messageId = match[1];
 	var messageContent = match[2];	
 
-	console.log("messageId sa mere : "+ messageId);
-	console.log("messagecontent sa mere : "+messageContent );
+	console.log("messageId : "+ messageId);
+	console.log("messagecontent : "+messageContent );
 
 	//different traitement selon messageId
 	switch(messageId) {
@@ -390,36 +334,8 @@ function handleMessage (message) {
 
 	case "210":
         //Serveur a envoyé message pour indiquer que le joueur a bien ete cree. Fournit une connexionKey
-        //alert("[210|...] [INFO] Message provenant d'un objet du jeu + "+messageContent);
-
-        console.log("msg recu"+messageContent);
-		var regexMessage = /(.*);(.*)/;
-	
-
-		var match = regexMessage.exec(messageContent);
-	
-		var senderName = match[1];
-		var contentData = match[2];	
-
-		console.log("messageId : "+ senderName);
-		console.log("messagecontent : "+contentData );
-
-		var msgToAdd= '['+senderName+'] '+contentData;
-        document.getElementById('message-popup').innerHTML = msgToAdd;
-
-        //ajout du message au sommet de la pile des messages (s'il n'y est pas deja present)
-        /*if(!messageArray.find(msgToAdd))
-        {
-        	messageArray.unshift(msgToAdd);
-        }
-        */
-
-        //fade-in pop-up
-        $("#message-popup").fadeIn(1000);
-
-        //fade-out pop-up
-        $("#message-popup").fadeOut(3000);
-
+        console.log("[210|...] [INFO] Message provenant d'un objet du jeu + "+messageContent);
+        updateConnexionKey(messageContent);
         break;
        
     default:
@@ -430,20 +346,19 @@ function handleMessage (message) {
 }
 
 
-
 //reception des messages
 function waitMsg (){
 
 	socket.addEventListener('message', function (event) {    
 
-		var reader = new FileReader();
-		reader.onload = function() {    
-			handleMessage(reader.result);
-		}
-		reader.readAsText(event.data);	
-	});
-}
+    var reader = new FileReader();
+	reader.onload = function() {    
+   		handleMessage(reader.result);
+	}
+	reader.readAsText(event.data);	
+});
 
+}
 
 
 //envoie des messages
@@ -540,7 +455,6 @@ function setConnected()
 ///// MAIN //////////////////
 
 
-
 if (isConnected == 0)
 {	
 	setVisible("connexionScreen");
@@ -556,4 +470,3 @@ else
 }   
 
 });
-

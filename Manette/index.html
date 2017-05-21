@@ -9,16 +9,26 @@
   </head>
   <body>
   	
+		<div id="menuScreen" class="hide">  			
+			<a id="button_close"></a>
+  			<button id="buttonconfiguration"> Configurations </button>  		 
+  			<button id="button_messages"> Messages </button>  		
+  		</div>
+
 	<div id="interfaceScreen" >
 		<div id="menu">
-		<button> Menu </button>
+		<button id="button_menu"> Menu </button>
 		<div class="btn-space">&nbsp;</div>
-		<button> Inventaire </button>
+		<button id="button_inventory"> Inventaire </button>
 		</div>
+
+		
+
+		<div id="message-popup" class="hide"></div>
 
 		<div id="control-area">
 			<div id="joystick">
-				
+				<div id="joystick-item"></div>
 			</div>
 			
 			<div id="buttons">
@@ -40,7 +50,7 @@
 	
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-	<script src="./joystick/dist/nipplejs.min.js"></script>
+	<script src="./virtualjoystick.js"></script>
 	<script src="utility2.js" defer></script> 
 
 

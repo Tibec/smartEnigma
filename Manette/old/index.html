@@ -1,59 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">-->
-   <!-- <meta id="viewport" name="viewport" content="initial-scale=1.0; user-scalable=0; minimum-scale=1.0; maximum-scale=1.0" />-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no,minimal-ui>
-
-    <link rel="stylesheet" type="text/css" href="mystyle.css">
-    <title>Controller</title>
-
-  
-
-    <!-- Inline scripts are forbidden in Firefox OS apps (CSP restrictions),
-         so we use a script file. -->
-
-    <div id="portrait">
-    	Please turn your phone to landscape mode. 
-
-    </div>
-
-
-    <div id="landscape">
-    	<!--landscape mode.-->
-    	<div id="connectionPage">
-    		connexion page
-		    <input type="text" id="url" />
-		    <button id="connect">Connect</button>
-
-		    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>		    
-	    
-		    <!-- <script src="app.js" defer></script> -->
-		    <script src="utility.js" defer></script> 
-	    </div>
-
-	    <div id="controllerPage">
-	    	<!--controller page-->
-	    	<canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3; margin: 0 auto;">
-Your browser does not support the HTML5 canvas tag.</canvas>
-	    		
-	    	<script src="controller.js" defer></script> 
-	    </div>
-
-    </div>
-
-    
-
-
-
-       
-
-
+    <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <title>SmartEnigma - Manette</title>
+  <link rel="stylesheet" href="interface.css" type="text/css">
   </head>
-
   <body>
+  	
+	<div id="interfaceScreen" >
+		<div id="menu">
+		<button> Menu </button>
+		<div class="btn-space">&nbsp;</div>
+		<button> Inventaire </button>
+		</div>
+
+		<div id="control-area">
+			<div id="joystick">
+				
+			</div>
+			
+			<div id="buttons">
+				<div id="button-a"></div>
+				<div id="button-b"></div>
+			</div>
+		</div>
+	</div>  
+
+	<div id="connexionScreen">
+			Connexion mode  
+            <!-- l'ecran de connexion peut apparaitre en format portrait et paysage -->
+            IP :<input type="text" id="url" /><br>
+            <br>
+            Nom du joueur : <input type="text" id="name" /><br>
+            <button id="connect">Connect</button>
+	</div>
+	
+	
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+	<script src="./joystick/dist/nipplejs.min.js"></script>
+	<script src="utility2.js" defer></script> 
+
 
   </body>
-
 </html>
