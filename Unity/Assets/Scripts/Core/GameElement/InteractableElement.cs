@@ -22,20 +22,20 @@ public class InteractableElement : GameElement
 
     }
 
-    protected void NotifyController()
+    protected void NotifyController(Player p)
     {
         if (controller == null)
             return;
 
-        controller.OnInteraction(this);
+        controller.OnInteraction(this, p);
     }
 
-    protected bool InteractionAllowed()
+    protected bool InteractionAllowed(Player p)
     {
         if (controller == null)
             return true;
 
-        return controller.CanInteract(this);
+        return controller.CanInteract(this, p);
     }
 
     protected override void PlayerTriggerEnter(Player p)

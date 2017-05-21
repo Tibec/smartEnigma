@@ -31,11 +31,10 @@ public class Lever : InteractableElement
 
     public override void Interact(Player p)
     {
-        if(InteractionAllowed())
+        if(InteractionAllowed(p))
         {
-            NotifyController();
+            NotifyController(p);
             ChangeState();
-            p.SendGameTip("Levier", "Tu m'as actionner !");
         }
     }
 
