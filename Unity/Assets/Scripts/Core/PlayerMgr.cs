@@ -10,6 +10,7 @@ public class PlayerMgr : MonoBehaviour {
     public List<RuntimeAnimatorController> PlayersForms;
     public GameObject PlayerPrefab;
     public UILabel PlayerNamePrefab;
+    public UILabel PlayerInteractPrefab;
 
     void Start ()
     {
@@ -34,9 +35,12 @@ public class PlayerMgr : MonoBehaviour {
 
         UILabel i = (UILabel)Instantiate(PlayerNamePrefab);
         i.text = username;
+        i.SetAnchor(p.transform.FindChild("NameAnchor").gameObject, 0, 0, 0, 150);
 
-        i.SetAnchor(p.transform.GetChild(0).gameObject, 0, 0, 0, 150);
-       // i.SetDimensions
+        UILabel i2 = (UILabel)Instantiate(PlayerNamePrefab);
+        i2.SetAnchor(p.transform.FindChild("ActionAnchor").gameObject, 0, 0, 0, 150);
+        p.InteractionLabel = i2;
+        // i.SetDimensions
 
         return p.Key;
     }

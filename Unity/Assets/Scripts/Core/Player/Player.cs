@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
     public bool Connected { get; set; }
     public string Key { get; set; }
     public Color Coloration { get { return sprite.color; } set { sprite.color = value; } }
+    public UILabel InteractionLabel { get; set; }
 
     private SpriteRenderer sprite;
     private GameElement nearestInteraction;
@@ -174,12 +175,21 @@ public class Player : MonoBehaviour {
     {
         Debug.Log("Player notified for interaction");
         if (nearestInteraction == null)
-            nearestInteraction = e;
+            SetNearestInteraction(e);
         else
         {
             if (Vector3.Distance(e.transform.position, transform.position) < Vector3.Distance(e.transform.position, transform.position))
-                nearestInteraction = e;
+                SetNearestInteraction(e);
+        }
+    }
 
+    private void SetNearestInteraction(GameElement e)
+    {
+        nearestInteraction = e;
+        if(!string.IsNullOrEmpty(e.InteractText))
+        {
+            InteractionLabel.text = e.InteractText;
+            InteractionLabel.enabled = true;
         }
     }
 
@@ -187,5 +197,6 @@ public class Player : MonoBehaviour {
     {
         if (nearestInteraction == e)
             nearestInteraction = null;
+        InteractionLabel.enabled = false;
     }
 }
