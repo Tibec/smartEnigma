@@ -47,6 +47,8 @@ public class NetworkManager : MonoBehaviour
         playerMgr = GetComponent<PlayerMgr>();
         if (playerMgr == null)
             Debug.Log("NetworkMgr: Cannot found the playermgr !");
+
+		SetupServer ();
     }
 
     void Update()

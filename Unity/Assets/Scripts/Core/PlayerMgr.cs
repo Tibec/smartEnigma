@@ -26,6 +26,8 @@ public class PlayerMgr : MonoBehaviour {
     public string AddPlayer(Connection conn, string username)
     {
         Player p = Instantiate(PlayerPrefab, new Vector3(-1+ Players.Count,0,-1), new Quaternion()).GetComponent<Player>();
+		p.transform.parent = gameObject.transform;
+
        // p.Coloration = UnityEngine.Random.ColorHSV();
         p.Socket = conn;
         p.Username = username;
