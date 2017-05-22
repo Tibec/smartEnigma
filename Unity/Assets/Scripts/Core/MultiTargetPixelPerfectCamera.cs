@@ -7,7 +7,7 @@ using UnityEngine;
 public class MultiTargetPixelPerfectCamera : MonoBehaviour
 {
     public Camera Camera { get; private set; }
-
+   
     public float Zoom = 1f;
     public float PixelToUnits = 100f;
     public bool PixelPerfectEnabled = true;
@@ -20,7 +20,7 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
 
 
     private Vector3 velocity = Vector3.zero;
-
+    private Vector3 lastPlayerPos;
     // Use this for initialization
     void Start()
     {
@@ -44,18 +44,34 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
 
         Vector3 destination = ComputePlayerMiddle();
         destination.z = transform.position.z;
+        if (destination == lastPlayerPos)
+            return;
+        lastPlayerPos = destination;
         transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, DampTime);
     }
 
     private Vector3 ComputePlayerMiddle()
     {
-        Player[] players = FindObjectsOfType<Player>();
-        if (players.Length == 0)
+        PlayerMgr pmgr = FindObjectOfType<PlayerMgr>();
+        if (!pmgr)
+            return transform.position;
+        List<Player> players = pmgr.Players;
+        if (players.Count == 0)
             return transform.position;
         Vector3 middle = players[0].transform.position;
-        for(int i = 1;i<players.Length;++i)
+        for(int i = 1;i<players.Count; ++i)
         {
-            middle = Vector3.Lerp(middle, players[i].transform.position, 0.5f);
+            Vector3 screenPoint = Camera.WorldToViewportPoint(players[i].transform.position);
+            bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+            if (onScreen)
+            {
+                middle = Vector3.Lerp(middle, players[i].transform.position, 0.5f);
+                players[i].OutOfCameraBound = false;
+            }
+            else
+            {
+                players[i].OutOfCameraBound = true;
+            }
         }
 
         return middle;

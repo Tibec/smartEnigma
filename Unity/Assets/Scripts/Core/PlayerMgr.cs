@@ -6,11 +6,16 @@ using UnityEngine.Networking;
 
 public class PlayerMgr : MonoBehaviour {
 
+    [Serializable]
+    public struct PointerData { public Sprite icon; public Color color; }
+
     public List<Player> Players;
     public List<RuntimeAnimatorController> PlayersForms;
     public GameObject PlayerPrefab;
     public UILabel PlayerNamePrefab;
     public UILabel PlayerInteractPrefab;
+    public UI2DSprite PlayerPointerPrefab;
+    public List<PointerData> PlayerPointerIcon;
 
     void Start ()
     {
@@ -21,7 +26,6 @@ public class PlayerMgr : MonoBehaviour {
 	void Update () {
 		
 	}
-
 
     public string AddPlayer(Connection conn, string username)
     {
@@ -35,15 +39,24 @@ public class PlayerMgr : MonoBehaviour {
         p.GetComponent<Animator>().runtimeAnimatorController = PlayersForms[Players.Count];
         Players.Add(p);
 
-        UILabel i = (UILabel)Instantiate(PlayerNamePrefab);
+        UILabel i = Instantiate(PlayerNamePrefab);
         i.text = username;
         i.SetAnchor(p.transform.FindChild("NameAnchor").gameObject, 0, 0, 0, 50);
+        p.NameLabel = i;
 
-        UILabel i2 = (UILabel)Instantiate(PlayerNamePrefab);
+        UILabel i2 = Instantiate(PlayerInteractPrefab);
         i2.SetAnchor(p.transform.FindChild("ActionAnchor").gameObject, 120, 0, 0, 50);
         i2.enabled = false;
         p.InteractionLabel = i2;
         // i.SetDimensions
+
+        UI2DSprite panel = Instantiate(PlayerPointerPrefab);
+        panel.transform.parent = i2.transform.parent;
+        panel.enabled = false;
+        panel.sprite2D = PlayerPointerIcon[Players.Count - 1].icon;
+        panel.transform.FindChild("Arrow").GetComponent<UI2DSprite>().enabled = false;
+        panel.transform.FindChild("Arrow").GetComponent<UI2DSprite>().color = PlayerPointerIcon[Players.Count - 1].color;
+        p.NamePanel = panel;
 
         return p.Key;
     }

@@ -13,7 +13,9 @@ public class Player : MonoBehaviour {
     public string Key { get; set; }
     public Color Coloration { get { return sprite.color; } set { sprite.color = value; } }
     public UILabel InteractionLabel { get; set; }
-
+    public UILabel NameLabel { get; set; }
+    public UI2DSprite NamePanel { get; set; }
+    public bool OutOfCameraBound { get; set; }
     private SpriteRenderer sprite;
     private GameElement nearestInteraction;
 
@@ -74,6 +76,37 @@ public class Player : MonoBehaviour {
         }
         // end test
 
+        if(OutOfCameraBound)
+        {
+            Debug.Log(Username + " n'est plus visible. Affichage de sa bulle");
+
+            MultiTargetPixelPerfectCamera camMgr = FindObjectOfType<MultiTargetPixelPerfectCamera>();
+            Camera cam = camMgr.GetComponent<Camera>();
+            Vector3 point = (transform.position - NamePanel.transform.position);
+            float angle = (Mathf.Atan2(point.y, point.x) * 180 / Mathf.PI) % 360 + 90;
+            UI2DSprite arrow = NamePanel.transform.FindChild("Arrow").GetComponent<UI2DSprite>();
+            Vector3 pos = cam.WorldToViewportPoint(transform.position);
+            if (pos.x <= 0)
+                pos.x = 0.1f;
+            if (pos.x >= 1)
+                pos.x = 0.9f;
+            if (pos.y <= 0)
+                pos.y = 0.1f;
+            if (pos.y >= 1)
+                pos.y = 0.9f;
+            Camera uiCam = FindObjectOfType<UICamera>().GetComponent<Camera>();
+            pos = uiCam.ViewportToWorldPoint(pos);
+            
+            arrow.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            NamePanel.transform.position = pos;
+            NamePanel.enabled = true;
+            arrow.enabled = true;
+        }
+        else
+        {
+            NamePanel.enabled = false;
+            NamePanel.transform.FindChild("Arrow").GetComponent<UI2DSprite>().enabled = false;
+        }
 
     }
 
