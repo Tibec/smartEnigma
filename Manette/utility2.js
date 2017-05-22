@@ -8,6 +8,9 @@ var showConnexionScreen=1;//l'ecran de connexion doit s'afficher au demarrage
 var url='';
 var i=0;
 var messageArray = new Array();
+var clonedMessageScreen =  $('#MessageScreen').clone();
+
+
 
 
 ////// LISTENER //////////////////////////
@@ -56,6 +59,11 @@ $(document).on("keydown", function(evt) {
 	{
 		pressClose();
 	}
+	if(evt.key== "l")
+	{
+		pressMenuMessages();
+	}
+
 });
 
 $(document).on("keyup", function(evt) {
@@ -77,6 +85,7 @@ $("#button_close").on('touchstart', pressClose);
 
 $("#button_menu").on('touchstart', pressMenu);
 $("#button_inventory").on('touchstart', pressInventory);
+$("#button_messages").on('touchstart', pressMenuMessages);
 
 function pressClose() {
        		console.log("button_close pressed");       		
@@ -86,8 +95,9 @@ function pressClose() {
 }
 
 function pressMenu() {
-       		console.log("button_menu pressed");       		
-       		 $("#menuScreen").slideDown();
+       		console.log("button_menu pressed");   
+       		setHidden("MessageScreen");
+       		$("#menuScreen").slideDown();
 
         	
 }
@@ -97,12 +107,46 @@ function pressInventory() {
         	
 }
 
+function pressMenuMessages(){
+	console.log("button_messages pressed");
+
+	//recuperation du div vide
+	//clonedMessageScreen
+	//$('#MessageScreen').replaceWith(clonedMessageScreen);
+	$("#MessageScreen").text('');
+	for (var i = 0; i < messageArray.length; i++) {
+     	console.log(messageArray[i]);
+
+     	//create new div
+     	var textMsg = document.createElement('button');
+     	//textMsg.className = '#message-list';
+     	var idTextMsg = guidGenerator();
+
+     	//message-list
+     	//myElem.className = 'myElem';
+
+     	textMsg.appendChild(document.createTextNode(messageArray[i]));    	
+     	textMsg.id = idTextMsg;     	
+     	
+    	document.getElementById('MessageScreen').appendChild(textMsg); 
+    		
+    	//setVisible("MessageScreen");	
+
+	}
+	$("#MessageScreen").slideDown();  
+
+	
+}
+
 
 $("#button-a").on('touchstart', pressA);
 $("#button-a").on('touchend', releaseA);
 
 $("#button-b").on('touchstart', pressB);
 $("#button-b").on('touchend', releaseB);
+
+
+
 
 function pressA() {
        		console.log("BtnA:Pressed");
@@ -122,6 +166,7 @@ function releaseB() {
        		console.log("BtnB:Released");
         	sendMsg ("111", "2");
 }
+
 
 
 
@@ -299,7 +344,7 @@ function updateUrl( newVal)
 function listenerSendMessageWhenDisconnect()
 {
 	socket.onclose = function (e) {
-		alert("deconnexion du serveur ! ");
+		console.log("deconnexion du serveur ! ");
 		
 		createReconnexionButton(document.body, function(){
 		    highlight(this.parentNode.childNodes[1]);
@@ -325,6 +370,15 @@ function updateConnexionKey( newVal)
 }
 
 
+function monitorStack() {
+
+	$('#message-popup').innerHTML = // tete de file
+	//bordel animation
+
+	// si file pas vide
+	setTimeout(monitorStack, 4000);
+}
+
 //gere les actions a effectuer en fonction du message reçu
 
 function handleMessage (message) {	
@@ -339,8 +393,8 @@ function handleMessage (message) {
 	var messageId = match[1];
 	var messageContent = match[2];	
 
-	console.log("messageId sa mere : "+ messageId);
-	console.log("messagecontent sa mere : "+messageContent );
+	console.log("messageId : "+ messageId);
+	console.log("messagecontent : "+messageContent );
 
 	//different traitement selon messageId
 	switch(messageId) {
@@ -353,7 +407,6 @@ function handleMessage (message) {
 
         //test de recuperation du cookie
         var tempVar=getCookie("smartEnigmaConnexionKey");
-        alert("test de recuperation du cookie : "+tempVar);
         console.log("test de recuperation du cookie : "+tempVar);
         break;
 
@@ -392,6 +445,9 @@ function handleMessage (message) {
         //Serveur a envoyé message pour indiquer que le joueur a bien ete cree. Fournit une connexionKey
         //alert("[210|...] [INFO] Message provenant d'un objet du jeu + "+messageContent);
 
+        
+        
+
         console.log("msg recu"+messageContent);
 		var regexMessage = /(.*);(.*)/;
 	
@@ -405,20 +461,34 @@ function handleMessage (message) {
 		console.log("messagecontent : "+contentData );
 
 		var msgToAdd= '['+senderName+'] '+contentData;
-        document.getElementById('message-popup').innerHTML = msgToAdd;
 
-        //ajout du message au sommet de la pile des messages (s'il n'y est pas deja present)
-        /*if(!messageArray.find(msgToAdd))
-        {
-        	messageArray.unshift(msgToAdd);
-        }
-        */
+		//ajout du message dans la pile de message, s'il n'est pas deja present
+		if(jQuery.inArray(msgToAdd, messageArray) == -1)
+		{
+			messageArray.unshift(msgToAdd);
+			console.log("msg ajoutee : "+msgToAdd);
 
-        //fade-in pop-up
-        $("#message-popup").fadeIn(1000);
+		}
+		
 
-        //fade-out pop-up
-        $("#message-popup").fadeOut(3000);
+		var textPopup = document.createElement("div");
+		var idTextPopup = guidGenerator();
+    	textPopup.appendChild(document.createTextNode(msgToAdd));
+    	textPopup.id = idTextPopup;
+   		document.getElementById('message-popup').appendChild(textPopup);
+   		setHidden(idTextPopup);
+				
+	    //$("#message-popup").text(msgToAdd);
+		$("#message-popup").fadeIn({ duration : 1000, start : function(){
+			setVisible(idTextPopup);
+			console.log('start');
+		}});
+
+	    $("#message-popup").fadeOut(3000, function(){
+	    	remove(idTextPopup);//detruire
+	    });
+			   
+      
 
         break;
        
@@ -428,6 +498,26 @@ function handleMessage (message) {
 
 
 }
+
+
+function isInArray(valElement)
+{
+
+}
+
+function remove(id) {
+    var elem = document.getElementById(id);
+    return elem.parentNode.removeChild(elem);
+}
+
+
+function guidGenerator() {
+    var S4 = function() {
+       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
+
 
 
 
@@ -485,7 +575,7 @@ function createReconnexionButton(context, func)
         var tempVar=getCookie("smartEnigmaConnexionKey");
         socket.send("101|"+tempVar);
 
-		alert("RECONNECTED");   
+		console.log("RECONNECTED");   
 		 
 		}     	 
     };
@@ -522,7 +612,7 @@ function connexion()
 			//declenchement du listener qui agit en cas de deconnexion au serveur
 			listenerSendMessageWhenDisconnect();
 
-			alert("CONNECTED");   
+			console.log("CONNECTED");   
 		 
 		}   
 	    

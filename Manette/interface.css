@@ -30,17 +30,17 @@ html, body {
 
 #menuScreen button {
 	text-align:center;
-	 border: 3px solid white;
-	 border-radius: 10px;
-	 height:50px;
-     background-color: #434343;
-	 color:white;
-	 padding:5px;
-	 min-width : 120px;
-	 width: 94%;
-	 font-family: Tahoma, serif;
-	 margin:3%;
-	 font-size: 125%;
+	border: 3px solid white;
+	border-radius: 10px;
+	height:50px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 94%;
+	font-family: Tahoma, serif;
+	margin:3%;
+	font-size: 125%;
 	 
 }
 
@@ -62,6 +62,18 @@ html, body {
 	 padding:2%;
 }
 
+#message-list {
+	border: 3px solid white;
+	 border-radius: 10px;
+     background-color: #434343;
+	 color:white;
+	 font-family: Tahoma, serif;
+	 font-size: 125%;
+	 z-index:50;
+	 position:absolute;
+	 padding:2%;
+}
+
 #menuScreen {
 	 border: 3px solid white;
 	 border-radius: 10px;
@@ -72,6 +84,33 @@ html, body {
 	 z-index:50;
 	 position:absolute;
 	 padding:2%;
+}
+
+#MessageScreen {
+	border: 3px solid white;
+	border-radius: 10px;
+    background-color: #434343;
+	color:white;
+	font-family: Tahoma, serif;
+	font-size: 125%;
+	z-index:50;
+	position:absolute;
+	padding:2%;	
+}
+
+#MessageScreen button {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height:100px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 94%;
+	font-family: Tahoma, serif;
+	margin:3%;
+	font-size: 125%;
 }
 
 #button_close {
@@ -115,8 +154,22 @@ background-size: 60px;
 		height: 20%;
 	}
 
+	#message-list {
+		top: 15%;
+		left: 25%;
+		width: 45%;
+		height: 20%;
+	}
+
 	#menuScreen {
 		top: 10%;
+		left: 10%;
+		width: 75%;
+		height: 70%;
+	}
+
+	#MessageScreen {
+		top: 20%;
 		left: 10%;
 		width: 75%;
 		height: 70%;
@@ -155,13 +208,26 @@ background-size: 60px;
         width: 84%;
 	}
 
+	#message-list {
+		top:20%;
+		height:30%;
+		margin:0 5%;
+        width: 84%;
+	}
+
 	#menuScreen {
 		top: 10%;
 		left: 10%;
 		width: 75%;
-		height: 50%;
+		height: 80%;
 	}
 
+	#MessageScreen {
+		top: 15%;
+		left: 10%;
+		width: 75%;
+		height: 80%;
+	}
 }
 
 #joystick {

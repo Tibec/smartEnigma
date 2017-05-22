@@ -9,19 +9,21 @@
   </head>
   <body>
   	
-		<div id="menuScreen" class="hide">  			
-			<a id="button_close"></a>
-  			<button id="buttonconfiguration"> Configurations </button>  		 
-  			<button id="button_messages"> Messages </button>  		
-  		</div>
 
-	<div id="interfaceScreen" >
+
+	<div id="menuScreen" class="hide">  			
+		<div id="button_close"></div>
+  		<button id="buttonconfiguration"> Configurations </button>  		 
+  		<button id="button_messages"> Messages </button>  	
+  		<div id="MessageScreen"  class="hide" ></div>	
+  	</div>
+
+	<div id="interfaceScreen" class="hide" >
 		<div id="menu">
-		<button id="button_menu"> Menu </button>
-		<div class="btn-space">&nbsp;</div>
-		<button id="button_inventory"> Inventaire </button>
+			<button id="button_menu"> Menu </button>
+			<div class="btn-space">&nbsp;</div>
+			<button id="button_inventory"> Inventaire </button>
 		</div>
-
 		
 
 		<div id="message-popup" class="hide"></div>
@@ -49,7 +51,7 @@
 	
 	
 	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" type="text/javascript"></script>
 	<script src="./virtualjoystick.js"></script>
 	<script src="utility2.js" defer></script> 
 
