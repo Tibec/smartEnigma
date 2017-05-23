@@ -27,9 +27,27 @@ public class PlayerMgr : MonoBehaviour {
 		
 	}
 
+    private void OnLevelWasLoaded(int level)
+    {
+
+    }
+
+    private Vector3 GetSpawnPoint(int playerID)
+    {
+        GameObject go = GameObject.Find("SpawnArea");
+        Transform[] ts = go.GetComponentsInChildren<Transform>();
+        foreach(Transform t in ts)
+        {
+            if (t.name == "Spawn" + playerID)
+                return t.position;
+        }
+        return Vector3.zero;
+    }
+
     public string AddPlayer(Connection conn, string username)
     {
-        Player p = Instantiate(PlayerPrefab, new Vector3(-1+ Players.Count,0,-1), new Quaternion()).GetComponent<Player>();
+        Vector3 spawn = GetSpawnPoint(Players.Count + 1);
+        Player p = Instantiate(PlayerPrefab, new Vector3(spawn.x,spawn.y,-1), new Quaternion()).GetComponent<Player>();
 		p.transform.parent = gameObject.transform;
 
        // p.Coloration = UnityEngine.Random.ColorHSV();
