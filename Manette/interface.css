@@ -94,8 +94,11 @@ html, body {
 	font-family: Tahoma, serif;
 	font-size: 125%;
 	z-index:50;
-	position:absolute;
+	position:fixed;
 	padding:2%;	
+	overflow: hidden;
+	-webkit-overflow-scrolling: touch;
+
 }
 
 #MessageScreen button {
@@ -111,9 +114,62 @@ html, body {
 	font-family: Tahoma, serif;
 	margin:3%;
 	font-size: 125%;
+	word-wrap : break-word;
+}
+
+#inventoryScreen {
+	border: 3px solid white;
+	border-radius: 10px;
+    background-color: #434343;
+	color:white;
+	font-family: Tahoma, serif;
+	font-size: 125%;
+	z-index:50;
+	position:fixed;
+	padding:2%;	
+	overflow: hidden;
+	
+}
+
+#imageObject {
+	border: 3px solid white;
+	border-radius: 10px;
+    background-color: #434343;
+	color:white;
+	font-family: Tahoma, serif;
+	font-size: 125%;
+	z-index:50;
+	position:fixed;
+	padding:2%;	
+	overflow: hidden;
+	width:50%;
+}
+
+#inventoryScreen button {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height:100px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 94%;
+	font-family: Tahoma, serif;
+	margin:3%;
+	font-size: 125%;
 }
 
 #button_close {
+display: block;
+float: right;
+width: 43px;
+height: 43px;
+background: url(./images/closeBtn.png) no-repeat center center;
+background-size: 60px;
+}
+
+#button_closeInventory{
 display: block;
 float: right;
 width: 43px;
@@ -174,6 +230,16 @@ background-size: 60px;
 		width: 75%;
 		height: 70%;
 	}
+
+	#inventoryScreen {
+		top: 20%;
+		left: 10%;
+		width: 75%;
+		height: 70%;
+	}
+
+	
+
 }
 
 @media (orientation:portrait) {
@@ -224,6 +290,13 @@ background-size: 60px;
 
 	#MessageScreen {
 		top: 15%;
+		left: 10%;
+		width: 75%;
+		height: 80%;
+	}
+
+	#inventoryScreen {
+		top: 10%;
 		left: 10%;
 		width: 75%;
 		height: 80%;

@@ -63,6 +63,10 @@ $(document).on("keydown", function(evt) {
 	{
 		pressMenuMessages();
 	}
+	if(evt.key=="v")
+	{
+		pressCloseInventory();
+	}
 
 });
 
@@ -86,24 +90,48 @@ $("#button_close").on('touchstart', pressClose);
 $("#button_menu").on('touchstart', pressMenu);
 $("#button_inventory").on('touchstart', pressInventory);
 $("#button_messages").on('touchstart', pressMenuMessages);
+$("#button_throw").on('touchstart', pressThrow);
+$("#button_closeInventory").on('touchstart', pressCloseInventory);
+
+function pressCloseInventory()
+{
+	console.log("button_closeInventory pressed");   
+	$("#inventoryScreen").slideUp();
+}
+
+function pressThrow(){
+	console.log("button_throw pressed");       		
+    sendMsg ("120", "");
+}
 
 function pressClose() {
-       		console.log("button_close pressed");       		
-       		 $("#menuScreen").slideUp();
-
+    console.log("button_close pressed");       		
+    $("#menuScreen").slideUp();
         	
 }
 
 function pressMenu() {
-       		console.log("button_menu pressed");   
-       		setHidden("MessageScreen");
-       		$("#menuScreen").slideDown();
+    console.log("button_menu pressed");   
+    setHidden("MessageScreen");
+    $("#menuScreen").slideDown();
 
         	
 }
 
 function pressInventory() {
-       		console.log("button_inventory pressed");
+    console.log("button_inventory pressed");
+
+    //$('#imageObject').prepend('<img id="gold" src="images/gold.png" />')
+    
+	
+    
+    var img = document.createElement("IMG");
+    img.src = "images/gold.png";
+    document.getElementById('imageObject').appendChild(img);
+   
+
+
+    $("#inventoryScreen").slideDown();
         	
 }
 
@@ -166,8 +194,6 @@ function releaseB() {
        		console.log("BtnB:Released");
         	sendMsg ("111", "2");
 }
-
-
 
 
 
@@ -391,10 +417,16 @@ function handleMessage (message) {
 	var match = regex.exec(message);
 	
 	var messageId = match[1];
-	var messageContent = match[2];	
-
 	console.log("messageId : "+ messageId);
-	console.log("messagecontent : "+messageContent );
+
+	var messageContent=null;
+
+	if (match[2]!=null)
+	{
+		var messageContent = match[2];
+		console.log("messagecontent : "+messageContent );
+	}
+	
 
 	//different traitement selon messageId
 	switch(messageId) {
@@ -438,8 +470,17 @@ function handleMessage (message) {
 
 	    default:
 	    	//le code erreur saisi n'est pas connu
-	        console.log("[201|_] [ERROR] Code erreur non reconnu : "+messageContent);
+	        console.log("[201|_] [ERROR] Code erreur non reconnu");
 		}
+
+		break;
+
+	case "202":
+        //Serveur a envoyé message pour indiquer que le joueur a bien ete cree. Fournit une connexionKey
+        console.log("[202] [ERROR] Le serveur est etteint");
+
+        
+        break;
 
 	case "210":
         //Serveur a envoyé message pour indiquer que le joueur a bien ete cree. Fournit une connexionKey
@@ -490,6 +531,24 @@ function handleMessage (message) {
 			   
       
 
+        break;
+
+    case "220":
+        //Serveur a envoyé message pour indiquer que le joueur a bien ete cree. Fournit une connexionKey
+        console.log("[202] : msg recu"+messageContent);
+		var regexObject = /(.*);(.*);(.*)/;
+
+		var matchObject = regexObject.exec(messageContent);
+	
+		var idObject = matchObject[1];
+		var descriptionObject = matchObject[2];
+		var nameObject = matchObject[3];
+
+		console.log("idobject : "+ idObject);
+		console.log("descriptionObject : "+ descriptionObject);
+		console.log("nameObject : "+ nameObject);
+
+        
         break;
        
     default:
