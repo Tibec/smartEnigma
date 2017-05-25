@@ -58,22 +58,14 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
         List<Player> players = pmgr.Players;
         if (players.Count == 0)
             return transform.position;
-        Vector3 middle = Vector3.zero;
-        for(int i = 0;i<players.Count; ++i)
+        Vector3 middle = players[0].transform.position;
+        for(int i = 1;i<players.Count; ++i)
         {
             Vector3 screenPoint = Camera.WorldToViewportPoint(players[i].transform.position);
             bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
             if (onScreen)
             {
-                if (middle == Vector3.zero)
-                    middle = players[i].transform.position;
-                else
-                    middle = Vector3.Lerp(middle, players[i].transform.position, 0.5f);
-                players[i].OutOfCameraBound = false;
-            }
-            else
-            {
-                players[i].OutOfCameraBound = true;
+                middle = Vector3.Lerp(middle, players[i].transform.position, 0.5f);
             }
         }
 

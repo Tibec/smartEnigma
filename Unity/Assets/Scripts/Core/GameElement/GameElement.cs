@@ -33,9 +33,9 @@ public class GameElement : MonoBehaviour {
         Player player = collision.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            if(!string.IsNullOrEmpty(InteractText))
+            PlayerTriggerEnter(player);
+            if (!string.IsNullOrEmpty(InteractText))
             {
-                PlayerTriggerEnter(player);
                 player.SetInteraction(this);
             }
         }
@@ -46,11 +46,8 @@ public class GameElement : MonoBehaviour {
         Player player = collision.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            if (!string.IsNullOrEmpty(InteractText))
-            {
-                PlayerTriggerExit(player);
-                player.RemoveInteraction(this);
-            }
+            PlayerTriggerExit(player);
+            player.RemoveInteraction(this);
         }
     }
 
@@ -60,6 +57,11 @@ public class GameElement : MonoBehaviour {
     }
 
     protected virtual void PlayerTriggerExit(Player p)
+    {
+
+    }
+
+    private void OnDestroy()
     {
 
     }

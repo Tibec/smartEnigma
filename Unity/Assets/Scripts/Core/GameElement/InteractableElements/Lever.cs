@@ -35,15 +35,8 @@ public class Lever : InteractableElement
         {
             NotifyController(p);
             ChangeState();
-
-			executeAction ();
         }
     }
-
-	public virtual void executeAction()
-	{
-		
-	}
 
     private void ChangeState()
     {
