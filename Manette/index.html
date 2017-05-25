@@ -11,23 +11,33 @@
   	
 
 
-	<div id="menuScreen" class="hide">  			
+	<div id="menuScreen"  class="hide">  			
 		<div id="button_close"></div>
   		<button id="buttonconfiguration"> Configurations </button>  		 
   		<button id="button_messages"> Messages </button>  	
-  		<div id="MessageScreen"  class="hide" ></div>	  		
+  		<div id="MessageScreen" class="hide" >  			
+			<div id="previous"><</div>
+			<div id="next">></div>	
+			<div id="listMessages"></div>				
+  		</div>	  		
+  		<div id="noMessage" class="hide">Pas de message</div>
   	</div>
 
 
-  	<div id="inventoryScreen" class="hide" >
+  	<div id="inventoryScreen" class="hide">
   			<div id="button_closeInventory"></div>
-  			<div id="infoObject">
-  				<div id="imageObject"></div>
-  				<div id="NameObject"></div>
-  				<div id="descriptionObject"></div>
+
+	  		<div id="objectScreen" class="hide">
+	  			<div id="infoObject">
+	  				<div id="imageObject"></div>
+	  				<div id="NameObject"></div>
+	  				<div id="descriptionObject"></div>
+	  			</div>
+	  			<button id="button_throw"> Jeter</button>		  
   			</div>
 
-  			<button id="button_throw">  			  			
+  			<div id="noObjectScreen">Inventaire vide</div>		
+
   	</div>
 
 	<div id="interfaceScreen" class="hide" >

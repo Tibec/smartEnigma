@@ -86,7 +86,7 @@ html, body {
 	 padding:2%;
 }
 
-#MessageScreen {
+#MessageScreen, #noMessage {
 	border: 3px solid white;
 	border-radius: 10px;
     background-color: #434343;
@@ -97,24 +97,26 @@ html, body {
 	position:fixed;
 	padding:2%;	
 	overflow: hidden;
-	-webkit-overflow-scrolling: touch;
 
 }
 
+
+
 #MessageScreen button {
-	text-align:center;
+	text-align:left;
 	border: 3px solid white;
 	border-radius: 10px;
-	height:100px;
+	height:50px;
     background-color: #434343;
 	color:white;
-	padding:5px;
+	
 	min-width : 120px;
 	width: 94%;
 	font-family: Tahoma, serif;
-	margin:3%;
+	
 	font-size: 125%;
 	word-wrap : break-word;
+	margin-bottom : 5px;
 }
 
 #inventoryScreen {
@@ -131,55 +133,95 @@ html, body {
 	
 }
 
-#imageObject {
+#NameObject {
+	text-align:center;
 	border: 3px solid white;
 	border-radius: 10px;
+	height: 40px;
     background-color: #434343;
 	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 50%;
 	font-family: Tahoma, serif;
+	
 	font-size: 125%;
-	z-index:50;
-	position:fixed;
-	padding:2%;	
-	overflow: hidden;
-	width:50%;
+	margin: 0 auto;
+	margin-bottom : 5px;
 }
+
+#descriptionObject {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height:60px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 80%;
+	font-family: Tahoma, serif;
+	
+	font-size: 125%;
+	margin: 0 auto;
+	margin-bottom : 20px;
+}
+
+
+#imageObject {
+	width: 50%;
+ 	margin: 0 auto;
+
+ }
+
+
 
 #inventoryScreen button {
 	text-align:center;
 	border: 3px solid white;
 	border-radius: 10px;
-	height:100px;
+	height:60px;
     background-color: #434343;
 	color:white;
 	padding:5px;
 	min-width : 120px;
-	width: 94%;
+	width: 80%;
 	font-family: Tahoma, serif;
-	margin:3%;
+	float: middle;
 	font-size: 125%;
+
 }
 
 #button_close {
-display: block;
-float: right;
-width: 43px;
-height: 43px;
-background: url(./images/closeBtn.png) no-repeat center center;
-background-size: 60px;
+	display: block;
+	float: right;
+	width: 43px;
+	height: 43px;
+	background: url(./images/closeBtn.png) no-repeat center center;
+	background-size: 60px;
 }
 
 #button_closeInventory{
-display: block;
-float: right;
-width: 43px;
-height: 43px;
-background: url(./images/closeBtn.png) no-repeat center center;
-background-size: 60px;
+	display: block;
+	float: right;
+	width: 43px;
+	height: 43px;
+	background: url(./images/closeBtn.png) no-repeat center center;
+	background-size: 60px;
 }
 
 .hide {
 	display:none;
+}
+
+#previous {
+	float : left;
+   text-align: left;
+}
+
+#next {
+	float : right;
+   text-align: right;
 }
 
 @media (orientation:landscape) {
@@ -218,24 +260,24 @@ background-size: 60px;
 	}
 
 	#menuScreen {
-		top: 10%;
-		left: 10%;
-		width: 75%;
-		height: 70%;
+		top: 5%;
+		left: 5%;
+		width: 85%;
+		height: 80%;
 	}
 
-	#MessageScreen {
-		top: 20%;
+	#MessageScreen, #noMessage {
+		top: 30%;
 		left: 10%;
 		width: 75%;
-		height: 70%;
+		height: 50%;
 	}
 
 	#inventoryScreen {
-		top: 20%;
-		left: 10%;
-		width: 75%;
-		height: 70%;
+		top: 5%;
+		left: 5%;
+		width: 85%;
+		height: 80%;
 	}
 
 	
@@ -282,24 +324,25 @@ background-size: 60px;
 	}
 
 	#menuScreen {
-		top: 10%;
-		left: 10%;
-		width: 75%;
-		height: 80%;
+		top: 3%;
+		left: 5%;
+		width: 84%;
+		height: 90%;
 	}
 
-	#MessageScreen {
+	#MessageScreen, #noMessage {
+		
 		top: 15%;
 		left: 10%;
 		width: 75%;
-		height: 80%;
+		height: 75%;
 	}
 
 	#inventoryScreen {
-		top: 10%;
-		left: 10%;
-		width: 75%;
-		height: 80%;
+		top: 3%;
+		left: 5%;
+		width: 84%;
+		height: 90%;
 	}
 }
 

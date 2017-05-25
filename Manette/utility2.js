@@ -9,8 +9,11 @@ var url='';
 var i=0;
 var messageArray = new Array();
 var clonedMessageScreen =  $('#MessageScreen').clone();
-
-
+var clonedInfoObject =  $('#infoObject').clone();
+var isObjectInInventory=0;
+var pathImageObject="";
+var nameObject="";
+var descriptionObject="";
 
 
 ////// LISTENER //////////////////////////
@@ -100,13 +103,22 @@ function pressCloseInventory()
 }
 
 function pressThrow(){
-	console.log("button_throw pressed");       		
+	console.log("button_throw pressed");  
+	//il n'y a plus d'objet dans l'inventaire
+	updateIsObjectInInventory(0);
+
     sendMsg ("120", "");
 }
 
 function pressClose() {
     console.log("button_close pressed");       		
     $("#menuScreen").slideUp();
+    
+    //timeout de 2s,
+    setTimeout(function(){ 
+    	setHidden("noMessage");
+    	sethidden("MessageScreen");
+    }, 500);
         	
 }
 
@@ -121,49 +133,125 @@ function pressMenu() {
 function pressInventory() {
     console.log("button_inventory pressed");
 
-    //$('#imageObject').prepend('<img id="gold" src="images/gold.png" />')
-    
+    if(isObjectInInventory)
+    {
+    	setVisible("objectScreen");
+    	setHidden("noObjectScreen");
+
+    	$('#infoObject').replaceWith(clonedInfoObject);
 	
-    
-    var img = document.createElement("IMG");
-    img.src = "images/gold.png";
-    document.getElementById('imageObject').appendChild(img);
-   
+		//reinitialisation de la valeur des champs
+		$("#imageObject").text('');
+		$("#NameObject").text('');
+		$("#descriptionObject").text('');
+
+	   	
+	    //image
+	    var img = document.createElement("IMG");
+	    //img.src = "images/gold.png";
+	    img.src = pathImageObject;
+	    img.setAttribute("width","100");
+	    img.setAttribute("height","100");
+	    document.getElementById('imageObject').appendChild(img);
+	   
+	    /*
+pathImageObject="";
+var nameObject="";
+var descriptionObject="";
+	    */
 
 
+	   //nom
+	   //$("#NameObject").text('gold');
+	   $("#NameObject").text( nameObject);
+
+	   //description
+		//$("#descriptionObject").text('pour acheter des choses');
+		$("#descriptionObject").text(descriptionObject);
+   	
+    }
+    else
+    {
+
+    }
+
+
+    //affichage
     $("#inventoryScreen").slideDown();
+
+    
         	
 }
 
 function pressMenuMessages(){
+
 	console.log("button_messages pressed");
-
-	//recuperation du div vide
-	//clonedMessageScreen
-	//$('#MessageScreen').replaceWith(clonedMessageScreen);
-	$("#MessageScreen").text('');
-	for (var i = 0; i < messageArray.length; i++) {
-     	console.log(messageArray[i]);
-
-     	//create new div
-     	var textMsg = document.createElement('button');
-     	//textMsg.className = '#message-list';
-     	var idTextMsg = guidGenerator();
-
-     	//message-list
-     	//myElem.className = 'myElem';
-
-     	textMsg.appendChild(document.createTextNode(messageArray[i]));    	
-     	textMsg.id = idTextMsg;     	
-     	
-    	document.getElementById('MessageScreen').appendChild(textMsg); 
-    		
-    	//setVisible("MessageScreen");	
-
-	}
-	$("#MessageScreen").slideDown();  
-
 	
+	//recuperation du div vide
+
+	if(messageArray.length!=0)
+	{
+		$('#MessageScreen').replaceWith(clonedMessageScreen);
+		$("#listMessages").text('');
+
+		//var messageArray = ["test 1", "test 2", "test 3", "test 4", "test 5"];
+		var idMsg = [];
+		for (var i = 0; i <messageArray.length; i++) {
+		     	console.log(messageArray[i]);
+
+		     	//create new div
+		     	var textMsg = document.createElement('button');
+		     	var idTextMsg = guidGenerator();
+				idMsg.push(idTextMsg);
+				$(textMsg).hide();
+
+		     	textMsg.appendChild(document.createTextNode(messageArray[i]));    	
+		     	textMsg.id = idTextMsg;     	
+		     	
+		    	document.getElementById('listMessages').appendChild(textMsg); 
+		}
+
+		var page=1;
+		var maxpage = Math.floor((messageArray.length+1)/2);
+
+		var visibleElements = [0, 1];
+		$(document.getElementById(idMsg[visibleElements[0]])).show();
+		$(document.getElementById(idMsg[visibleElements[1]])).show();
+		
+
+
+		$("#next").on('touchstart',function(){
+			if (page < maxpage ){
+				$(document.getElementById(idMsg[visibleElements[0]])).hide();
+				$(document.getElementById(idMsg[visibleElements[1]])).hide();
+				visibleElements = [visibleElements[0]+2,visibleElements[1]+2];   
+				$(document.getElementById(idMsg[visibleElements[0]])).show();
+				if (document.getElementById(idMsg[visibleElements[1]])){
+					$(document.getElementById(idMsg[visibleElements[1]])).show();
+				}
+				page++;
+		  	}
+		});
+
+		$("#previous").on('touchstart',function(){
+			if (page > 1 ){ 
+				$(document.getElementById(idMsg[visibleElements[0]])).hide();
+				if (document.getElementById(idMsg[visibleElements[1]])){
+					$(document.getElementById(idMsg[visibleElements[1]])).hide();
+				}
+				visibleElements = [visibleElements[0]-2,visibleElements[1]-2];   
+				$(document.getElementById(idMsg[visibleElements[0]])).show();
+				$(document.getElementById(idMsg[visibleElements[1]])).show();
+				page--;
+			}
+		});
+		$("#MessageScreen").slideDown();  
+	}
+	else
+	{
+		$("#noMessage").slideDown();  
+	}
+		
 }
 
 
@@ -298,9 +386,21 @@ window.addEventListener("load",function() {
 
 //////  FONCTIONS ///////////////////////
 
+function updateObjectData(path,name,description)
+{
+
+	pathImageObject=path;
+	nameObject=name;
+	descriptionObject=description;
+}
+
+//met a jour isObjectInInventory (1: il y a un objet dans l'inventaire)
+function updateIsObjectInInventory(newVal)
+{
+	isObjectInInventory=newval;
+}
+
 //met a jour showConnexionScreen (1 : ecran doit s'afficher. 0 : ecran ne doit pas s'afficher)
-
-
 function updateShowConnexionScreen(newVal)
 {
 	showConnexionScreen=newVal
@@ -540,15 +640,25 @@ function handleMessage (message) {
 
 		var matchObject = regexObject.exec(messageContent);
 	
+		//images/gold.png";
 		var idObject = matchObject[1];
-		var descriptionObject = matchObject[2];
+		var descriptionObject = "images/"+matchObject[2]+".png";
 		var nameObject = matchObject[3];
 
 		console.log("idobject : "+ idObject);
 		console.log("descriptionObject : "+ descriptionObject);
 		console.log("nameObject : "+ nameObject);
 
-        
+
+		updateObjectData(idObject,descriptionObject,nameObject);
+		updateIsObjectInInventory(1);
+
+        /*
+			pathImageObject="";
+var nameObject="";
+var descriptionObject="";
+        */
+
         break;
        
     default:
