@@ -37,10 +37,13 @@ public class PlayerAnimation : MonoBehaviour
 
     private PlayerController m_platformCtrl;
     private Animator m_animator;
+    private SpriteRenderer m_sprite;
+
     void Start()
     {
         m_platformCtrl = GetComponent<PlayerController>();
         m_animator = GetComponent<Animator>();
+        m_sprite = GetComponent<SpriteRenderer>();
         OnStateChanged += _OnStateChanged;
     }
 
@@ -69,11 +72,11 @@ public class PlayerAnimation : MonoBehaviour
         float absScaleX = Mathf.Abs(transform.localScale.x);
         if (m_platformCtrl.GetActionState(eControllerActions.Left))
         {
-            transform.localScale = new Vector3(IsSpriteFacingRight ? -absScaleX : absScaleX, transform.localScale.y, transform.localScale.z);
+            m_sprite.flipX = true;
         }
         else if (m_platformCtrl.GetActionState(eControllerActions.Right))
         {
-            transform.localScale = new Vector3(IsSpriteFacingRight ? absScaleX : -absScaleX, transform.localScale.y, transform.localScale.z);
+            m_sprite.flipX = false;
         }
 
         if (m_platformCtrl.IsClimbing)

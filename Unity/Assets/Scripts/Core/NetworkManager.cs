@@ -19,7 +19,9 @@ public class NetworkManager : MonoBehaviour
 
     public NetworkStatus Status;
     public Server Server { get; private set; }
+    public Server2 Server2 { get; private set; }
     public UILabel StatusPointer;
+    public UILabel IPPointer;
 
     public int PlayerLimit;
 
@@ -30,6 +32,7 @@ public class NetworkManager : MonoBehaviour
     {
         PlayerLimit = 4;
         Server = new Server();
+        Server2 = new Server2();
         Status = NetworkStatus.Offline;
         lobby = new List<Connection>();
     }
@@ -51,9 +54,20 @@ public class NetworkManager : MonoBehaviour
 		SetupServer ();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Server.Update();
+        Server.UpdateConnections();
+
+        foreach(Connection c in Server.connections)
+        {
+            if (c == null) continue;
+            if (c.queuedForDisconnection == 0)
+                c.Disconnect();
+            if (c.queuedForDisconnection > 0)
+                --c.queuedForDisconnection;
+        }
+
     }
 
     // Create a server and listen on a port
@@ -66,26 +80,44 @@ public class NetworkManager : MonoBehaviour
         }
         Status = NetworkStatus.Starting;
 
+        Server2.Listen(82);
+
         Server.useWebSockets = true;
-        if (Server.Listen(80))
+        int port = 80;
+        int tries = 0;
+        while(!Server.Listen(port) && tries <= 10)
         {
-            Debug.Log("SetupServer: Server started on " + "localhost:80");
-            Server.OnConnectionOpened += OnNewPlayer;
-            Server.OnConnectionClosed += OnDeletedPlayer;
-            Server.OnMessageReceived += OnNewMessage;
-
-            Status = NetworkStatus.Online;
-
-            if (StatusPointer != null)
-            {
-                StatusPointer.color = new Color(0, 1, 0, 1);
-                StatusPointer.text = "On";
-            }
+            port = UnityEngine.Random.Range(100, 65536);
+            ++tries;
         }
-        else
+        if(tries > 10)
         {
             Debug.Log("SetupServer: An error happened while trying to start the server.");
+            return;
         }
+
+        Debug.Log("SetupServer: Server started on " + Network.player.ipAddress + ":"+port);
+        Server.OnConnectionOpened += OnNewPlayer;
+        Server.OnConnectionClosed += OnDeletedPlayer;
+        Server.OnMessageReceived += OnNewMessage;
+
+        Status = NetworkStatus.Online;
+
+        if (StatusPointer != null)
+        {
+            StatusPointer.color = new Color(0, 1, 0, 1);
+            StatusPointer.text = "On";
+        }
+        if(IPPointer != null)
+        {
+            IPPointer.color = Color.red;
+            IPPointer.text = Network.player.ipAddress + ((port == 80) ? "" : ":" + port.ToString());
+        }
+    }
+
+    private void OnDisconnectError(NetworkConnection arg1, byte arg2)
+    {
+        
     }
 
     public void StopServer()
@@ -96,6 +128,13 @@ public class NetworkManager : MonoBehaviour
             return;
         }
         Status = NetworkStatus.Stopping;
+
+        foreach(Connection c in Server.connections)
+        {
+            if (c == null)
+                continue;
+            c.SendMessage(new KickMessage());
+        }
 
         Server.Stop();
 
@@ -111,7 +150,6 @@ public class NetworkManager : MonoBehaviour
             StatusPointer.color = new Color(1, 0, 0, 1);
             StatusPointer.text = "Off";
         }
-
     }
 
     private void OnDeletedPlayer(Connection conn)
@@ -132,7 +170,6 @@ public class NetworkManager : MonoBehaviour
     {
         Debug.Log("A new player from " + conn.address + " has been added to the lobby");
         lobby.Add(conn);
-        //playerMgr.AddPlayer(conn);
     }
 
     private void OnNewMessage(Connection conn, Message mess)
@@ -187,7 +224,15 @@ public class NetworkManager : MonoBehaviour
         LoginErrorMessage err = new LoginErrorMessage();
         err.ErrorCode = error;
         conn.SendMessage(err);
-        conn.Disconnect();
+        conn.SoftDisconnect();
+     }
+
+    public void OnDestroy()
+    {
+        if(Status == NetworkStatus.Online)
+        {
+            StopServer();
+        }
     }
 }
 

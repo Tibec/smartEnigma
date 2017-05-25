@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class PlayerMgr : MonoBehaviour {
 
@@ -10,26 +12,50 @@ public class PlayerMgr : MonoBehaviour {
     public struct PointerData { public Sprite icon; public Color color; }
 
     public List<Player> Players;
+    public List<Connection> PlayersConn;
     public List<RuntimeAnimatorController> PlayersForms;
     public GameObject PlayerPrefab;
-    public UILabel PlayerNamePrefab;
-    public UILabel PlayerInteractPrefab;
     public UI2DSprite PlayerPointerPrefab;
+    public UIPanel PlayerActionPrefab;
     public List<PointerData> PlayerPointerIcon;
+
+    private UIRoot root;
 
     void Start ()
     {
         DontDestroyOnLoad(this);
-	}
+        SceneManager.activeSceneChanged += OnSceneChange;
+        root = GetComponentInChildren<UIRoot>();
+        Assert.IsNotNull(root, "There must be an UIRoot inside the gamemgr component !");
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
 
+    public static PlayerMgr Instance()
+    {
+        return FindObjectOfType<PlayerMgr>();
+    }
+
+    private void OnSceneChange(Scene previousScene, Scene newScene)
+    {
+        /*
+        int i = 1;
+        foreach(Player p in Players)
+        {
+            Vector3 newPos = GetSpawnPoint(i++);
+         //   SceneManager.MoveGameObjectToScene(p.gameObject, newScene);
+            p.transform.position.Set(0,0,0);
+        }
+        */
+    }
+
     public string AddPlayer(Connection conn, string username)
     {
-        Player p = Instantiate(PlayerPrefab, new Vector3(-1+ Players.Count,0,-1), new Quaternion()).GetComponent<Player>();
+        Vector3 spawn = SpawnManager.GetSpawnPoint(Players.Count + 1);
+        Player p = Instantiate(PlayerPrefab, new Vector3(spawn.x,spawn.y,-1), new Quaternion()).GetComponent<Player>();
 		p.transform.parent = gameObject.transform;
 
        // p.Coloration = UnityEngine.Random.ColorHSV();
@@ -39,26 +65,30 @@ public class PlayerMgr : MonoBehaviour {
         p.GetComponent<Animator>().runtimeAnimatorController = PlayersForms[Players.Count];
         Players.Add(p);
 
-        UILabel i = Instantiate(PlayerNamePrefab);
-        i.text = username;
-        i.SetAnchor(p.transform.FindChild("NameAnchor").gameObject, 0, 0, 0, 50);
-        p.NameLabel = i;
-
-        UILabel i2 = Instantiate(PlayerInteractPrefab);
-        i2.SetAnchor(p.transform.FindChild("ActionAnchor").gameObject, 120, 0, 0, 50);
-        i2.enabled = false;
-        p.InteractionLabel = i2;
-        // i.SetDimensions
-
-        UI2DSprite panel = Instantiate(PlayerPointerPrefab);
-        panel.transform.parent = i2.transform.parent;
-        panel.enabled = false;
-        panel.sprite2D = PlayerPointerIcon[Players.Count - 1].icon;
-        panel.transform.FindChild("Arrow").GetComponent<UI2DSprite>().enabled = false;
-        panel.transform.FindChild("Arrow").GetComponent<UI2DSprite>().color = PlayerPointerIcon[Players.Count - 1].color;
-        p.NamePanel = panel;
+        InstantiatePlayerUI(p);
 
         return p.Key;
+    }
+
+    private void InstantiatePlayerUI(Player p)
+    {
+        GameObject actionGO = NGUITools.AddChild(p.gameObject, PlayerActionPrefab.gameObject);
+        actionGO.transform.localPosition = new Vector3(0, 1.8f, 0);
+    }
+
+    public void RemovePlayer(string username)
+    {
+        foreach(Player p in Players)
+        {
+            if(p.Username == username)
+            {
+                p.Socket.SendMessage(new KickMessage());
+                p.Socket.SoftDisconnect();
+                Destroy(p.gameObject);
+                Players.Remove(p);
+                return;
+            }
+        }
     }
 
     public void PlayerDisconnected(Connection conn)

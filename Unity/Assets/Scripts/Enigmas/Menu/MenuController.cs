@@ -16,13 +16,28 @@ public class MenuController : InteractableElementBehaviour
 
     public override bool CanInteract(InteractableElement ie, Player p)
     {
-        if (mgr.Players.Count < 2)
-            return false;
+       // if (mgr.Players.Count < 2 && ie.GetType() == typeof(Lever))
+       //     return false;
         return true;
     }
 
     public override void OnInteraction(InteractableElement ie, Player p)
     {
-        SceneManager.LoadScene("Scene/TestEnigmaSelect", LoadSceneMode.Single);
+        if(ie.GetType() == typeof(Lever))
+        {
+            if (ie.name == "LeverStart")
+                SceneManager.LoadScene("Scene/EnigmaSelect", LoadSceneMode.Single);
+            if (ie.name == "LeverTest")
+                SceneManager.LoadScene("Scene/Test", LoadSceneMode.Single);
+            base.PlayerExitTrigger(ie, p);
+        }
+    }
+
+    public override void PlayerEnterTrigger(InteractableElement ie, Player p)
+    {
+        if(ie.GetType() != typeof(Lever))
+        {
+            mgr.RemovePlayer(p.Username);
+        }
     }
 }

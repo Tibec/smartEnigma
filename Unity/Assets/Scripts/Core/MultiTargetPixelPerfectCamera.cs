@@ -66,11 +66,6 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
             if (onScreen)
             {
                 middle = Vector3.Lerp(middle, players[i].transform.position, 0.5f);
-                players[i].OutOfCameraBound = false;
-            }
-            else
-            {
-                players[i].OutOfCameraBound = true;
             }
         }
 

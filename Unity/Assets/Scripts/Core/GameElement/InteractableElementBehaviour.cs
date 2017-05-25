@@ -13,13 +13,13 @@ public class InteractableElementBehaviour : MonoBehaviour {
         return true;
     }
 
-    public virtual bool PlayerEnterTrigger(InteractableElement ie, Player p)
+    public virtual void PlayerEnterTrigger(InteractableElement ie, Player p)
     {
-        return true;
+
     }
 
-    public virtual bool PlayerExitTrigger(InteractableElement ie, Player p)
+    public virtual void PlayerExitTrigger(InteractableElement ie, Player p)
     {
-        return true;
+
     }
 }
