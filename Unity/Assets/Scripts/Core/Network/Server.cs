@@ -44,9 +44,6 @@ public class Server : MonoBehaviour
     {
         srv = new WebSocketServer(IPAddress.Any, port);
 
-        srv.Log.Level = LogLevel.Trace;
-        srv.Log.File = @"D:\Users\Benjamin\Documents\Projets\SmartEnigma\git\Unity\Temp\UnityVS_bin\Debug\web.log";
-
         srv.Start();
         srv.AddWebSocketService<Connection>("/", (s) => {
             s.SetServer(this);
