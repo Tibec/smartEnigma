@@ -21,7 +21,7 @@ public class PlayerMgr : MonoBehaviour {
 
     private UIRoot root;
 
-    void Start ()
+    void Awake ()
     {
         DontDestroyOnLoad(this);
         SceneManager.activeSceneChanged += OnSceneChange;
@@ -60,6 +60,7 @@ public class PlayerMgr : MonoBehaviour {
 
        // p.Coloration = UnityEngine.Random.ColorHSV();
         p.Socket = conn;
+        p.SocketID = conn.ID;
         p.Username = username;
         p.Key = Utils.RandomString(20);
         p.GetComponent<Animator>().runtimeAnimatorController = PlayersForms[Players.Count];
@@ -83,7 +84,7 @@ public class PlayerMgr : MonoBehaviour {
             if(p.Username == username)
             {
                 p.Socket.SendMessage(new KickMessage());
-                p.Socket.SoftDisconnect();
+                p.Socket.Disconnect();
                 Destroy(p.gameObject);
                 Players.Remove(p);
                 return;
@@ -91,21 +92,23 @@ public class PlayerMgr : MonoBehaviour {
         }
     }
 
-    public void PlayerDisconnected(Connection conn)
+    public void PlayerDisconnected(string conn)
     {
-        GetPlayerByConnection(conn).Connected = false;
+        Player p = GetPlayerByConnectionId(conn);
+        if(p!=null)
+            p.Connected = false;
     }
 
-    public void NewMessage(Connection conn, Message mess)
+    public void NewMessage(string conn, Message mess)
     {
-        GetPlayerByConnection(conn).ReceiveMessage(mess);
+        GetPlayerByConnectionId(conn).ReceiveMessage(mess);
     }
 
-    private Player GetPlayerByConnection(Connection conn)
+    private Player GetPlayerByConnectionId(string id)
     {
         foreach (Player p in Players)
         {
-            if (p.Socket.connectionId == conn.connectionId)
+            if (p.SocketID == id)
             {
                 return p;
             }

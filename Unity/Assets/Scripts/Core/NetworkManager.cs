@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using System;
 using System.Text;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
 
 public enum NetworkStatus
 {
@@ -18,8 +19,7 @@ public class NetworkManager : MonoBehaviour
 {
 
     public NetworkStatus Status;
-    public Server Server { get; private set; }
-    public Server2 Server2 { get; private set; }
+    public Server Server;
     public UILabel StatusPointer;
     public UILabel IPPointer;
 
@@ -28,11 +28,9 @@ public class NetworkManager : MonoBehaviour
     private PlayerMgr playerMgr;
     private List<Connection> lobby;
 
-    public NetworkManager()
+    void Start()
     {
         PlayerLimit = 4;
-        Server = new Server();
-        Server2 = new Server2();
         Status = NetworkStatus.Offline;
         lobby = new List<Connection>();
     }
@@ -51,23 +49,15 @@ public class NetworkManager : MonoBehaviour
         if (playerMgr == null)
             Debug.Log("NetworkMgr: Cannot found the playermgr !");
 
-		SetupServer ();
+        Server = GetComponent<Server>();
+        Assert.IsNotNull(Server, "Cannot found a server !");
+
+        SetupServer();
     }
 
     void FixedUpdate()
     {
-        Server.Update();
-        Server.UpdateConnections();
-
-        foreach(Connection c in Server.connections)
-        {
-            if (c == null) continue;
-            if (c.queuedForDisconnection == 0)
-                c.Disconnect();
-            if (c.queuedForDisconnection > 0)
-                --c.queuedForDisconnection;
-        }
-
+        
     }
 
     // Create a server and listen on a port
@@ -80,9 +70,7 @@ public class NetworkManager : MonoBehaviour
         }
         Status = NetworkStatus.Starting;
 
-        Server2.Listen(82);
 
-        Server.useWebSockets = true;
         int port = 80;
         int tries = 0;
         while(!Server.Listen(port) && tries <= 10)
@@ -115,11 +103,6 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    private void OnDisconnectError(NetworkConnection arg1, byte arg2)
-    {
-        
-    }
-
     public void StopServer()
     {
         if (Status != NetworkStatus.Online)
@@ -129,7 +112,7 @@ public class NetworkManager : MonoBehaviour
         }
         Status = NetworkStatus.Stopping;
 
-        foreach(Connection c in Server.connections)
+        foreach(Connection c in Server.Clients)
         {
             if (c == null)
                 continue;
@@ -152,13 +135,13 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    private void OnDeletedPlayer(Connection conn)
+    private void OnDeletedPlayer(string conn)
     {
         Debug.Log("Player disconnected");
-        if(lobby.Contains(conn))
+        if(lobby.Contains(null))
         {
             Debug.Log("He has been removed from the lobby");
-            lobby.Remove(conn);
+            lobby.Remove(null);
         }
         else
         {
@@ -168,7 +151,7 @@ public class NetworkManager : MonoBehaviour
 
     private void OnNewPlayer(Connection conn)
     {
-        Debug.Log("A new player from " + conn.address + " has been added to the lobby");
+        Debug.Log("A new player from " + conn.Context.UserEndPoint + " has been added to the lobby");
         lobby.Add(conn);
     }
 
@@ -214,7 +197,7 @@ public class NetworkManager : MonoBehaviour
         }
         else
         {
-            playerMgr.NewMessage(conn, mess);
+            playerMgr.NewMessage(conn.ID, mess);
         }
     }
 
@@ -224,12 +207,12 @@ public class NetworkManager : MonoBehaviour
         LoginErrorMessage err = new LoginErrorMessage();
         err.ErrorCode = error;
         conn.SendMessage(err);
-        conn.SoftDisconnect();
+        conn.Disconnect();
      }
 
     public void OnDestroy()
     {
-        if(Status == NetworkStatus.Online)
+        if(Status == NetworkStatus.Online && Server != null)
         {
             StopServer();
         }

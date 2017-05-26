@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -7,103 +8,85 @@ using UnityEngine.Networking;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
-
-public class Server : NetworkServerSimple
+public class Server : MonoBehaviour
 {
-    public Server()
-        : base()
+    private WebSocketServer srv;
+    private List<Action> pendingCalls;
+    public List<Connection> Clients;
+
+    void Start()
     {
-        SetNetworkConnectionClass<Connection>();
+        Clients = new List<Connection>();
+        pendingCalls = new List<Action>();
     }
 
-    public override void OnData(NetworkConnection conn, int receivedSize, int channelId)
+    private void OnDestroy()
     {
-        string received = (char)channelId + Encoding.ASCII.GetString(this.messageBuffer, 0, receivedSize);
-        MessageReader reader = new MessageReader(received);
-        OnMessageReceived((Connection)conn, reader.GetMessage());
+        foreach (Connection c in Clients)
+        {
+            if (c == null)
+                continue;
+            c.SendMessage(new KickMessage());
+        }
+        srv.Stop();
     }
 
-    public override void OnConnectError(int connectionId, byte error)
+    private void Update()
     {
-        base.OnConnectError(connectionId, error);
-        Debug.Log("Erreur a la connexion :" + error);
-
-    }
-
-    public override void OnConnected(NetworkConnection conn)
-    {
-        // base.OnConnected(conn);
-        Debug.Log("Connection received !");
-        OnConnectionOpened((Connection)conn);
-        /*
-        string hello = "hello";
-        conn.SendBytes(Encoding.ASCII.GetBytes(hello), hello.Length, 0);
-        Debug.Log(conn.GetType().ToString());
-        */
-    }
-
-    public override void OnDisconnected(NetworkConnection conn)
-    {
-        Debug.Log("Connection closed");
-        OnConnectionClosed((Connection)conn);
-    }
-
-    public override void OnDataError(NetworkConnection conn, byte error)
-    {
-        
-    }
-
-    public override void OnDisconnectError(NetworkConnection conn, byte error)
-    {
-        
-    }
-
-    public delegate void ConnectionEvent(Connection conn);
-    public event ConnectionEvent OnConnectionOpened;
-    public event ConnectionEvent OnConnectionClosed;
-
-    public delegate void MessageReceived(Connection conn, Message mess);
-    public event MessageReceived OnMessageReceived;
-}
-
-public class Server2
-{
-    public WebSocketServer srv;
-
-    public Server2()
-    {
-
+        foreach(Action a in pendingCalls)
+        {
+            a.Invoke();
+        }
+        pendingCalls.Clear();
     }
 
     public bool Listen(int port)
     {
-        srv = new WebSocketServer("ws://localhost:"+ port);
+        srv = new WebSocketServer(IPAddress.Any, port);
+
         srv.Log.Level = LogLevel.Trace;
         srv.Log.File = @"D:\Users\Benjamin\Documents\Projets\SmartEnigma\git\Unity\Temp\UnityVS_bin\Debug\web.log";
+
         srv.Start();
-        srv.AddWebSocketService<InputService>("/");
+        srv.AddWebSocketService<Connection>("/", (s) => {
+            s.SetServer(this);
+            s.OnConnectionOpened += ConnectionOpened;
+            s.OnConnectionClosed += ConnectionClosed;
+            s.OnMessageReceived += MessageReceived;
+        });
     
-        return true;
+        return srv.IsListening;
     }
 
-    public void Start()
+    private void ConnectionClosed(Connection conn)
     {
-
+        Clients.Remove(conn);
+        pendingCalls.Add(() => OnConnectionClosed(conn.ID));
     }
+
+    private void ConnectionOpened(Connection conn)
+    {
+        pendingCalls.Add(() => OnConnectionOpened(conn));
+        Clients.Add(conn);
+    }
+
+    private void MessageReceived(Connection conn, Message mess)
+    {
+        pendingCalls.Add(() => OnMessageReceived(conn, mess));
+    }
+
+    public void Stop()
+    {
+        if (srv != null)
+            srv.Stop();
+    }
+
+    public delegate void ConnectionEvent(Connection conn);
+    public event ConnectionEvent OnConnectionOpened;
+    public delegate void ConnectionClosedEvent(string conn);
+    public event ConnectionClosedEvent OnConnectionClosed;
+
+    public delegate void MessageEvent(Connection conn, Message mess);
+    public event MessageEvent OnMessageReceived;
 }
 
-public class InputService : WebSocketBehavior
-{
-    protected override void OnMessage(MessageEventArgs e)
-    {
-        if (e.Data.StartsWith("100"))
-        {
-            Send(Encoding.ASCII.GetBytes("200 | eeeeeee"));
-        }
-    }
-
-    protected override void OnOpen()
-    {
-        //Debug.Log(s.ID); 
-    }
-}

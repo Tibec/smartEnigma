@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 public class Player : MonoBehaviour {
 
     public Connection Socket { get; set; }
+    public string SocketID { get; set; }
     public string Username { get; set; }
     public bool Connected { get; set; }
     public string Key { get; set; }
@@ -190,7 +191,7 @@ public class Player : MonoBehaviour {
     public void Disconnect()
     {
         Socket.SendMessage(new KickMessage());
-        Socket.SoftDisconnect();
+        Socket.Disconnect();
     }
 
     private void SetNearestInteraction(GameElement e)
