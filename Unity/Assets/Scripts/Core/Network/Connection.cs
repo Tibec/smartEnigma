@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Timers;
 using UnityEngine;
+using WebSocketSharp;
 using WebSocketSharp.Server;
 
 public class Connection : WebSocketBehavior
