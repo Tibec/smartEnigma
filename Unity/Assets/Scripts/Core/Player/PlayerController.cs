@@ -71,6 +71,16 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public bool IsGrounded { get { return m_isGrounded; } set { m_isGrounded = value; } }
     /// <summary>
+    /// Returns true is player is grounded
+    /// </summary>
+    public bool CanClimb {
+        get {
+            Collider2D climbingColliderBelow = GetClimbingColliderBelow();
+            Collider2D climbingColliderAbove = GetClimbingColliderAbove();
+
+            return climbingColliderBelow != null || climbingColliderAbove != null;
+        } }
+    /// <summary>
     /// The horizontal moving acceleration depending on the gounded state
     /// </summary>
     public float HorizontalMovingAcc { get { return IsGrounded ? m_walkingAcc : m_airborneAcc; } }
@@ -130,6 +140,7 @@ public class PlayerController : MonoBehaviour
     private float m_airborneAcc = 8f;
 
     private bool m_isGrounded;
+    private bool m_canClimb;
     private float m_slopeAngle;
     private Vector3 m_prevPos;
     private Vector3 m_instantVelocity;

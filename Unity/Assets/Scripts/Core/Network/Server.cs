@@ -13,7 +13,7 @@ public class Server : MonoBehaviour
     private WebSocketServer srv;
     private List<Action> pendingCalls;
     public List<Connection> Clients;
-
+    public int ListenedPort { get; private set; }
     void Start()
     {
         Clients = new List<Connection>();
@@ -51,7 +51,7 @@ public class Server : MonoBehaviour
             s.OnConnectionClosed += ConnectionClosed;
             s.OnMessageReceived += MessageReceived;
         });
-    
+        ListenedPort = port;
         return srv.IsListening;
     }
 

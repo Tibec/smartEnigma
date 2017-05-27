@@ -15,7 +15,6 @@ public class PlayerMgr : MonoBehaviour {
     public List<Connection> PlayersConn;
     public List<RuntimeAnimatorController> PlayersForms;
     public GameObject PlayerPrefab;
-    public UI2DSprite PlayerPointerPrefab;
     public UIPanel PlayerActionPrefab;
     public List<PointerData> PlayerPointerIcon;
 

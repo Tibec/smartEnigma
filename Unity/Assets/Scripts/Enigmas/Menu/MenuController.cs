@@ -29,7 +29,6 @@ public class MenuController : InteractableElementBehaviour
                 SceneManager.LoadScene("Scene/EnigmaSelect", LoadSceneMode.Single);
             if (ie.name == "LeverTest")
                 SceneManager.LoadScene("Scene/Test", LoadSceneMode.Single);
-            base.PlayerExitTrigger(ie, p);
         }
     }
 

@@ -6,6 +6,7 @@ using System;
 using System.Text;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public enum NetworkStatus
 {
@@ -33,17 +34,40 @@ public class NetworkManager : MonoBehaviour
         PlayerLimit = 4;
         Status = NetworkStatus.Offline;
         lobby = new List<Connection>();
+
+    }
+
+    private void UpdateUI()
+    {
+        if (StatusPointer == null)
+            StatusPointer = GameObject.Find("Label - ServerState").GetComponent<UILabel>();
+        if (IPPointer == null)
+            IPPointer = GameObject.Find("Label - HowToJoinURL").GetComponent<UILabel>();
+        if (StatusPointer != null)
+        {
+            bool online = Status == NetworkStatus.Online;
+
+            if (online)
+            {
+                StatusPointer.color = new Color(0xA5, 0x00, 0x00, 0xFF);
+                StatusPointer.text = "Off";
+            }
+            else
+            {
+                StatusPointer.color = new Color(0, 1, 0, 1);
+                StatusPointer.text = "On";
+                if (IPPointer != null)
+                {
+                    int port = Server.ListenedPort;
+                    IPPointer.text = Network.player.ipAddress + ((port == 80) ? "" : ":" + port.ToString());
+                }
+            }
+        }
     }
 
     private void Awake()
     {
         DontDestroyOnLoad(this);
-
-        if (StatusPointer != null)
-        {
-            StatusPointer.color = new Color(1, 0, 0, 1);
-            StatusPointer.text = "Off";
-        }
 
         playerMgr = GetComponent<PlayerMgr>();
         if (playerMgr == null)
@@ -55,9 +79,9 @@ public class NetworkManager : MonoBehaviour
         SetupServer();
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        
+        UpdateUI();
     }
 
     // Create a server and listen on a port
@@ -90,17 +114,6 @@ public class NetworkManager : MonoBehaviour
         Server.OnMessageReceived += OnNewMessage;
 
         Status = NetworkStatus.Online;
-
-        if (StatusPointer != null)
-        {
-            StatusPointer.color = new Color(0, 1, 0, 1);
-            StatusPointer.text = "On";
-        }
-        if(IPPointer != null)
-        {
-            IPPointer.color = Color.red;
-            IPPointer.text = Network.player.ipAddress + ((port == 80) ? "" : ":" + port.ToString());
-        }
     }
 
     public void StopServer()
@@ -126,13 +139,6 @@ public class NetworkManager : MonoBehaviour
         Server.OnMessageReceived -= OnNewMessage;
 
         Debug.Log("StopServer: Server stopped !");
-
-        Status = NetworkStatus.Offline;
-        if (StatusPointer != null)
-        {
-            StatusPointer.color = new Color(1, 0, 0, 1);
-            StatusPointer.text = "Off";
-        }
     }
 
     private void OnDeletedPlayer(string conn)

@@ -8,7 +8,15 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
 {
     public Camera Camera { get; private set; }
    
-    public float Zoom = 1f;
+    [Serializable]
+    public class ZoomAdapt { public float zoom; public int minWidth; public int maxWidth; }
+
+    public bool FollowIndividual = false;
+
+    private float Zoom = 1f;
+    public List<ZoomAdapt> Zooms = new List<ZoomAdapt>();
+
+
     public float PixelToUnits = 100f;
     public bool PixelPerfectEnabled = true;
 
@@ -17,7 +25,7 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
 
     public float DampTime = 0.15f;
     public float RotationDampTime = 0.25f;
-
+    public float DampDelta = 0.01f;
 
     private Vector3 velocity = Vector3.zero;
     private Vector3 lastPlayerPos;
@@ -31,6 +39,8 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
     {
         if (Camera != null)
         {
+            UpdateZoom();
+
             if (KeepInsideBoundingBox)
             {
                 DoKeepInsideBounds();
@@ -39,15 +49,40 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
         }
     }
 
+    private void UpdateZoom()
+    {
+        foreach( ZoomAdapt za in Zooms)
+        {
+            if (Screen.width >= za.minWidth && Screen.width <= za.maxWidth)
+            {
+                Zoom = za.zoom;
+            }
+
+        }
+    }
+
     void UpdatePosition()
     {
-
-        Vector3 destination = ComputePlayerMiddle();
+        Vector3 destination = FollowIndividual ? GameObject.Find("PlayerEntity").transform.position : ComputePlayerMiddle();
         destination.z = transform.position.z;
         if (destination == lastPlayerPos)
             return;
         lastPlayerPos = destination;
-        transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, DampTime);
+      //  if(!InsignifiantMove(transform.position, destination))
+        transform.position = RoundCameraPosition(Vector3.SmoothDamp(transform.position, destination, ref velocity, DampTime));
+    }
+
+    bool InsignifiantMove(Vector3 origin, Vector3 destination)
+    {
+        return Vector3.Distance(origin, destination) <= DampDelta;
+    }
+
+    Vector3 RoundCameraPosition(Vector3 cam)
+    {
+        Vector3 pos = cam;
+        pos.x = Mathf.RoundToInt(pos.x * 100) / 100f;
+        pos.y = Mathf.RoundToInt(pos.y * 100) / 100f;
+        return pos;
     }
 
     private Vector3 ComputePlayerMiddle()
@@ -138,6 +173,7 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
         vCamPos += vOffset;
         if (rCamera.width >= Mathf.Abs(BoundingBox.width)) vCamPos.x = BoundingBox.center.x;
         if (rCamera.height >= Mathf.Abs(BoundingBox.height)) vCamPos.y = BoundingBox.center.y;
-        Camera.transform.position = vCamPos;
+        //if(!InsignifiantMove(Camera.transform.position, vCamPos))
+        Camera.transform.position = RoundCameraPosition(vCamPos);
     }
 }

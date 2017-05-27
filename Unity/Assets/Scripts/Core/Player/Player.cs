@@ -27,6 +27,7 @@ public class Player : MonoBehaviour {
     private PlayerController controller;
     private UILabel interactionLabel;
     private UIPanel interactionPanel;
+    private UI2DSprite climbSprite;
 
     // Use this for initialization
     void Start () {
@@ -74,6 +75,55 @@ public class Player : MonoBehaviour {
             ReceiveMessage(m);
         }
         // end test
+
+        if(nearestInteraction == null)
+        {
+            RemoveInteraction(null);
+        }
+
+        PlayerController ctl = GetComponent<PlayerController>();
+
+        if (ctl.CanClimb)
+            ShowIndicator(false);
+        else
+            HideIndicator(false);
+
+    }
+
+    private void ShowIndicator(bool interaction, string text = "")
+    {
+        UI2DSprite climbSprite = Array.Find(GetComponentsInChildren<UI2DSprite>(), (s) => s.name == "ActionClimb");
+        UI2DSprite actionSprite = Array.Find(GetComponentsInChildren<UI2DSprite>(), (s) => s.name == "ActionBackground");
+        UILabel actiontText = GetComponentInChildren<UILabel>();
+
+        if(interaction)
+        {
+            actionSprite.enabled = true;
+            actiontText.enabled = true;
+            actiontText.text = text;
+        }
+        else
+        {
+            climbSprite.enabled = true;
+        }
+    }
+
+    private void HideIndicator(bool interaction)
+    {
+        UIPanel panel = GetComponentInChildren<UIPanel>();
+        UI2DSprite climbSprite = Array.Find(GetComponentsInChildren<UI2DSprite>(), (s) => s.name == "ActionClimb");
+        UI2DSprite actionSprite = Array.Find(GetComponentsInChildren<UI2DSprite>(), (s) => s.name == "ActionBackground");
+        UILabel actiontText = GetComponentInChildren<UILabel>();
+
+        if(interaction)
+        {
+            actionSprite.enabled = false;
+            actiontText.enabled = false;
+        }
+        else
+        {
+            climbSprite.enabled = false;
+        }
     }
 
     public void ReceiveMessage(Message mess)
@@ -172,11 +222,6 @@ public class Player : MonoBehaviour {
 
     public void SetInteraction(GameElement e)
     {
-        if (interactionLabel == null || interactionPanel == null)
-        {
-            interactionLabel = GetComponentInChildren<UILabel>(true);
-            interactionPanel = GetComponentInChildren<UIPanel>(true);
-        }
 
         Debug.Log("Player notified for interaction");
         if (nearestInteraction == null)
@@ -199,8 +244,7 @@ public class Player : MonoBehaviour {
         nearestInteraction = e;
         if(!string.IsNullOrEmpty(e.InteractText))
         {
-            interactionLabel.text = e.InteractText;
-            interactionPanel.enabled = true;
+            ShowIndicator(true, e.InteractText);
         }
     }
 
@@ -208,7 +252,7 @@ public class Player : MonoBehaviour {
     {
         if (nearestInteraction == e)
             nearestInteraction = null;
-        if(interactionLabel != null)
-            interactionPanel.enabled = false;
+
+        HideIndicator(true);
     }
 }
