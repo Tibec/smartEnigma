@@ -33,11 +33,20 @@ public class Server : MonoBehaviour
 
     private void Update()
     {
-        foreach(Action a in pendingCalls)
-        {
-            a.Invoke();
-        }
+        List<Action> copy = new List<Action>(pendingCalls);
         pendingCalls.Clear();
+
+        foreach (Action a in copy)
+        {
+            try
+            {
+                a.Invoke();
+            }
+            catch(Exception e)
+            {
+                Debug.LogError("An error happened while trying to process the websocket server event queue :" + e.Message);
+            }
+        }
     }
 
     public bool Listen(int port)
