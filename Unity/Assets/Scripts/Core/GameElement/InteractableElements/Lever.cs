@@ -33,8 +33,8 @@ public class Lever : InteractableElement
     {
         if(InteractionAllowed(p))
         {
-            NotifyController(p);
             ChangeState();
+            NotifyController(p);
         }
     }
 
@@ -58,4 +58,17 @@ public class Lever : InteractableElement
     {
         return currentState;
     }
+
+    
+    public void SetState(eLeverState state)
+    {
+        if (state == eLeverState.Middle && DualStateOnly)
+            throw new ArgumentException("Cannot set as Middle a DualState Lever", "state");
+
+        lastState = currentState;
+        currentState = state;
+        tiledata.Map.SetTileData(tiledata.Position, TileId[(int)state]);
+        tiledata.Map.UpdateMesh();
+    }
+
 }

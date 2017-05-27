@@ -4,4 +4,14 @@ using UnityEngine;
 
 public class EnigmaDoor : InteractableElementBehaviour {
 
+
+    public override void OnInteraction(InteractableElement ie, Player p)
+    {
+        
+    }
+
+    void Update()
+    {
+
+    }
 }

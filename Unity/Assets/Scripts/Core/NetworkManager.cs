@@ -34,15 +34,23 @@ public class NetworkManager : MonoBehaviour
         PlayerLimit = 4;
         Status = NetworkStatus.Offline;
         lobby = new List<Connection>();
-
     }
 
     private void UpdateUI()
     {
         if (StatusPointer == null)
-            StatusPointer = GameObject.Find("Label - ServerState").GetComponent<UILabel>();
+        {
+            GameObject go = GameObject.Find("Label - ServerState");
+            if (go != null)
+                StatusPointer = go.GetComponent<UILabel>();
+        }
         if (IPPointer == null)
-            IPPointer = GameObject.Find("Label - HowToJoinURL").GetComponent<UILabel>();
+        {
+            GameObject go = GameObject.Find("Label - HowToJoinURL");
+            if (go != null)
+                IPPointer = go.GetComponent<UILabel>();
+        }
+
         if (StatusPointer != null)
         {
             bool online = Status == NetworkStatus.Online;
