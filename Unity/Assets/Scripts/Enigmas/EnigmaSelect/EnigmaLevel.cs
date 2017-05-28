@@ -8,7 +8,6 @@ public class EnigmaLevel : InteractableElementBehaviour
 {
     [Serializable]
     public class DifficultyData { public Color color; public string name; }
-    public enum eDifficulty { Easy, Normal, Hard }
 
     eDifficulty currentDiff = eDifficulty.Easy;
     UILabel diffText;
@@ -41,6 +40,7 @@ public class EnigmaLevel : InteractableElementBehaviour
 
             //OnDifficultyChanged(currentDiff);
             UpdateText();
+            OnDifficultyChanged(currentDiff);
         }
     }
 

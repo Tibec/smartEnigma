@@ -11,6 +11,11 @@ public class Connection : WebSocketBehavior
 {
     private Server server;
 
+    public Connection()
+    {
+        IgnoreExtensions = true;
+    }
+
     public void SetServer(Server server)
     {
         this.server = server;
