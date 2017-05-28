@@ -694,13 +694,18 @@ function guidGenerator() {
 function waitMsg (){
 
 	socket.addEventListener('message', function (event) {    
-
+		/*
 		var reader = new FileReader();
+		var msgString = event.data;
 		reader.onload = function() {    
 			handleMessage(reader.result);
 		}
 		reader.readAsText(event.data);	
+		*/
+		handleMessage(event.data);
 	});
+	
+	
 }
 
 
