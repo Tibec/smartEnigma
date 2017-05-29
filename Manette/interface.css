@@ -100,9 +100,21 @@ html, body {
 
 }
 
+#ConfigurationScreen  {
+	border: 3px solid white;
+	border-radius: 10px;
+    background-color: #434343;
+	color:white;
+	font-family: Tahoma, serif;
+	font-size: 125%;
+	z-index:50;
+	position:fixed;
+	padding:2%;	
+	overflow: hidden;
 
+}
 
-#MessageScreen button {
+#ConfigurationScreen button {
 	text-align:left;
 	border: 3px solid white;
 	border-radius: 10px;
@@ -117,6 +129,26 @@ html, body {
 	font-size: 125%;
 	word-wrap : break-word;
 	margin-bottom : 5px;
+
+}
+
+
+
+#MessageScreen button {
+	text-align:left;
+	border: 3px solid white;
+	border-radius: 10px;
+	height:30%;
+    background-color: #434343;
+	color:white;
+	
+	min-width : 120px;
+	width: 94%;
+	font-family: Tahoma, serif;
+	
+	font-size: 80%;
+	word-wrap : break-word;
+	margin-bottom : 10%;
 }
 
 #inventoryScreen {
@@ -215,14 +247,25 @@ html, body {
 }
 
 #previous {
-	float : left;
-   text-align: left;
+   float:left;
+   width: 15%; 
+   height: 100%; 
+
 }
 
 #next {
-	float : right;
-   text-align: right;
+   float:left; 
+   width: 15%; 
+   height: 100%; 
 }
+
+#listMessages {
+	float:left; 
+	width: 70%; 
+	height: 100%;
+}
+
+
 
 @media (orientation:landscape) {
 	.btn-space {
@@ -266,8 +309,15 @@ html, body {
 		height: 80%;
 	}
 
+	#ConfigurationScreen {
+		top: 19%;
+		left: 10%;
+		width: 75%;
+		height: 50%;
+	}
+
 	#MessageScreen, #noMessage {
-		top: 30%;
+		top: 19%;
 		left: 10%;
 		width: 75%;
 		height: 50%;
@@ -328,6 +378,13 @@ html, body {
 		left: 5%;
 		width: 84%;
 		height: 90%;
+	}
+
+	#ConfigurationScreen {
+		top: 15%;
+		left: 10%;
+		width: 75%;
+		height: 75%;
 	}
 
 	#MessageScreen, #noMessage {
