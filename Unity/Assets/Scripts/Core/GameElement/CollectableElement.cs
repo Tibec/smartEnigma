@@ -1,15 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class CollectableElement : GameElement {
 
     public int ItemID;
+    private Transform originalParent;
+    private Player owner;
+    private Rigidbody2D body;
+    private SpriteRenderer sprite;
+    private Collider2D[] collision;
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
+        originalParent = transform.parent;
+        body = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        collision = GetComponents<Collider2D>();
     }
 
     // Update is called once per frame
@@ -17,19 +28,22 @@ public class CollectableElement : GameElement {
 
 	}
 
+    private void SetVisibility(bool visible)
+    {
+        body.isKinematic = !visible;
+        sprite.enabled = visible;
+        foreach(Collider2D coll in collision)
+            coll.enabled = visible;
+    }
+
     public override void Interact(Player p)
     {
-        /*
-        if(p.AddInventory(ItemID))
-        {
-            this.enabled = false;
-            this.transform.parent = p.transform;
-        }
-        else
-        {
-            p.SendMessage("Votre inventaire est plein !");
-        }
-        */
+        if (owner != null)
+            throw new AlreadyOwnItemException();
+        transform.parent = p.transform;
+        transform.localPosition = Vector3.zero;
+        owner = p;
+        SetVisibility(false);
     }
 
     virtual public void Use(Player p)
@@ -39,6 +53,10 @@ public class CollectableElement : GameElement {
 
     public void Throw()
     {
-        this.transform.parent = this.GetComponentInParent<Transform>();
+        transform.parent = originalParent;
+        SetVisibility(true);
+        owner = null;
     }
 }
+
+public class AlreadyOwnItemException : Exception { }

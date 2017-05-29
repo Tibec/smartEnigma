@@ -43,7 +43,7 @@ public class InteractableElement : GameElement
         if (controller == null)
             return;
 
-        controller.PlayerEnterTrigger(this, p);
+        controller.ObjectEnterTrigger(this, p);
     }
 
     protected override void PlayerTriggerExit(Player p)
@@ -51,7 +51,22 @@ public class InteractableElement : GameElement
         if (controller == null)
             return;
 
-        controller.PlayerExitTrigger(this, p);
+        controller.ObjectExitTrigger(this, p);
     }
 
+    protected override void GrabbableTriggerEnter(GrabbableElement p)
+    {
+        if (controller == null)
+            return;
+
+        controller.ObjectEnterTrigger(this, p);
+    }
+
+    protected override void GrabbableTriggerExit(GrabbableElement p)
+    {
+        if (controller == null)
+            return;
+
+        controller.ObjectExitTrigger(this, p);
+    }
 }

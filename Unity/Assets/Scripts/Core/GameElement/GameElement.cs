@@ -31,6 +31,7 @@ public class GameElement : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Player player = collision.gameObject.GetComponent<Player>();
+        GrabbableElement ge = collision.gameObject.GetComponent<GrabbableElement>();
         if (player != null)
         {
             PlayerTriggerEnter(player);
@@ -39,15 +40,24 @@ public class GameElement : MonoBehaviour {
                 player.SetInteraction(this);
             }
         }
+        if(ge != null)
+        {
+            GrabbableTriggerEnter(ge);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         Player player = collision.gameObject.GetComponent<Player>();
+        GrabbableElement ge = collision.gameObject.GetComponent<GrabbableElement>();
         if (player != null)
         {
             PlayerTriggerExit(player);
             player.RemoveInteraction(this);
+        }
+        if (ge != null)
+        {
+            GrabbableTriggerExit(ge);
         }
     }
 
@@ -57,6 +67,16 @@ public class GameElement : MonoBehaviour {
     }
 
     protected virtual void PlayerTriggerExit(Player p)
+    {
+
+    }
+
+    protected virtual void GrabbableTriggerEnter(GrabbableElement p)
+    {
+
+    }
+
+    protected virtual void GrabbableTriggerExit(GrabbableElement p)
     {
 
     }

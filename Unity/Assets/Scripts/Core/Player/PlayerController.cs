@@ -477,6 +477,10 @@ public class PlayerController : MonoBehaviour
 
     protected void DoClimbing()
     {
+        Player p = GetComponent<Player>();
+        if (p.CarrySomething)
+            return;
+
         float fHorAxis = 0f;
         float fVerAxis = 0f;
 

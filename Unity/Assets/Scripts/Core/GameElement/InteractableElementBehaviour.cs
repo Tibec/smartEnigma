@@ -13,12 +13,12 @@ public class InteractableElementBehaviour : MonoBehaviour {
         return true;
     }
 
-    public virtual void PlayerEnterTrigger(InteractableElement ie, Player p)
+    public virtual void ObjectEnterTrigger(InteractableElement ie, Object o)
     {
 
     }
 
-    public virtual void PlayerExitTrigger(InteractableElement ie, Player p)
+    public virtual void ObjectExitTrigger(InteractableElement ie, Object o)
     {
 
     }

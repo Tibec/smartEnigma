@@ -18,6 +18,8 @@ public class Player : MonoBehaviour {
     private GrabbableElement grabbedElement;
     private CollectableElement heldElement;
 
+    public bool CarrySomething { get { return grabbedElement != null; } }
+
     // Test things
     [Header("Debug")]
     public bool singleAction;
@@ -49,7 +51,11 @@ public class Player : MonoBehaviour {
             controller.SetActionState(eControllerActions.Up, Input.GetKey(KeyCode.Z));
             if(Input.GetKeyDown(KeyCode.A))
                 Interact();
-
+            if(Input.GetKeyDown(KeyCode.T))
+            {
+                heldElement.Throw();
+                heldElement = null;
+            }
         }
 
         if (singleAction || continousAction)
@@ -85,7 +91,7 @@ public class Player : MonoBehaviour {
 
         PlayerController ctl = GetComponent<PlayerController>();
 
-        if (ctl.CanClimb)
+        if (ctl.CanClimb && !CarrySomething)
             ShowIndicator(false);
         else
             HideIndicator(false);
@@ -186,7 +192,15 @@ public class Player : MonoBehaviour {
                 case Buttons.A:
                     break;
             }
-
+        }
+        else if(mess is ItemThrowMessage)
+        {
+            if(heldElement!=null)
+            {
+                heldElement.Throw();
+                heldElement = null;
+                Socket.SendMessage(new UpdateItemMessage(0));
+            }
         }
     }
 
@@ -208,19 +222,29 @@ public class Player : MonoBehaviour {
         // Next check if an interaction is available
         if (nearestInteraction != null)
         {
-            nearestInteraction.Interact(this);
-            if (nearestInteraction is GrabbableElement)
+            GameElement elem = nearestInteraction;
+            try
             {
-                try
-                {
-                    grabbedElement = nearestInteraction as GrabbableElement;
-                }
-                catch(AlreadyGrabbedException e)
-                { }
+                elem.Interact(this);
             }
-            if (nearestInteraction is CollectableElement)
+            catch(Exception e)
             {
-                heldElement = nearestInteraction as CollectableElement;
+
+            }
+
+            if (elem is GrabbableElement)
+            {
+                grabbedElement = elem as GrabbableElement;
+            }
+            if (elem is CollectableElement)
+            {
+                if (heldElement == null)
+                {
+                    heldElement = elem as CollectableElement;
+                    Socket.SendMessage(new UpdateItemMessage(heldElement.ItemID));
+                }
+                else
+                    (elem as CollectableElement).Throw();
             }
             return;
         }

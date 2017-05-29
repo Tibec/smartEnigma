@@ -32,10 +32,11 @@ public class MenuController : InteractableElementBehaviour
         }
     }
 
-    public override void PlayerEnterTrigger(InteractableElement ie, Player p)
+    public override void ObjectEnterTrigger(InteractableElement ie, Object o)
     {
-        if(ie.GetType() != typeof(Lever))
+        if(ie.GetType() != typeof(Lever) && o is Player)
         {
+            Player p = o as Player;
             mgr.RemovePlayer(p.Username);
         }
     }
