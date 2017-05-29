@@ -8,18 +8,32 @@
   <link rel="stylesheet" href="interface.css" type="text/css">
   </head>
   <body>
-  	
 
+ 
+  		
 
 	<div id="menuScreen"  class="hide">  			
 		<div id="button_close"></div>
-  		<button id="buttonconfiguration"> Configurations </button>  		 
-  		<button id="button_messages"> Messages </button>  	
-  		<div id="MessageScreen" class="hide" >  			
-			<div id="previous"><</div>
-			<div id="next">></div>	
-			<div id="listMessages"></div>				
-  		</div>	  		
+  		<button id="button_configuration"> Configurations </button> 
+  		<button id="button_messages" > Messages </button>  	
+
+  		<div id="ConfigurationScreen" class="hide" >
+  			<button id="button_reconnexion"> Reconnexion </button>  
+		</div> 
+
+		<div id="MessageScreen"  class="hide">    						
+			<div id="previous" >
+				<div style="position: absolute;top: 50%;"><</div> 
+			</div>
+			<div id="listMessages"></div>
+			<div id="next">
+				<div style="position: absolute;top: 50%;">></div> 
+			</div>	
+							
+  		</div>
+
+
+
   		<div id="noMessage" class="hide">Pas de message</div>
   	</div>
 

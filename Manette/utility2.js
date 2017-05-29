@@ -70,6 +70,10 @@ $(document).on("keydown", function(evt) {
 	{
 		pressCloseInventory();
 	}
+	if(evt.key=="r")
+	{
+		pressReconnexion();
+	}
 
 });
 
@@ -95,6 +99,41 @@ $("#button_inventory").on('touchstart', pressInventory);
 $("#button_messages").on('touchstart', pressMenuMessages);
 $("#button_throw").on('touchstart', pressThrow);
 $("#button_closeInventory").on('touchstart', pressCloseInventory);
+$("#button_reconnexion").on('touchstart', pressReconnexion);
+$("#button_configuration").on('touchstart', pressconfiguration);
+
+function pressconfiguration()
+{
+	console.log("button_configuration pressed");   
+	$("#ConfigurationScreen").slideDown();
+}
+
+
+function pressReconnexion()
+{
+	//alert("button_reconnexion pressed"); 
+	//creation d'une nouvelle socket
+    setSocket(new WebSocket(url));
+    socket.onopen = function (event) 
+	{
+		//attente des messages
+		waitMsg();
+
+		//declenchement du listener qui agit en cas de deconnexion au serveur
+		listenerSendMessageWhenDisconnect();        
+
+	    //recuperation de la cle de connexion en cookie
+	    var tempVar=getCookie("smartEnigmaConnexionKey");
+	    //alert ("cle de reconnexion :"+tempVar);
+	    socket.send("101|"+tempVar);
+	    //alert("envoie de 101|"+tempVar);
+	     
+	}
+
+	
+}
+
+
 
 function pressCloseInventory()
 {
@@ -114,10 +153,12 @@ function pressClose() {
     console.log("button_close pressed");       		
     $("#menuScreen").slideUp();
     
-    //timeout de 2s,
-    setTimeout(function(){ 
+    //timeout ,
+    setTimeout(function(){     	
+    	setHidden("ConfigurationScreen");
     	setHidden("noMessage");
-    	sethidden("MessageScreen");
+    	sethidden("MessageScreen");    	
+    	
     }, 500);
         	
 }
@@ -295,18 +336,7 @@ var joystick = new VirtualJoystick({
 		container : document.getElementById("joystick-item"), 
 		strokeStyle	: 'white' 
 	});
-	/*
-	setInterval(function(){
-		var outputEl	= document.getElementById('result');
-		outputEl.innerHTML	= '<b>Result:</b> '
-			+ ' dx:'+joystick.deltaX()
-			+ ' dy:'+joystick.deltaY()
-			+ (joystick.right()	? ' right'	: '')
-			+ (joystick.up()	? ' up'		: '')
-			+ (joystick.left()	? ' left'	: '')
-			+ (joystick.down()	? ' down' 	: '')	
-	}, 1/30 * 1000);	
-	*/
+	
 //listener qui detecte les evenements du joystick
 
 $(joystick._container).on("moved", function(){
@@ -328,35 +358,7 @@ $(joystick._container).on("released", function(){
 	sendMsg ("111", "3");
 
 });
-/*
-joystick.on('end move', function (evt, data) {
 
-            if (evt.type === 'move'){
-
-            	//envoie des nouvelles valeurs au serveur
-            	//envoie de l'angle et de la force
-
-            	var intDegree = Math.round(data.angle.degree);
-            	var intForce = Math.round(data.force);
-
-                console.log("valeur de l'angle : "+intDegree);
-                console.log("valeur de la force : "+intForce);
-                sendMsg ("110", "3;"+intDegree+";"+intForce);
-
-            }
-            else if(evt.type === 'end'){
-                console.log("le joystick a ete lache");
-
-                //previent le serveur que le joystick a ete lache
-                sendMsg ("111", "3");
-
-            }
-
-            return false;
-   
-        });
-*/
-//joystick.off('event', handler);
 
 //no scroll
 
@@ -470,11 +472,13 @@ function updateUrl( newVal)
 function listenerSendMessageWhenDisconnect()
 {
 	socket.onclose = function (e) {
-		console.log("deconnexion du serveur ! ");
+		alert("deconnexion du serveur ! ");
 		
+		/*
 		createReconnexionButton(document.body, function(){
 		    highlight(this.parentNode.childNodes[1]);
 		    });	 
+		*/
 		   
 	}; 
 }
@@ -490,6 +494,7 @@ function updateConnexionKey( newVal)
 		//sauvegarde de la cle de connexion dans un cookie
 		//document.cookie = "smartEnigmaConnexionKey="+newVal; 
 		setCookie("smartEnigmaConnexionKey", newVal, 1);
+		//alert("enregistrement du cookie :"+connexionKey);
 	}
 	
 
@@ -653,11 +658,7 @@ function handleMessage (message) {
 		updateObjectData(idObject,descriptionObject,nameObject);
 		updateIsObjectInInventory(1);
 
-        /*
-			pathImageObject="";
-var nameObject="";
-var descriptionObject="";
-        */
+      
 
         break;
        
@@ -669,10 +670,6 @@ var descriptionObject="";
 }
 
 
-function isInArray(valElement)
-{
-
-}
 
 function remove(id) {
     var elem = document.getElementById(id);
@@ -722,7 +719,7 @@ function setSocket(sock)
     socket=sock;
 }
 
-
+/*
 function createReconnexionButton(context, func)
 {
 	var button = document.createElement("input");
@@ -755,6 +752,7 @@ function createReconnexionButton(context, func)
     };
     context.appendChild(button);
 }
+*/
 
 function connexion()
 {
@@ -817,7 +815,5 @@ else
 	setHidden("connexionScreen");
 	setVisible("interfaceScreen");
 
-}   
-
+}
 });
-
