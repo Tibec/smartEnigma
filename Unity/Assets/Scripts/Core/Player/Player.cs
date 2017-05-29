@@ -15,6 +15,8 @@ public class Player : MonoBehaviour {
     public Color Coloration { get { return sprite.color; } set { sprite.color = value; } }
     private SpriteRenderer sprite;
     private GameElement nearestInteraction;
+    private GrabbableElement grabbedElement;
+    private CollectableElement heldElement;
 
     // Test things
     [Header("Debug")]
@@ -195,9 +197,32 @@ public class Player : MonoBehaviour {
 
     private void Interact()
     {
-        if(nearestInteraction != null)
+        // first check if something is held
+        if(grabbedElement != null)
+        {
+            grabbedElement.Throw();
+            grabbedElement = null;
+            return;
+        }
+
+        // Next check if an interaction is available
+        if (nearestInteraction != null)
         {
             nearestInteraction.Interact(this);
+            if (nearestInteraction is GrabbableElement)
+            {
+                try
+                {
+                    grabbedElement = nearestInteraction as GrabbableElement;
+                }
+                catch(AlreadyGrabbedException e)
+                { }
+            }
+            if (nearestInteraction is CollectableElement)
+            {
+                heldElement = nearestInteraction as CollectableElement;
+            }
+            return;
         }
     }
 

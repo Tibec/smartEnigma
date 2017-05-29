@@ -72,10 +72,22 @@ public class PlayerAnimation : MonoBehaviour
         float absScaleX = Mathf.Abs(transform.localScale.x);
         if (m_platformCtrl.GetActionState(eControllerActions.Left))
         {
+            if (IsSpriteFacingRight)
+            {
+                IsSpriteFacingRight = false;
+                if(OnOrientationChanged != null)
+                    OnOrientationChanged(eControllerActions.Left);
+            }
             m_sprite.flipX = true;
         }
         else if (m_platformCtrl.GetActionState(eControllerActions.Right))
         {
+            if (!IsSpriteFacingRight)
+            {
+                if (OnOrientationChanged != null)
+                    OnOrientationChanged(eControllerActions.Right);
+                IsSpriteFacingRight = true;
+            }
             m_sprite.flipX = false;
         }
 
@@ -99,4 +111,7 @@ public class PlayerAnimation : MonoBehaviour
             m_nextState = m_platformCtrl.PlatformCharacterPhysics.VSpeed > 0f ? ePlayerState.Jump : ePlayerState.Fall;
         }
     }
+
+    public delegate void OrientationChanged(eControllerActions direction);
+    public event OrientationChanged OnOrientationChanged;
 }

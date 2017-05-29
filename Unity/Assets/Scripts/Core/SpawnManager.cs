@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
-    public bool relocated = false;
-    public int frameWaited = 0;
+
 	// Use this for initialization
 	void Awake ()
     {
         int i = 1;
+        if (PlayerMgr.Instance() == null)
+            return; 
         foreach (Player p in PlayerMgr.Instance().Players)
         {
             SmartPlatformCollider collider = p.GetComponent<SmartPlatformCollider>();
@@ -26,15 +27,6 @@ public class SpawnManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
-		if(!relocated /*&& frameWaited > 4*/)
-        {
-            relocated = true;
-
-        }
-        ++frameWaited;
-    }
-
 
     static public Vector3 GetSpawnPoint(int playerID)
     {
