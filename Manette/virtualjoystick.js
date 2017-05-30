@@ -172,8 +172,6 @@ VirtualJoystick.prototype._onUp	= function()
 
 VirtualJoystick.prototype._onDown	= function(x, y)
 {
-	this._container.dispatchEvent(new Event('moved'));
-
 	this._basePosX = this._container.getBoundingClientRect().left - document.body.getBoundingClientRect().left;
 	this._basePosY = this._container.getBoundingClientRect().top - document.body.getBoundingClientRect().top;
 
@@ -209,7 +207,6 @@ VirtualJoystick.prototype._onDown	= function(x, y)
 VirtualJoystick.prototype._onMove	= function(x, y)
 {
 	if( this._pressed === true ){
-		this._container.dispatchEvent(new Event('moved'));
 		this._stickX	= x - this._basePosX;
 		this._stickY	= y - this._basePosY;
 		
@@ -380,6 +377,7 @@ VirtualJoystick.prototype._buildJoystickStick	= function()
 
 VirtualJoystick.prototype._move = function(style, x, y)
 {
+	this._container.dispatchEvent(new Event('moved'));
 	if (this._transform) {
 		if (this._has3d) {
 			style[this._transform] = 'translate3d(' + x + 'px,' + y + 'px, 0)';
