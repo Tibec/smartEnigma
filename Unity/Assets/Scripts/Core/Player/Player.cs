@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
     public string Key { get; set; }
     public Color Coloration { get { return sprite.color; } set { sprite.color = value; } }
     private SpriteRenderer sprite;
+    private List<GameElement> availableInteraction;
     private GameElement nearestInteraction;
     private GrabbableElement grabbedElement;
     private CollectableElement heldElement;
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour {
     void Start () {
         sprite = GetComponent<SpriteRenderer>();
         controller = GetComponent<PlayerController>();
+        availableInteraction = new List<GameElement>();
     }
 
     private void Update()
@@ -96,6 +98,22 @@ public class Player : MonoBehaviour {
         else
             HideIndicator(false);
 
+        UpdateNearestInteraction();
+    }
+
+    private void UpdateNearestInteraction()
+    {
+        if (availableInteraction.Count == 0)
+            return;
+
+        GameElement nearest = availableInteraction[0];
+
+        for(int i=1; i<availableInteraction.Count; ++i)
+        {
+            if (Vector3.Distance(nearest.transform.position, transform.position) > Vector3.Distance(availableInteraction[i].transform.position, transform.position))
+                nearest = availableInteraction[i];
+        }
+        SetNearestInteraction(nearest);
     }
 
     private void ShowIndicator(bool interaction, string text = "")
@@ -271,15 +289,8 @@ public class Player : MonoBehaviour {
 
     public void SetInteraction(GameElement e)
     {
-
-        Debug.Log("Player notified for interaction");
-        if (nearestInteraction == null)
-            SetNearestInteraction(e);
-        else
-        {
-            if (Vector3.Distance(e.transform.position, transform.position) < Vector3.Distance(e.transform.position, transform.position))
-                SetNearestInteraction(e);
-        }
+        Debug.Log("Player "+Username+" got notified for interaction");
+        availableInteraction.Add(e);
     }
 
     public void Disconnect()
@@ -299,8 +310,7 @@ public class Player : MonoBehaviour {
 
     public void RemoveInteraction(GameElement e)
     {
-        if (nearestInteraction == e)
-            nearestInteraction = null;
+        availableInteraction.Remove(e);
 
         HideIndicator(true);
     }

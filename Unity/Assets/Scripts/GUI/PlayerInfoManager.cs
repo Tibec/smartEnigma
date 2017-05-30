@@ -9,10 +9,10 @@ public class PlayerInfoManager : MonoBehaviour {
     // Use this for initialization
     void Start() {
         playersGO = new List<GameObject>(4);
-        playersGO.Add(transform.FindChild("Player1").gameObject);
-        playersGO.Add(transform.FindChild("Player2").gameObject);
-        playersGO.Add(transform.FindChild("Player3").gameObject);
-        playersGO.Add(transform.FindChild("Player4").gameObject);
+        playersGO.Add(transform.FindChild("Layout1/Player1").gameObject);
+        playersGO.Add(transform.FindChild("Layout1/Player2").gameObject);
+        playersGO.Add(transform.FindChild("Layout2/Player3").gameObject);
+        playersGO.Add(transform.FindChild("Layout2/Player4").gameObject);
     }
 
     // Update is called once per frame

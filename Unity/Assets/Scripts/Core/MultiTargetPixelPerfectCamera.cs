@@ -65,6 +65,7 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
     {
         Vector3 destination = FollowIndividual ? GameObject.Find("PlayerEntity").transform.position : ComputePlayerMiddle();
         destination.z = transform.position.z;
+        destination.y -= 5;
         if (destination == lastPlayerPos)
             return;
         lastPlayerPos = destination;

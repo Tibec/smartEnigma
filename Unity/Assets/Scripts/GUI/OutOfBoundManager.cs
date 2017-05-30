@@ -54,7 +54,8 @@ public class OutOfBoundManager : MonoBehaviour {
 
                 if(outofbound)
                 { 
-                    Vector3 point = (pp.transform.position - playersGO[i].transform.position);
+                    // add vector3.up because player's origin is at their foot
+                    Vector3 point = (pp.transform.position + Vector3.up - playersGO[i].transform.position);
                     float angle = (Mathf.Atan2(point.y, point.x) * 180 / Mathf.PI) % 360 + 90;
                     UI2DSprite arrow = playersGO[i].transform.FindChild("Arrow").GetComponent<UI2DSprite>();
                     Camera uiCam = PlayerMgr.Instance().GetComponentInChildren<Camera>();
