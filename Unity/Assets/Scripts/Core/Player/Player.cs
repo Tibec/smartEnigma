@@ -113,7 +113,8 @@ public class Player : MonoBehaviour {
             if (Vector3.Distance(nearest.transform.position, transform.position) > Vector3.Distance(availableInteraction[i].transform.position, transform.position))
                 nearest = availableInteraction[i];
         }
-        SetNearestInteraction(nearest);
+        if(!CarrySomething)
+            SetNearestInteraction(nearest);
     }
 
     private void ShowIndicator(bool interaction, string text = "")
@@ -253,6 +254,7 @@ public class Player : MonoBehaviour {
             if (elem is GrabbableElement)
             {
                 grabbedElement = elem as GrabbableElement;
+                HideIndicator(true);
             }
             if (elem is CollectableElement)
             {

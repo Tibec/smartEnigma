@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OutOfBoundManager : MonoBehaviour {
 
     List<GameObject> playersGO;
-
+    MultiTargetPixelPerfectCamera camMgr;
     // Use this for initialization
     void Start() {
         playersGO = new List<GameObject>(4);
@@ -13,6 +14,19 @@ public class OutOfBoundManager : MonoBehaviour {
         playersGO.Add(transform.FindChild("Player2").gameObject);
         playersGO.Add(transform.FindChild("Player3").gameObject);
         playersGO.Add(transform.FindChild("Player4").gameObject);
+
+        SceneManager.activeSceneChanged += OnSceneChanged;
+    }
+
+    private void Awake()
+    {
+        camMgr = FindObjectOfType<MultiTargetPixelPerfectCamera>();
+    }
+
+    private void OnSceneChanged(Scene previous, Scene next)
+    {
+        Awake();
+        
     }
 
     // Update is called once per frame
@@ -27,7 +41,6 @@ public class OutOfBoundManager : MonoBehaviour {
             else
             {
                 Player pp = p[i];
-                MultiTargetPixelPerfectCamera camMgr = FindObjectOfType<MultiTargetPixelPerfectCamera>();
                 Camera cam = camMgr.GetComponent<Camera>();
                 bool outofbound = false;
                 Vector3 pos = cam.WorldToViewportPoint(pp.transform.position);

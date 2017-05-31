@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SnapMode { Pixel, Screen}
+
 [RequireComponent(typeof(Camera))]
 public class MultiTargetPixelPerfectCamera : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
     public class ZoomAdapt { public float zoom; public int minWidth; public int maxWidth; }
 
     public bool FollowIndividual = false;
-
+    public SnapMode SnapMode = SnapMode.Pixel;
     private float Zoom = 1f;
     public List<ZoomAdapt> Zooms = new List<ZoomAdapt>();
 
@@ -65,12 +67,12 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
     {
         Vector3 destination = FollowIndividual ? GameObject.Find("PlayerEntity").transform.position : ComputePlayerMiddle();
         destination.z = transform.position.z;
-        destination.y -= 5;
+        //destination.y -= 5;
         if (destination == lastPlayerPos)
             return;
         lastPlayerPos = destination;
-      //  if(!InsignifiantMove(transform.position, destination))
-        transform.position = RoundCameraPosition(Vector3.SmoothDamp(transform.position, destination, ref velocity, DampTime));
+        if(!InsignifiantMove(transform.position, destination))
+            transform.position = RoundToScreenPixelGrid(Vector3.SmoothDamp(transform.position, destination, ref velocity, DampTime));
     }
 
     bool InsignifiantMove(Vector3 origin, Vector3 destination)
@@ -78,12 +80,25 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
         return Vector3.Distance(origin, destination) <= DampDelta;
     }
 
-    Vector3 RoundCameraPosition(Vector3 cam)
+
+    //Snapping function 1, snaps Camera to Screen Pixels
+    public Vector3 RoundToScreenPixelGrid(Vector3 worldPos)
     {
-        Vector3 pos = cam;
-        pos.x = Mathf.RoundToInt(pos.x * 100) / 100f;
-        pos.y = Mathf.RoundToInt(pos.y * 100) / 100f;
-        return pos;
+        float subPixelFactor = 2;    //1 means 1ArtPixel = 1 ScreenPixel, 2 means 1 Art = 2x2 Screen  
+        if (SnapMode == SnapMode.Pixel)
+        {
+            float snapArt = 1F / PixelToUnits / subPixelFactor;
+            return new Vector3(Mathf.Round(worldPos.x / snapArt) * snapArt,
+                                Mathf.Round(worldPos.y / snapArt) * snapArt,
+                                Mathf.Round(worldPos.z / snapArt) * snapArt);
+        }
+        else
+        {
+            float snapArt = 1F / PixelToUnits * subPixelFactor;
+            return new Vector3(Mathf.Round(worldPos.x / snapArt) * snapArt,
+                                Mathf.Round(worldPos.y / snapArt) * snapArt,
+                                Mathf.Round(worldPos.z / snapArt) * snapArt);
+        }
     }
 
     private Vector3 ComputePlayerMiddle()
@@ -174,7 +189,7 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
         vCamPos += vOffset;
         if (rCamera.width >= Mathf.Abs(BoundingBox.width)) vCamPos.x = BoundingBox.center.x;
         if (rCamera.height >= Mathf.Abs(BoundingBox.height)) vCamPos.y = BoundingBox.center.y;
-        //if(!InsignifiantMove(Camera.transform.position, vCamPos))
-        Camera.transform.position = RoundCameraPosition(vCamPos);
+        if(!InsignifiantMove(Camera.transform.position, vCamPos))
+            Camera.transform.position = RoundToScreenPixelGrid(vCamPos);
     }
 }

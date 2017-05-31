@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInfoManager : MonoBehaviour {
 
     List<GameObject> playersGO;
-
+    List<UILabel> playersLabel;
     // Use this for initialization
     void Start() {
         playersGO = new List<GameObject>(4);
@@ -13,6 +13,12 @@ public class PlayerInfoManager : MonoBehaviour {
         playersGO.Add(transform.FindChild("Layout1/Player2").gameObject);
         playersGO.Add(transform.FindChild("Layout2/Player3").gameObject);
         playersGO.Add(transform.FindChild("Layout2/Player4").gameObject);
+
+        playersLabel = new List<UILabel>();
+        playersLabel.Add(null);
+        playersLabel.Add(null);
+        playersLabel.Add(null);
+        playersLabel.Add(null);
     }
 
     // Update is called once per frame
@@ -28,7 +34,9 @@ public class PlayerInfoManager : MonoBehaviour {
             {
                 Player pp = p[i];
                 playersGO[i].SetActive(true);
-                UILabel pname = playersGO[i].GetComponentInChildren<UILabel>();
+                if(playersLabel[i] == null)
+                    playersLabel[i] = playersGO[i].GetComponentInChildren<UILabel>();
+                UILabel pname = playersLabel[i];
                 pname.text = pp.Username;
             }
 
