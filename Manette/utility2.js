@@ -78,6 +78,10 @@ $(document).on("keydown", function(evt) {
 	{
 		pressThrow();
 	}
+	if(evt.key=="w")
+	{
+		pressCloseSocket();
+	}
 
 });
 
@@ -97,7 +101,6 @@ $(document).on("keyup", function(evt) {
 });
 
 $("#button_close").on('touchstart', pressClose);
-
 $("#button_menu").on('touchstart', pressMenu);
 $("#button_inventory").on('touchstart', pressInventory);
 $("#button_messages").on('touchstart', pressMenuMessages);
@@ -105,6 +108,17 @@ $("#button_throw").on('touchstart', pressThrow);
 $("#button_closeInventory").on('touchstart', pressCloseInventory);
 $("#button_reconnexion").on('touchstart', pressReconnexion);
 $("#button_configuration").on('touchstart', pressconfiguration);
+$("#button_closeSocket").on('touchstart', pressCloseSocket);
+
+function pressCloseSocket()
+{
+	console.log("button_closeSocket pressed"); 
+	//socket detruite, lorsque la page est recharge
+	document.location.href="index.html";
+
+
+}
+
 
 function pressconfiguration()
 {
@@ -734,52 +748,20 @@ function setSocket(sock)
     socket=sock;
 }
 
-/*
-function createReconnexionButton(context, func)
-{
-	var button = document.createElement("input");
-    button.type = "button";
-    button.value = "reconnexion";
-    button.onclick = function(){
-
-    	//creation d'une nouvelle socket
-    	setSocket(new WebSocket(url));
-    	socket.onopen = function (event) 
-		{
-			createButton(document.body, function(){
-		    highlight(this.parentNode.childNodes[1]);
-		    });
-
-		
-		//attente des messages
-		waitMsg();
-
-		//declenchement du listener qui agit en cas de deconnexion au serveur
-		listenerSendMessageWhenDisconnect();        
-
-        //recuperation de la cle de connexion en cookie
-        var tempVar=getCookie("smartEnigmaConnexionKey");
-        socket.send("101|"+tempVar);
-
-		console.log("RECONNECTED");   
-		 
-		}     	 
-    };
-    context.appendChild(button);
-}
-*/
 
 function connexion()
 {
 	$("#connect").click(function(event)
 	{
 
-		console.log($("#url").val());
+		//console.log($("#url").val());
 
-		var urlGiven = "ws://"+$("#url").val();
+		//var urlGiven = "ws://"+$("#url").val();
+		var urlGiven = "ws://"+document.getElementById("url").value;
 		updateUrl(urlGiven);
 
-		var name=$("#name").val();        
+		//var name=$("#name").val();  
+		var name = document.getElementById("name").value;      
         
         //creation de la socket
         setSocket(new WebSocket(urlGiven));

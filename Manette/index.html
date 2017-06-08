@@ -6,6 +6,7 @@
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <title>SmartEnigma - Manette</title>
   <link rel="stylesheet" href="interface.css" type="text/css">
+  <link rel="stylesheet" href="index.css" type="text/css">
   </head>
   <body>
 
@@ -18,7 +19,8 @@
   		<button id="button_messages" > Messages </button>  	
 
   		<div id="ConfigurationScreen" class="hide" >
-  			<button id="button_reconnexion"> Reconnexion </button>  
+  			<button id="button_reconnexion"> Reconnexion </button>
+  			<button id="button_closeSocket"> Quitter la partie </button>    
 		</div> 
 
 		<div id="MessageScreen"  class="hide">    						
@@ -76,14 +78,27 @@
 		</div>
 	</div>  
 
+<!--
 	<div id="connexionScreen">
 			Connexion mode  
-            <!-- l'ecran de connexion peut apparaitre en format portrait et paysage -->
+           
             IP :<input type="text" id="url" /><br>
             <br>
             Nom du joueur : <input type="text" id="name" /><br>
             <button id="connect">Connect</button>
 	</div>
+	-->
+<div id="connexionScreen">
+	<section class="login">
+		<div class="titulo">SmartEnigma</div>
+		<form  method="post" enctype="application/x-www-form-urlencoded">
+	    	<input type="text" id="url" required title="IP du serveur requise" placeholder="IP du serveur" data-icon="U">
+	        <input type="text" id="name" required title="Nom du joueur requis" placeholder="Nom du joueur" data-icon="x">
+	       
+	        <a href="#" id="connect" class="enviar">Go</a>
+	    </form>
+	</section>
+</div>
 	
 	
 	
