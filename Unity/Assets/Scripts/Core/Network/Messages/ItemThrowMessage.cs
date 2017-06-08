@@ -7,7 +7,7 @@ public class ItemThrowMessage : Message
 
     public ItemThrowMessage()
     {
-        Id = 100;
+        Id = 120;
     }
 
     public override void Deserialize(string data)
