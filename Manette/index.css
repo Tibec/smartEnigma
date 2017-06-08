@@ -5,7 +5,7 @@
     width: 300px;
     height: 285px;
     overflow: hidden;
-    background: #1e1e1e;
+    background: #363636;
     border-radius: 6px;
     margin: 50px auto;
     box-shadow: 0px 0px 50px rgba(0,0,0,.8);
@@ -18,7 +18,7 @@
     padding-bottom: 13px;
     font-size: 14px;
     text-align: center;
-    color: #bfbfbf;
+    color: #e8e8e8;
     font-weight: bold;
     background: #121212;
     border: #2d2d2d solid 1px;
