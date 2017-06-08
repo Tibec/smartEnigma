@@ -266,6 +266,7 @@ public class Player : MonoBehaviour {
                 else
                     (elem as CollectableElement).Throw();
             }
+            nearestInteraction = null;
             return;
         }
     }
