@@ -74,6 +74,10 @@ $(document).on("keydown", function(evt) {
 	{
 		pressReconnexion();
 	}
+	if(evt.key=="t")
+	{
+		pressThrow();
+	}
 
 });
 
@@ -147,6 +151,10 @@ function pressThrow(){
 	updateIsObjectInInventory(0);
 
     sendMsg ("120", "");
+
+    //l'item est jete de l'inventaire, inventaire est vide
+    $("#inventoryScreen").slideUp();
+
 }
 
 function pressClose() {
@@ -176,6 +184,7 @@ function pressInventory() {
 
     if(isObjectInInventory)
     {
+    	console.log("affichage inventaire non vide. valeur de isObjectInInventory : "+isObjectInInventory);
     	setVisible("objectScreen");
     	setHidden("noObjectScreen");
 
@@ -190,18 +199,12 @@ function pressInventory() {
 	    //image
 	    var img = document.createElement("IMG");
 	    //img.src = "images/gold.png";
-	    img.src = pathImageObject;
+	    img.src = pathImageObject+"";
 	    img.setAttribute("width","100");
 	    img.setAttribute("height","100");
 	    document.getElementById('imageObject').appendChild(img);
 	   
-	    /*
-pathImageObject="";
-var nameObject="";
-var descriptionObject="";
-	    */
-
-
+	
 	   //nom
 	   //$("#NameObject").text('gold');
 	   $("#NameObject").text( nameObject);
@@ -213,6 +216,8 @@ var descriptionObject="";
     }
     else
     {
+    	setVisible("noObjectScreen");
+    	setHidden("objectScreen");
 
     }
 
@@ -388,10 +393,10 @@ window.addEventListener("load",function() {
 
 //////  FONCTIONS ///////////////////////
 
-function updateObjectData(path,name,description)
+function updateObjectData(idObject,name,description)
 {
 
-	pathImageObject=path;
+	pathImageObject="images/items/"+idObject+".png";
 	nameObject=name;
 	descriptionObject=description;
 }
@@ -399,7 +404,7 @@ function updateObjectData(path,name,description)
 //met a jour isObjectInInventory (1: il y a un objet dans l'inventaire)
 function updateIsObjectInInventory(newVal)
 {
-	isObjectInInventory=newval;
+	isObjectInInventory=newVal;
 }
 
 //met a jour showConnexionScreen (1 : ecran doit s'afficher. 0 : ecran ne doit pas s'afficher)
@@ -645,18 +650,28 @@ function handleMessage (message) {
 
 		var matchObject = regexObject.exec(messageContent);
 	
-		//images/gold.png";
 		var idObject = matchObject[1];
-		var descriptionObject = "images/"+matchObject[2]+".png";
+		var descriptionObject = matchObject[2];
 		var nameObject = matchObject[3];
 
 		console.log("idobject : "+ idObject);
 		console.log("descriptionObject : "+ descriptionObject);
 		console.log("nameObject : "+ nameObject);
 
-
-		updateObjectData(idObject,descriptionObject,nameObject);
-		updateIsObjectInInventory(1);
+		if(idObject == 0)
+		{
+			//plus d'objet dans l'inventaire
+			updateIsObjectInInventory(0);
+		}
+		else
+		{
+			//ajout d'un objet dans l'inventaire
+			
+			updateObjectData(idObject,nameObject,descriptionObject);
+			updateIsObjectInInventory(1);
+		}
+		
+		
 
       
 

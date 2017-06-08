@@ -12,7 +12,9 @@ public class SceneLoader : MonoBehaviour {
 
     private void Awake()
     {
-        SceneManager.LoadScene(1);
+		if (!runInEditMode) {
+			//SceneManager.LoadScene (1);
+		}
     }
     // Update is called once per frame
     void Update () {
