@@ -218,7 +218,7 @@ public class Player : MonoBehaviour {
             {
                 heldElement.Throw();
                 heldElement = null;
-                Socket.SendMessage(new UpdateItemMessage(0));
+                Socket.SendMessage(new UpdateItemMessage(0, "", ""));
             }
         }
     }
@@ -261,7 +261,7 @@ public class Player : MonoBehaviour {
                 if (heldElement == null)
                 {
                     heldElement = elem as CollectableElement;
-                    Socket.SendMessage(new UpdateItemMessage(heldElement.ItemID));
+                    Socket.SendMessage(new UpdateItemMessage(heldElement.ItemID, heldElement.ItemDescription, heldElement.ItemName));
                 }
                 else
                     (elem as CollectableElement).Throw();

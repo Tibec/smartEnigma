@@ -7,6 +7,8 @@ using UnityEngine;
 public class CollectableElement : GameElement {
 
     public int ItemID;
+    public string ItemName;
+    public string ItemDescription;
     private Transform originalParent;
     private Player owner;
     private Rigidbody2D body;
