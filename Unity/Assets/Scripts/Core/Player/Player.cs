@@ -228,6 +228,16 @@ public class Player : MonoBehaviour {
         Socket.SendMessage(new GameTipSentMessage(origin, content));
     }
 
+	public void ReleaseGrabbedElement()
+	{
+		if(grabbedElement != null)
+		{
+			grabbedElement.Release();
+			grabbedElement = null;
+			return;
+		}
+	}
+
     private void Interact()
     {
         // first check if something is held

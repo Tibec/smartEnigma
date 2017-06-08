@@ -69,6 +69,15 @@ public class GrabbableElement : GameElement
         owner = null;
     }
 
+	public void Release()
+	{
+		PlayerAnimation pa = owner.GetComponent<PlayerAnimation>();
+		pa.OnOrientationChanged -= FlipTransform;
+		body.isKinematic = false;
+		transform.parent = originalParent;
+		owner = null;
+	}
+
     private Vector2 ComputeLaunchVector()
     {
         Vector2 v;
