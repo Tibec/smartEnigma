@@ -31,11 +31,8 @@ public class Lever : InteractableElement
 
     public override void Interact(Player p)
     {
-        if(InteractionAllowed(p))
-        {
-            ChangeState();
-            NotifyController(p);
-        }
+        ChangeState();
+        NotifyController(p);
     }
 
     private void ChangeState()

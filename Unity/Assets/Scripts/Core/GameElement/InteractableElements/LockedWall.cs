@@ -12,6 +12,9 @@ public class LockedWall : InteractableElement
     private eWallState currentState;
     private TileData tiledata;
     public List<Vector2> LinkedTiles = new List<Vector2>();
+    private bool deleteWall = false;
+    public int despawnSpeed = 10; // frame
+    private int counter = 0;
 
     // Use this for initialization
     protected override void Start()
@@ -25,7 +28,24 @@ public class LockedWall : InteractableElement
     // Update is called once per frame
     void Update()
     {
-
+        if (deleteWall && counter <= 0)
+        {
+            if (LinkedTiles.Count == 0)
+            {
+                tiledata.Map.Erase(tiledata.Position);
+                deleteWall = false;
+            }
+            else
+            {
+                int target = UnityEngine.Random.Range(0, LinkedTiles.Count);
+                Vector2 pos = LinkedTiles[target];
+                tiledata.Map.Erase(pos);
+                LinkedTiles.RemoveAt(target);
+                counter = despawnSpeed;
+            }
+            tiledata.Map.UpdateMesh();
+        }
+        --counter;
     }
 
     public override void Interact(Player p)
@@ -33,23 +53,20 @@ public class LockedWall : InteractableElement
         if (currentState == eWallState.Open)
             return;
 
-        if (InteractionAllowed(p))
+        if(controller != null)
         {
-            ChangeState();
-            NotifyController(p);
+            controller.OnInteraction(this, p);
         }
     }
 
-    private void ChangeState()
+    public void Open()
     {
         if (currentState == eWallState.Closed)
         {
             currentState = eWallState.Open;
         }
 
-        // TODO:
-        //tiledata.Map.SetTileData(tiledata.Position, TileId[(int)currentState]);
-        tiledata.Map.UpdateMesh();
+        deleteWall = true;        
     }
 
     public eWallState CurrentState()

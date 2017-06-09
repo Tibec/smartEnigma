@@ -14,13 +14,6 @@ public class MenuController : InteractableElementBehaviour
         Assert.IsNotNull(mgr, "Cannot found PlayerMgr !");    
     }
 
-    public override bool CanInteract(InteractableElement ie, Player p)
-    {
-       // if (mgr.Players.Count < 2 && ie.GetType() == typeof(Lever))
-       //     return false;
-        return true;
-    }
-
     public override void OnInteraction(InteractableElement ie, Player p)
     {
         if(ie.GetType() == typeof(Lever))

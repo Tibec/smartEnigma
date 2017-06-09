@@ -8,11 +8,6 @@ public class InteractableElementBehaviour : MonoBehaviour {
 
     }
 
-    public virtual bool CanInteract(InteractableElement ie, Player p)
-    {
-        return true;
-    }
-
     public virtual void ObjectEnterTrigger(InteractableElement ie, Object o)
     {
 		

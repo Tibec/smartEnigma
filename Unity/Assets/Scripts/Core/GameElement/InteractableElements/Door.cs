@@ -24,10 +24,7 @@ public class Door : InteractableElement {
 
     public override void Interact(Player p)
     {
-        if (InteractionAllowed(p))
-        {
-            NotifyController(p);
-        }
+        NotifyController(p);
     }
 
 }

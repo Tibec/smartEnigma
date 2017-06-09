@@ -30,14 +30,6 @@ public class InteractableElement : GameElement
         controller.OnInteraction(this, p);
     }
 
-    protected bool InteractionAllowed(Player p)
-    {
-        if (controller == null)
-            return true;
-
-        return controller.CanInteract(this, p);
-    }
-
     protected override void PlayerTriggerEnter(Player p)
     {
         if (controller == null)
