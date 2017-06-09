@@ -16,8 +16,8 @@ public class CrateRespawn : InteractableElementBehaviour {
 
 	public override void ObjectEnterTrigger (InteractableElement ie, Object o)
 	{
-		if (o is Crate) {
-			Crate c = o as Crate;
+		if (o is InteractableElement) {
+            InteractableElement c = o as InteractableElement;
 			Player p = c.GetComponentInParent<Player> ();
 			if (p != null) {
 				p.ReleaseGrabbedElement ();

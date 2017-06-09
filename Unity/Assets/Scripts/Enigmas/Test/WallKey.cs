@@ -9,7 +9,11 @@ public class WallKey : InteractableElementBehaviour {
         if(ie is LockedWall)
         {
             LockedWall w = ie as LockedWall;
-            w.Open();
+            if (p.HeldElement.ItemID == 1)
+            {
+                //Destroy(p.HeldElement.gameObject);
+                w.Open();
+            }
         }
     }
 }

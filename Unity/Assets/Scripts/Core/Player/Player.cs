@@ -19,6 +19,8 @@ public class Player : MonoBehaviour {
     private GrabbableElement grabbedElement;
     private CollectableElement heldElement;
 
+    public CollectableElement HeldElement { get { return heldElement; } }
+
     public bool CarrySomething { get { return grabbedElement != null; } }
 
     // Test things
