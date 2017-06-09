@@ -2,8 +2,13 @@
 
 
 .login {
-    width: 300px;
-    height: 285px;
+    position:absolute;
+    top:2%;
+    bottom: 2%;
+    left:5%;
+    right: 5%;
+    width: auto;
+    height: auto;
     overflow: hidden;
     background: #363636;
     border-radius: 6px;
@@ -12,7 +17,7 @@
 }
 
 .login .titulo {
-    width: 298px;
+    width: 100%;
     height: 14px;
     padding-top: 13px;
     padding-bottom: 13px;
@@ -29,6 +34,7 @@
 }
 
 .login form {
+    text-align: center;
     width: 240px;
     height: auto;
     overflow: hidden;
@@ -37,30 +43,20 @@
 }
 
 .login form input[type=text], .login form input[type=password] {
-    width: 200px;
+    width: 190px;
     font-size: 12px;
     padding-top: 14px;
     padding-bottom: 14px;
     padding-left: 40px;
-    border: none;
+    border: 2px solid white;
     color: #bfbfbf;
-    background: #141414;
+    background: #363636;
     outline: none;
-    margin: 0;
+    margin-bottom: 2px;
 }
 
 .login form input[type=text] {
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-top: #0b0b0b solid 1px;
-    
-}
-
-.login form input[type=password] {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    border-top: #0b0b0b 1px solid;
-    border-bottom: #353535 1px solid;
+    border-radius: 6px;
     
 }
 
