@@ -25,7 +25,12 @@ public class EnigmaDoor : InteractableElementBehaviour {
             toLoad = 2;
 
         if (loader.VisibleEnigmas[0] != null)
-            SceneManager.LoadScene(loader.VisibleEnigmas[toLoad].Scene);
+        {
+            SceneLoader scene = FindObjectOfType<SceneLoader>();
+            Assert.IsNotNull(scene, "Cannot found SceneLoader !");
+
+            scene.LoadScene(loader.VisibleEnigmas[toLoad].Scene);
+        }
         else
             Debug.LogError("Cannot open door " + (toLoad + 1) + " because theres no engima behind");
 

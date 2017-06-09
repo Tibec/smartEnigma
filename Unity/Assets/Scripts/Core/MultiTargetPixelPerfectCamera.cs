@@ -9,20 +9,17 @@ public enum SnapMode { Pixel, Screen}
 public class MultiTargetPixelPerfectCamera : MonoBehaviour
 {
     public Camera Camera { get; private set; }
-   
-    [Serializable]
-    public class ZoomAdapt { public float zoom; public int minWidth; public int maxWidth; }
 
     public bool FollowIndividual = false;
     public SnapMode SnapMode = SnapMode.Pixel;
     private float Zoom = 1f;
-    public List<ZoomAdapt> Zooms = new List<ZoomAdapt>();
-
 
     public float PixelToUnits = 100f;
     public bool PixelPerfectEnabled = true;
 
-    public Rect BoundingBox;
+    public Vector2 LowerCameraCorner;
+    public Vector2 UpperCameraCorner;
+    private Rect BoundingBox;
     public bool KeepInsideBoundingBox = false;
 
     public float DampTime = 0.15f;
@@ -35,13 +32,17 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
     void Start()
     {
         Camera = GetComponent<Camera>();
+
+        BoundingBox.Set(LowerCameraCorner.x, LowerCameraCorner.y,
+            UpperCameraCorner.x - LowerCameraCorner.x,
+            UpperCameraCorner.y - LowerCameraCorner.y);
     }
 
     void LateUpdate()
     {
         if (Camera != null)
         {
-            UpdateZoom();
+            UpdateZoomData();
 
             if (KeepInsideBoundingBox)
             {
@@ -51,16 +52,9 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
         }
     }
 
-    private void UpdateZoom()
+    private void UpdateZoomData()
     {
-        foreach( ZoomAdapt za in Zooms)
-        {
-            if (Screen.width >= za.minWidth && Screen.width <= za.maxWidth)
-            {
-                Zoom = za.zoom;
-            }
-
-        }
+        
     }
 
     void UpdatePosition()
@@ -121,52 +115,6 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
         }
 
         return middle;
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (!Application.isPlaying)
-        {
-            if (Camera == null) Camera = GetComponent<Camera>();
-            OnPreCull();
-        }
-    }
-
-    Vector3 m_vCamRealPos;
-    void OnPreCull()
-    {
-        if (Camera != null)
-        {
-            if (KeepInsideBoundingBox)
-            {
-                DoKeepInsideBounds();
-            }
-
-            //Note: ViewCamera.orthographicSize is not a real zoom based on pixels. This is the formula to calculate the real zoom.
-            Camera.orthographicSize = (Camera.pixelRect.height) / (2f * Zoom * PixelToUnits);
-
-            m_vCamRealPos = Camera.transform.position;
-
-            if (PixelPerfectEnabled)
-            {
-                Vector3 vPos = Camera.transform.position;
-                float mod = (1f / (Zoom * PixelToUnits));
-                float modX = vPos.x > 0 ? vPos.x % mod : -vPos.x % mod;
-                float modY = vPos.y > 0 ? vPos.y % mod : -vPos.y % mod;
-                vPos.x -= modX;
-                vPos.y -= modY;
-
-                Camera.transform.position = vPos;
-            }
-        }
-    }
-
-    void OnPostRender()
-    {
-        if (Camera != null)
-        {
-            Camera.transform.position = m_vCamRealPos;
-        }
     }
 
     void DoKeepInsideBounds()

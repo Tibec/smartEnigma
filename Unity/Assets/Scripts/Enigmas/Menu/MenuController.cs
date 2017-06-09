@@ -7,11 +7,13 @@ using UnityEngine.SceneManagement;
 public class MenuController : InteractableElementBehaviour
 {
     private PlayerMgr mgr;
-
-    public void Start()
+    private SceneLoader loader;
+    public void Awake()
     {
         mgr = FindObjectOfType<PlayerMgr>();
-        Assert.IsNotNull(mgr, "Cannot found PlayerMgr !");    
+        Assert.IsNotNull(mgr, "Cannot found PlayerMgr !");  
+        loader = FindObjectOfType<SceneLoader>();
+        Assert.IsNotNull(loader, "Cannot found SceneLoader !");
     }
 
     public override void OnInteraction(InteractableElement ie, Player p)
@@ -19,9 +21,9 @@ public class MenuController : InteractableElementBehaviour
         if(ie.GetType() == typeof(Lever))
         {
             if (ie.name == "LeverStart")
-                SceneManager.LoadScene("Scene/EnigmaSelect", LoadSceneMode.Single);
+                loader.LoadScene("Scene/EnigmaSelect");
             if (ie.name == "LeverTest")
-                SceneManager.LoadScene("Scene/Test", LoadSceneMode.Single);
+                loader.LoadScene("Scene/Test");
         }
     }
 

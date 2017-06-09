@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
     public string Username { get; set; }
     public bool Connected { get; set; }
     public string Key { get; set; }
+
     public Color Coloration { get { return sprite.color; } set { sprite.color = value; } }
     private SpriteRenderer sprite;
     private List<GameElement> availableInteraction;
@@ -239,6 +240,17 @@ public class Player : MonoBehaviour {
 			return;
 		}
 	}
+
+    public void DeleteHeldItem()
+    {
+        if (grabbedElement != null)
+        {
+            grabbedElement.Release();
+            Destroy(grabbedElement.gameObject);
+            grabbedElement = null;
+            return;
+        }
+    }
 
     private void Interact()
     {

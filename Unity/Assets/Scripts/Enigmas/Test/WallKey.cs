@@ -11,7 +11,7 @@ public class WallKey : InteractableElementBehaviour {
             LockedWall w = ie as LockedWall;
             if (p.HeldElement.ItemID == 1)
             {
-                //Destroy(p.HeldElement.gameObject);
+                p.DeleteHeldItem();
                 w.Open();
             }
         }

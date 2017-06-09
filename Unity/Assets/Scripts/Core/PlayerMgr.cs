@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Com.LuisPedroFonseca.ProCamera2D;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,6 +65,8 @@ public class PlayerMgr : MonoBehaviour {
         p.Key = Utils.RandomString(20);
         p.GetComponent<Animator>().runtimeAnimatorController = PlayersForms[Players.Count];
         Players.Add(p);
+
+        ProCamera2D.Instance.AddCameraTarget(p.transform);
 
         InstantiatePlayerUI(p);
 

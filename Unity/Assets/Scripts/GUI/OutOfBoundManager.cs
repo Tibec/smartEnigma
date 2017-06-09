@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Com.LuisPedroFonseca.ProCamera2D;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class OutOfBoundManager : MonoBehaviour {
 
     List<GameObject> playersGO;
-    MultiTargetPixelPerfectCamera camMgr;
+    ProCamera2D camMgr;
     // Use this for initialization
     void Start() {
         playersGO = new List<GameObject>(4);
@@ -20,7 +21,7 @@ public class OutOfBoundManager : MonoBehaviour {
 
     private void Awake()
     {
-        camMgr = FindObjectOfType<MultiTargetPixelPerfectCamera>();
+        camMgr = ProCamera2D.Instance;
     }
 
     private void OnSceneChanged(Scene previous, Scene next)

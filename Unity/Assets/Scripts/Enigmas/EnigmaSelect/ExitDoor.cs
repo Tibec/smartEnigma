@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 public class ExitDoor : InteractableElementBehaviour
@@ -8,6 +9,8 @@ public class ExitDoor : InteractableElementBehaviour
 
     public override void OnInteraction(InteractableElement ie, Player p)
     {
-        SceneManager.LoadScene("Scene/Menu", LoadSceneMode.Single);
+        SceneLoader loader = FindObjectOfType<SceneLoader>();
+        Assert.IsNotNull(loader, "Cannot found SceneLoader !");
+        loader.LoadScene("Scene/Menu");
     }
 }
