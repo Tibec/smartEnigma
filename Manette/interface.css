@@ -230,78 +230,6 @@ html, body {
 	margin-bottom : 10%;
 }
 
-#inventoryScreen {
-	border: 3px solid white;
-	border-radius: 10px;
-    background-color: #434343;
-	color:white;
-	font-family: Tahoma, serif;
-	font-size: 125%;
-	z-index:50;
-	position:fixed;
-	padding:2%;	
-	overflow: hidden;
-	
-}
-
-#NameObject {
-	text-align:center;
-	border: 3px solid white;
-	border-radius: 10px;
-	height: 40px;
-    background-color: #434343;
-	color:white;
-	padding:5px;
-	min-width : 120px;
-	width: 50%;
-	font-family: Tahoma, serif;
-	
-	font-size: 125%;
-	margin: 0 auto;
-	margin-bottom : 5px;
-}
-
-#descriptionObject {
-	text-align:center;
-	border: 3px solid white;
-	border-radius: 10px;
-	height:60px;
-    background-color: #434343;
-	color:white;
-	padding:5px;
-	min-width : 120px;
-	width: 80%;
-	font-family: Tahoma, serif;
-	
-	font-size: 125%;
-	margin: 0 auto;
-	margin-bottom : 20px;
-}
-
-
-#imageObject {
-	width: 50%;
- 	margin: 0 auto;
-
- }
-
-
-
-#inventoryScreen button {
-	text-align:center;
-	border: 3px solid white;
-	border-radius: 10px;
-	height:60px;
-    background-color: #434343;
-	color:white;
-	padding:5px;
-	min-width : 120px;
-	width: 80%;
-	font-family: Tahoma, serif;
-	float: middle;
-	font-size: 125%;
-
-}
 
 #button_close {
 	display: block;
@@ -347,6 +275,101 @@ html, body {
 
 
 @media (orientation:landscape) {
+
+	#button_throw {
+		text-align:center;
+		border: 3px solid white;
+		border-radius: 10px;
+		height:90px;
+	    background-color: #616161;
+		color:white;
+		padding:5px;
+		
+		width: 90px;
+		font-family: Tahoma, serif;
+		float: left;
+		font-size: 125%;
+		
+
+	}
+
+	#inventoryScreen {
+	border: 3px solid white;
+	border-radius: 10px;
+    background-color: #434343;
+	color:white;
+	font-family: Tahoma, serif;
+	font-size: 125%;
+	z-index:50;
+	position:fixed;
+	padding:2%;	
+	overflow: hidden;
+	
+}
+
+
+#NameObject {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height: 40px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 50%;
+	font-family: Tahoma, serif;
+	margin-top : 10px;
+	font-size: 125%;
+	float:left;
+	margin-left : 10%;
+}
+
+#descriptionObject {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height: 80%;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	
+	width: 70%;
+	font-family: Tahoma, serif;
+	
+	font-size: 125%;
+	float:right;
+	margin-bottom : 0px;
+	margin-top : 30px;
+}
+
+#infoObject {
+	
+	height: 100%;
+}
+
+#objectScreen {
+	height: 50%;
+}
+
+#imageObject {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height: 70px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	
+	width: 80px;
+	font-family: Tahoma, serif;
+	
+	font-size: 125%;
+	float:left;
+	margin-bottom : 10px;
+
+ }
+
 	.btn-space {
 		width:30%;
 		display:inline-block;
@@ -382,17 +405,17 @@ html, body {
 	}
 
 	#menuScreen {
-		top: 5%;
+		top: 2%;
 		left: 5%;
 		width: 85%;
-		height: 80%;
+		height: 85%;
 	}
 
 	#ConfigurationScreen {
-		top: 19%;
+		top: 27%;
 		left: 10%;
 		width: 75%;
-		height: 50%;
+		height: 56%;
 	}
 
 	#MessageScreen, #noMessage {
@@ -414,6 +437,99 @@ html, body {
 }
 
 @media (orientation:portrait) {
+
+#inventoryScreen button {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height:60px;
+    background-color: #616161;
+	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 80%;
+	font-family: Tahoma, serif;
+	float: middle;
+	font-size: 125%;
+
+}
+
+	#inventoryScreen {
+	border: 3px solid white;
+	border-radius: 10px;
+    background-color: #434343;
+	color:white;
+	font-family: Tahoma, serif;
+	font-size: 125%;
+	z-index:50;
+	position:fixed;
+	padding:2%;	
+	overflow: hidden;
+	
+}
+
+#NameObject {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height: 40px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 50%;
+	font-family: Tahoma, serif;
+	
+	font-size: 125%;
+	margin: 0 auto;
+	margin-bottom : 10px;
+}
+
+#descriptionObject {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height:100px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	min-width : 120px;
+	width: 80%;
+	font-family: Tahoma, serif;
+	
+	font-size: 125%;
+	margin: 0 auto;
+	margin-bottom : 40px;
+}
+
+#infoObject {
+	vertical-align: middle;
+  	text-align: center;
+}
+
+#objectScreen {
+	vertical-align: middle;
+  	text-align: center;
+}
+
+#imageObject {
+	text-align:center;
+	border: 3px solid white;
+	border-radius: 10px;
+	height: 70px;
+    background-color: #434343;
+	color:white;
+	padding:5px;
+	
+	width: 80px;
+	font-family: Tahoma, serif;
+	
+	font-size: 125%;
+	margin: 0 auto;
+	margin-bottom : 10px;
+
+ }
+
 	.btn-space {
 		display:none;
 	}
@@ -433,7 +549,7 @@ html, body {
 	#buttons {
 		position: absolute;
 		width: 50%;
-		bottom: 10%;
+		bottom: 5%;
 		right: 2%;
 		height: 20%;
 	}
@@ -493,8 +609,8 @@ html, body {
 	display: inline-block;
 	background-size:contain;
 	position: absolute;
-	bottom: 5%;
-	left: 5%;
+	bottom: 2%;
+	left: 10%;
 	cursor: pointer;
 
 }
@@ -506,7 +622,7 @@ html, body {
 	background-size:contain;
 	position: absolute;
 	top: 5%;
-	right: 5%;
+	right: 1%;
 	cursor: pointer;
 }
 

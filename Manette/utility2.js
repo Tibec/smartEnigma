@@ -82,6 +82,10 @@ $(document).on("keydown", function(evt) {
 	{
 		pressCloseSocket();
 	}
+	if(evt.key=="x")
+	{
+		pressconfiguration();
+	}
 
 });
 
@@ -214,8 +218,8 @@ function pressInventory() {
 	    var img = document.createElement("IMG");
 	    //img.src = "images/gold.png";
 	    img.src = pathImageObject+"";
-	    img.setAttribute("width","100");
-	    img.setAttribute("height","100");
+	    img.setAttribute("width","80");
+	    img.setAttribute("height","70");
 	    document.getElementById('imageObject').appendChild(img);
 	   
 	

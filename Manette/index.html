@@ -13,7 +13,7 @@
  
   		
 
-	<div id="menuScreen"  class="hide">  			
+	<div id="menuScreen" class="hide" >  			
 		<div id="button_close"></div>
   		<button id="button_configuration"> Configurations </button> 
   		<button id="button_messages" > Messages </button>  	
@@ -25,11 +25,11 @@
 
 		<div id="MessageScreen"  class="hide">    						
 			<div id="previous" >
-				<div style="position: absolute;top: 50%;"><</div> 
+				<div style="position: absolute;top: 50%"><</div> 
 			</div>
 			<div id="listMessages"></div>
 			<div id="next">
-				<div style="position: absolute;top: 50%;">></div> 
+				<div style="position: absolute;top: 50%">></div> 
 			</div>	
 							
   		</div>
@@ -43,7 +43,7 @@
   	<div id="inventoryScreen" class="hide">
   			<div id="button_closeInventory"></div>
 
-	  		<div id="objectScreen" class="hide">
+	  		<div id="objectScreen" >
 	  			<div id="infoObject">
 	  				<div id="imageObject"></div>
 	  				<div id="NameObject"></div>
@@ -52,7 +52,7 @@
 	  			<button id="button_throw"> Jeter</button>		  
   			</div>
 
-  			<div id="noObjectScreen">Inventaire vide</div>		
+  			<div id="noObjectScreen" class="hide">Inventaire vide</div>		
 
   	</div>
 
@@ -78,24 +78,20 @@
 		</div>
 	</div>  
 
-<!--
-	<div id="connexionScreen">
-			Connexion mode  
-           
-            IP :<input type="text" id="url" /><br>
-            <br>
-            Nom du joueur : <input type="text" id="name" /><br>
-            <button id="connect">Connect</button>
-	</div>
-	-->
-<div id="connexionScreen">
+
+<div id="connexionScreen" >
 	<section class="login">
 		<div class="titulo">SmartEnigma</div>
 		<form  method="post" enctype="application/x-www-form-urlencoded">
-	    	<input type="text" id="url" required title="IP du serveur requise" placeholder="IP du serveur" data-icon="U">
-	        <input type="text" id="name" required title="Nom du joueur requis" placeholder="Nom du joueur" data-icon="x">
-	       
-	        <a href="#" id="connect" class="enviar">Go</a>
+			<div id="saisie">
+		    	<input type="text" id="url" required title="IP du serveur requise" placeholder="IP du serveur" data-icon="U">
+		        <input type="text" id="name" required title="Nom du joueur requis" placeholder="Nom du joueur" data-icon="x">
+	        </div>
+	       <div id="espace"></div>
+	       <div id="GoDiv">
+	        	<a href="#" id="connect" class="enviar">Go</a>
+	       </div>
+
 	    </form>
 	</section>
 </div>
