@@ -8,31 +8,25 @@ using Com.LuisPedroFonseca.ProCamera2D;
 
 public class SceneLoader : MonoBehaviour {
 
-    ProCamera2DTransitionsFX camFX;
-
     private string sceneToLoad;
 
     // Use this for initialization
     void Start () {
-        DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += OnSceneLoaded;
 	}
 
     private void OnSceneLoaded(Scene arg0, LoadSceneMode mode)
     {
-        ProCamera2DTransitionsFX[] newCam = FindObjectsOfType<ProCamera2DTransitionsFX>();
-        camFX = newCam[0];
-        camFX.TransitionEnter();
+
     }
 
     private void Awake()
     {
-		if (!Application.isEditor) {
-			SceneManager.LoadScene (1);
-		}
-        else
+        DontDestroyOnLoad(this);
+
+        if (!Application.isEditor || SceneManager.sceneCount == 1)
         {
-            OnSceneLoaded(new Scene(), LoadSceneMode.Single);
+            LoadScene("Menu");
         }
     }
     // Update is called once per frame
@@ -47,6 +41,8 @@ public class SceneLoader : MonoBehaviour {
 
     public void LoadScene(string scene)
     {
+        ProCamera2DTransitionsFX camFX = FindObjectOfType<ProCamera2DTransitionsFX>();
+
         if (camFX != null)
         {
             camFX.OnTransitionExitEnded += AsynchLoadScene;

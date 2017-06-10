@@ -16,15 +16,15 @@ public class OutOfBoundManager : MonoBehaviour {
         playersGO.Add(transform.FindChild("Player3").gameObject);
         playersGO.Add(transform.FindChild("Player4").gameObject);
 
-        SceneManager.activeSceneChanged += OnSceneChanged;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Awake()
     {
-        camMgr = ProCamera2D.Instance;
+		camMgr = FindObjectOfType<ProCamera2D>();
     }
 
-    private void OnSceneChanged(Scene previous, Scene next)
+    private void OnSceneLoaded(Scene previous, LoadSceneMode lsm)
     {
         Awake();
         
@@ -33,6 +33,10 @@ public class OutOfBoundManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         List<Player> p = PlayerMgr.Instance().Players;
+
+        if (camMgr == null)
+            Awake();
+
         for (int i = 0; i < 4 ; ++i)
         {
             if(i >= p.Count)

@@ -229,9 +229,11 @@ public class Player : MonoBehaviour {
     public void SendGameTip(string origin, string content)
     {
         Socket.SendMessage(new GameTipSentMessage(origin, content));
+        PlayerInfoManager pim = FindObjectOfType<PlayerInfoManager>();
+        pim.HighlightPlayer(this);
     }
 
-	public void ReleaseGrabbedElement()
+    public void ReleaseGrabbedElement()
 	{
 		if(grabbedElement != null)
 		{
