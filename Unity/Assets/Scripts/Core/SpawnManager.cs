@@ -3,6 +3,7 @@ using CreativeSpore.SmartColliders;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SpawnManager : MonoBehaviour {
 
@@ -24,8 +25,10 @@ public class SpawnManager : MonoBehaviour {
 
             collider.enabled = true;
             controller.enabled = true;
-
+			try {
             ProCamera2D.Instance.AddCameraTarget(p.transform);
+			} catch (Exception e) {
+			}
         }
     }
 
