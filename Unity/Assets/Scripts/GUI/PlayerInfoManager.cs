@@ -42,4 +42,23 @@ public class PlayerInfoManager : MonoBehaviour {
 
         }
 	}
+
+    public void HighlightPlayer(Player p)
+    {
+        List<Player> ps = PlayerMgr.Instance().Players;
+        int pId = ps.IndexOf(p); 
+        UILabel label = playersLabel[pId];
+        StartCoroutine("BlinkLabel", label);
+    }
+
+    IEnumerator BlinkLabel(UILabel lbl)
+    {
+        for (int i = 0; i < 5;++i)
+        {
+            lbl.color = Color.yellow;
+            yield return new WaitForSeconds(0.1f);
+            lbl.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 }
