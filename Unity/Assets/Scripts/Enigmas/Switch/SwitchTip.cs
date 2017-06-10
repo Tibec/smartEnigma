@@ -14,7 +14,7 @@ public class SwitchTip : InteractableElementBehaviour {
 	{
 		if (o is Player) {
 			Player p = (Player)o;
-			p.SendGameTip("", " Jette un coup d'oeil au dessus ;)");
+			p.SendGameTip("indice", " Jette un coup d'oeil au dessus ;)");
 		}
 	}
 
