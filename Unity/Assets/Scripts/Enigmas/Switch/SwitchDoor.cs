@@ -24,7 +24,7 @@ public class SwitchDoor : InteractableElementBehaviour {
 	{
 		if (ie is Door) {
 			if (i == 3)
-				Debug.Log ("NIVEAU TERMINE");
+				Utils.LoadScene ("Scene/EnigmaClear");
 			else
 				p.SendGameTip(ie.name, " As tu actionné TOUS les intterupteurs ?");
 		}
