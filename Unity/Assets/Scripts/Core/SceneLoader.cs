@@ -5,9 +5,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using Com.LuisPedroFonseca.ProCamera2D;
+using NUnit.Framework;
 
 public class SceneLoader : MonoBehaviour {
 
+    private bool loadInProgress = false;
     private string sceneToLoad;
 
     // Use this for initialization
@@ -15,9 +17,27 @@ public class SceneLoader : MonoBehaviour {
         SceneManager.sceneLoaded += OnSceneLoaded;
 	}
 
-    private void OnSceneLoaded(Scene arg0, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        loadInProgress = false;
+        PlayerMgr.Instance().UpdatePlayerStatus(EnigmaInProgress());
+    }
 
+    public string CurrentScene()
+    {
+        return sceneToLoad;
+    }
+
+    public bool EnigmaInProgress()
+    {
+        return !(sceneToLoad.Contains("Menu") || sceneToLoad.Contains("EnigmaSelect") || sceneToLoad.Contains("EnigmaClear"));
+    }
+
+    static public SceneLoader Instance()
+    {
+        SceneLoader loader = FindObjectOfType<SceneLoader>();
+        Assert.IsNotNull(loader, "Cannot found SceneLoader !");
+        return loader;
     }
 
     private void Awake()
@@ -42,7 +62,8 @@ public class SceneLoader : MonoBehaviour {
     public void LoadScene(string scene)
     {
         ProCamera2DTransitionsFX camFX = FindObjectOfType<ProCamera2DTransitionsFX>();
-
+        loadInProgress = true;
+        PlayerMgr.Instance().UpdatePlayerStatus(false);
         if (camFX != null)
         {
             camFX.OnTransitionExitEnded += AsynchLoadScene;

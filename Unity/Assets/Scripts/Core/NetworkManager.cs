@@ -149,7 +149,7 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("StopServer: Server stopped !");
     }
 
-    private void OnDeletedPlayer(string conn)
+    private void OnDeletedPlayer(string connID)
     {
         Debug.Log("Player disconnected");
         if(lobby.Contains(null))
@@ -159,7 +159,7 @@ public class NetworkManager : MonoBehaviour
         }
         else
         {
-            playerMgr.PlayerDisconnected(conn);
+            playerMgr.PlayerDisconnected(connID);
         }
     }
 
@@ -173,6 +173,7 @@ public class NetworkManager : MonoBehaviour
     {
         if (lobby.Contains(conn))
         {
+            /*
             if(mess is HelloAgainMessage) // handle reconnection
             {
                 Player p = playerMgr.TryReconnect(((HelloAgainMessage)mess).Key);
@@ -186,7 +187,7 @@ public class NetworkManager : MonoBehaviour
                 else
                     SendLoginError(conn, LoginErrors.InvalidKey);
             }
-            else if(mess is HelloMessage) // new client
+            else */ if(mess is HelloMessage) // new client
             { 
                 if(playerMgr.Players.Count < PlayerLimit) // Check player limit
                 {
@@ -196,6 +197,7 @@ public class NetworkManager : MonoBehaviour
                         string key = playerMgr.AddPlayer(conn, ((HelloMessage)mess).Username);
                         lobby.Remove(conn);
                         conn.SendMessage(new LoginSuccessMessage(key));
+                        conn.SendMessage(new CanQuitEnigmaMessage(SceneLoader.Instance().EnigmaInProgress()));
                         Debug.Log("Player " + ((HelloMessage)mess).Username + " is now logged in");
                     }
                     else

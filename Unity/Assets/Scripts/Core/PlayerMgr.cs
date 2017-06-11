@@ -97,13 +97,27 @@ public class PlayerMgr : MonoBehaviour {
     public void PlayerDisconnected(string conn)
     {
         Player p = GetPlayerByConnectionId(conn);
-        if(p!=null)
-            p.Connected = false;
+        if (p != null)
+        {
+            Destroy(p.gameObject);
+            Players.Remove(p);
+        }
+    }
+
+    public void UpdatePlayerStatus(bool canQuit)
+    {
+        foreach (Player p in Players)
+            p.Socket.SendMessage(new CanQuitEnigmaMessage(canQuit));
     }
 
     public void NewMessage(string conn, Message mess)
     {
-        GetPlayerByConnectionId(conn).ReceiveMessage(mess);
+        if(mess is QuitEnigmaMessage)
+        {
+            SceneLoader.Instance().LoadScene("EnigmaSelect");
+        }
+        else
+            GetPlayerByConnectionId(conn).ReceiveMessage(mess);
     }
 
     private Player GetPlayerByConnectionId(string id)
