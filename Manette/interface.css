@@ -179,37 +179,7 @@ html, body {
 
 }
 
-#ConfigurationScreen  {
-	border: 3px solid white;
-	border-radius: 10px;
-    background-color: #434343;
-	color:white;
-	font-family: Tahoma, serif;
-	font-size: 125%;
-	z-index:50;
-	position:fixed;
-	padding:2%;	
-	overflow: hidden;
 
-}
-
-#ConfigurationScreen button {
-	text-align:left;
-	border: 3px solid white;
-	border-radius: 10px;
-	height:50px;
-    background-color: #434343;
-	color:white;
-	
-	min-width : 120px;
-	width: 94%;
-	font-family: Tahoma, serif;
-	
-	font-size: 125%;
-	word-wrap : break-word;
-	margin-bottom : 5px;
-
-}
 
 
 
@@ -418,12 +388,7 @@ html, body {
 		height: 56%;
 	}
 
-	#MessageScreen, #noMessage {
-		top: 19%;
-		left: 10%;
-		width: 75%;
-		height: 50%;
-	}
+	
 
 	#inventoryScreen {
 		top: 5%;
@@ -432,11 +397,18 @@ html, body {
 		height: 80%;
 	}
 
-	
+	#MessageScreen, #noMessage {
+		top: 20%;
+		left: 10%;
+		width: 75%;
+		height: 60%;
+	}
 
 }
 
 @media (orientation:portrait) {
+
+
 
 #inventoryScreen button {
 	text-align:center;
@@ -584,7 +556,7 @@ html, body {
 
 	#MessageScreen, #noMessage {
 		
-		top: 15%;
+		top: 11%;
 		left: 10%;
 		width: 75%;
 		height: 75%;

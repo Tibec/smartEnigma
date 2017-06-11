@@ -6,6 +6,7 @@ var isConnected =0;
 var connexionKey=0;
 var showConnexionScreen=1;//l'ecran de connexion doit s'afficher au demarrage
 var url='';
+var name='';
 var i=0;
 var messageArray = new Array();
 var clonedMessageScreen =  $('#MessageScreen').clone();
@@ -70,10 +71,6 @@ $(document).on("keydown", function(evt) {
 	{
 		pressCloseInventory();
 	}
-	if(evt.key=="r")
-	{
-		pressReconnexion();
-	}
 	if(evt.key=="t")
 	{
 		pressThrow();
@@ -84,8 +81,9 @@ $(document).on("keydown", function(evt) {
 	}
 	if(evt.key=="x")
 	{
-		pressconfiguration();
+		pressExitLevel();
 	}
+	
 
 });
 
@@ -110,48 +108,112 @@ $("#button_inventory").on('touchstart', pressInventory);
 $("#button_messages").on('touchstart', pressMenuMessages);
 $("#button_throw").on('touchstart', pressThrow);
 $("#button_closeInventory").on('touchstart', pressCloseInventory);
-$("#button_reconnexion").on('touchstart', pressReconnexion);
-$("#button_configuration").on('touchstart', pressconfiguration);
+//$("#button_reconnexion").on('touchstart', pressReconnexion);
+//$("#button_configuration").on('touchstart', pressconfiguration);
+$("#button_exitLevel").on('touchstart', pressExitLevel);
+
 $("#button_closeSocket").on('touchstart', pressCloseSocket);
+
+function pressExitLevel()
+{
+	console.log("button_exitLevel pressed"); 
+	sendMsg ("112", "");
+	pressClose();
+	
+
+}
+
+
+function deleteCookie(name)
+{
+	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 
 function pressCloseSocket()
 {
 	console.log("button_closeSocket pressed"); 
+	sendMsg ("102", "");
 	//socket detruite, lorsque la page est recharge
+	//supprime les cookies
+	deleteCookie("smartEnigmaUrl");
+	deleteCookie("smartEnigmaName");
+	deleteCookie("smartEnigmaConnexionKey");
+
 	document.location.href="index.html";
-
+	reconnect();
 
 }
 
 
-function pressconfiguration()
-{
-	console.log("button_configuration pressed");   
-	$("#ConfigurationScreen").slideDown();
-}
 
-
-function pressReconnexion()
+function reconnect()
 {
-	//alert("button_reconnexion pressed"); 
-	//creation d'une nouvelle socket
-    setSocket(new WebSocket(url));
-    socket.onopen = function (event) 
+	console.log("passe reconnnect");
+	//remet les champ du submit enregistre	
+	
+	if ((url!="") && (name != ""))
 	{
-		//attente des messages
-		waitMsg();
+		document.getElementById("url").value = url;
+		document.getElementById("name").value = name;
+		console.log("url "+url);
+		console.log("name"+name);
+	}	
 
-		//declenchement du listener qui agit en cas de deconnexion au serveur
-		listenerSendMessageWhenDisconnect();        
+	
 
-	    //recuperation de la cle de connexion en cookie
-	    var tempVar=getCookie("smartEnigmaConnexionKey");
-	    //alert ("cle de reconnexion :"+tempVar);
-	    socket.send("101|"+tempVar);
-	    //alert("envoie de 101|"+tempVar);
-	     
-	}
+	$("#connect").click(function(event)
+	{
+		var urlGiven2 = "ws://"+document.getElementById("url").value;
+		updateUrl(document.getElementById("url").value);
 
+		var name2 = document.getElementById("name").value;  
+		var isSameName=1;
+		console.log("cookieName* : "+cookieName);
+		if(name2!=cookieName)
+		{
+			isSameName=0;
+		}
+		updateName(name2);  
+
+
+		//creation de la socket
+        setSocket(new WebSocket(urlGiven2));
+		
+		console.log(socket);
+
+		socket.onopen = function (event) 
+		{
+			
+			if(isSameName)
+			{
+				var tempVar=getCookie("smartEnigmaConnexionKey");
+				console.log("tentative de reconnexion avec la cle"+tempVar);
+				socket.send("101|"+tempVar);				
+			}
+			else
+			{
+				console.log("joueur a change de nom");
+				//nouveau joueur, sur le meme telephone
+				socket.send("100|"+name2);
+				
+			}			
+     		
+			setConnected();
+
+			//attente des messages
+			waitMsg();
+
+			//declenchement du listener qui agit en cas de deconnexion au serveur
+			listenerSendMessageWhenDisconnect();
+
+			console.log("CONNECTED");   
+		 
+		}
+
+	});
+
+	
 	
 }
 
@@ -181,7 +243,7 @@ function pressClose() {
     
     //timeout ,
     setTimeout(function(){     	
-    	setHidden("ConfigurationScreen");
+    	//setHidden("ConfigurationScreen");
     	setHidden("noMessage");
     	sethidden("MessageScreen");    	
     	
@@ -490,12 +552,21 @@ function updateUrl( newVal)
 	url= newVal;
 }
 
+function updateName(newVal)
+{
+	name=newVal;
+}
 
 //renvoie un message au serveur quand le client est deconnecte
 function listenerSendMessageWhenDisconnect()
 {
 	socket.onclose = function (e) {
-		alert("deconnexion du serveur ! ");
+
+		//renvoie a la page de connexion (mais les champ sont deja saisies)
+		//alert("deconnexion du serveur ! ");
+
+		document.location.href="index.html";
+		reconnect();
 		
 		/*
 		createReconnexionButton(document.body, function(){
@@ -762,10 +833,13 @@ function connexion()
 
 		//var urlGiven = "ws://"+$("#url").val();
 		var urlGiven = "ws://"+document.getElementById("url").value;
-		updateUrl(urlGiven);
+		updateUrl(document.getElementById("url").value);
+		setCookie("smartEnigmaUrl", document.getElementById("url").value, 1);
 
 		//var name=$("#name").val();  
-		var name = document.getElementById("name").value;      
+		var name = document.getElementById("name").value;  
+		updateName(name);    
+		setCookie("smartEnigmaName", name, 1);
         
         //creation de la socket
         setSocket(new WebSocket(urlGiven));
@@ -802,14 +876,31 @@ function setConnected()
 
 ///// MAIN //////////////////
 
+var cookieUrl=getCookie("smartEnigmaUrl");
+var cookieName=getCookie("smartEnigmaName");
 
+if ((cookieUrl!="") && (cookieName!=""))
+	{
+		document.getElementById("url").value = cookieUrl;
+		document.getElementById("name").value = cookieName;
+		
+}
 
 if (isConnected == 0)
 {	
 	setVisible("connexionScreen");
 	setHidden("interfaceScreen");
-	connexion();      
-           
+
+	if ((cookieUrl!="") && (cookieName!=""))
+	{		
+		reconnect();
+	}
+	else
+	{
+
+		connexion();      
+	}
+	           
 }
 else
 {	
