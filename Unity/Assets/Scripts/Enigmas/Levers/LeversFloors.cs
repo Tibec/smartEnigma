@@ -17,6 +17,7 @@ public class LeversFloors : InteractableElementBehaviour {
 
 	private void Awake()
 	{
+
 	}
 
 	public override void OnInteraction(InteractableElement ie, Player p)

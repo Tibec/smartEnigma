@@ -42,6 +42,7 @@ public class Player : MonoBehaviour {
         sprite = GetComponent<SpriteRenderer>();
         controller = GetComponent<PlayerController>();
         availableInteraction = new List<GameElement>();
+
     }
 
     private void Update()

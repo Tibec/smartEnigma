@@ -184,16 +184,16 @@ function reconnect()
 
 		socket.onopen = function (event) 
 		{
-			
+			/*
 			if(isSameName)
 			{
 				var tempVar=getCookie("smartEnigmaConnexionKey");
 				console.log("tentative de reconnexion avec la cle"+tempVar);
 				socket.send("101|"+tempVar);				
 			}
-			else
+			else*/
 			{
-				console.log("joueur a change de nom");
+				//console.log("joueur a change de nom");
 				//nouveau joueur, sur le meme telephone
 				socket.send("100|"+name2);
 				

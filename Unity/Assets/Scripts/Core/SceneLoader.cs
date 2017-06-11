@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using Com.LuisPedroFonseca.ProCamera2D;
-using NUnit.Framework;
+using UnityEngine.Assertions;
 
 public class SceneLoader : MonoBehaviour {
 
     private bool loadInProgress = false;
-    private string sceneToLoad;
+    private string sceneToLoad = "";
 
     // Use this for initialization
     void Start () {

@@ -11,13 +11,13 @@ using WebSocketSharp.Server;
 public class Server : MonoBehaviour
 {
     private WebSocketServer srv;
-    private List<Action> pendingCalls;
+    private Queue<Action> pendingCalls;
     public List<Connection> Clients;
     public int ListenedPort { get; private set; }
     void Start()
     {
         Clients = new List<Connection>();
-        pendingCalls = new List<Action>();
+        pendingCalls = new Queue<Action>();
     }
 
     private void OnDestroy()
@@ -33,11 +33,12 @@ public class Server : MonoBehaviour
 
     private void Update()
     {
-        List<Action> copy = new List<Action>(pendingCalls);
+        Queue<Action> copy = new Queue<Action>(pendingCalls);
         pendingCalls.Clear();
 
-        foreach (Action a in copy)
+        while(copy.Count > 0)
         {
+            Action a = copy.Dequeue();
             try
             {
                 a.Invoke();
@@ -67,18 +68,18 @@ public class Server : MonoBehaviour
     private void ConnectionClosed(Connection conn)
     {
         Clients.Remove(conn);
-        pendingCalls.Add(() => OnConnectionClosed(conn.ID));
+        pendingCalls.Enqueue(() => OnConnectionClosed(conn.ID));
     }
 
     private void ConnectionOpened(Connection conn)
     {
-        pendingCalls.Add(() => OnConnectionOpened(conn));
+        pendingCalls.Enqueue(() => OnConnectionOpened(conn));
         Clients.Add(conn);
     }
 
     private void MessageReceived(Connection conn, Message mess)
     {
-        pendingCalls.Add(() => OnMessageReceived(conn, mess));
+        pendingCalls.Enqueue(() => OnMessageReceived(conn, mess));
     }
 
     public void Stop()
