@@ -17,6 +17,8 @@ public class Part2 : InteractableElementBehaviour
     {
         if (ie is FootInteruptor)
         {
+            if ((ie as FootInteruptor).CurrentState() != FootInteruptor.eInteruptorState.Up)
+                return;
             if (ie.name == "Inter10")
                 trigger1Ok = true;
             else if (ie.name == "Inter11")
@@ -34,6 +36,8 @@ public class Part2 : InteractableElementBehaviour
     {
         if (ie is FootInteruptor)
         {
+            if ((ie as FootInteruptor).CurrentState() != FootInteruptor.eInteruptorState.Down)
+                return;
             if (ie.name == "Inter10")
                 trigger1Ok = false;
             else if (ie.name == "Inter11")
@@ -47,7 +51,7 @@ public class Part2 : InteractableElementBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
         if (trigger1Ok && trigger2Ok && trigger3Ok && trigger4Ok && trigger5Ok)
         {
