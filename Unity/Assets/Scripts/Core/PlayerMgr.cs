@@ -140,7 +140,11 @@ public class PlayerMgr : MonoBehaviour {
     public void UpdatePlayerStatus(bool canQuit)
     {
         foreach (Player p in Players)
+        {
+            if (p == null)
+                continue;
             p.Socket.SendMessage(new CanQuitEnigmaMessage(canQuit));
+        }
     }
 
     public void NewMessage(string conn, Message mess)
