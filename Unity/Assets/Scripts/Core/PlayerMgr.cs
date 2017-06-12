@@ -12,8 +12,7 @@ public class PlayerMgr : MonoBehaviour {
     [Serializable]
     public struct PointerData { public Sprite icon; public Color color; }
 
-    public List<Player> Players;
-    public List<Connection> PlayersConn;
+    public List<Player> Players = new List<Player>();
     public List<RuntimeAnimatorController> PlayersForms;
     public GameObject PlayerPrefab;
     public UIPanel PlayerActionPrefab;

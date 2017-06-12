@@ -7,7 +7,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System;
 
-public enum eDifficulty { Easy, Normal, Hard }
+public enum eDifficulty { Easy, Normal }
 
 
 public class EnigmaLoader : MonoBehaviour {
@@ -16,9 +16,7 @@ public class EnigmaLoader : MonoBehaviour {
     public EnigmaMetadata[] VisibleEnigmas = new EnigmaMetadata[3];
 
 
-    public UILabel currentPageLabel;
-    public UILabel maxPageLabel;
-
+    public UILabel pageInfoLabel;
     public Sprite emptyImage;
 
     UIPanel enigma1Panel;
@@ -32,7 +30,7 @@ public class EnigmaLoader : MonoBehaviour {
     eDifficulty currentDifficulty = eDifficulty.Easy;
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
         level = GetComponentInChildren<EnigmaLevel>();
         switcher = GetComponentInChildren<EnigmaSwitch>();
 
@@ -54,24 +52,26 @@ public class EnigmaLoader : MonoBehaviour {
 
     private void UpdateUI()
     {
-        SetEnigma(VisibleEnigmas[0], enigma1Panel);
-        SetEnigma(VisibleEnigmas[1], enigma2Panel);
-        SetEnigma(VisibleEnigmas[2], enigma3Panel);
+        SetEnigma(VisibleEnigmas[0], enigma1Panel, 1);
+        SetEnigma(VisibleEnigmas[1], enigma2Panel, 2);
+        SetEnigma(VisibleEnigmas[2], enigma3Panel, 3);
 
         // update page count somewhere
-
+        pageInfoLabel.text = (currentPage + 1) + "/" + Mathf.Ceil(Enigmas.FindAll((e) => e.Difficulty == currentDifficulty).Count / 3f);
     }
 
-    private void SetEnigma(EnigmaMetadata data, UIPanel enigmaPanel)
+    private void SetEnigma(EnigmaMetadata data, UIPanel enigmaPanel, int doorId)
     {
         UILabel description, title;
         UI2DSprite preview;
+        Door door;
 
         try
         {
             description = enigmaPanel.transform.FindChild("Description").GetComponent<UILabel>();
             title = enigmaPanel.transform.FindChild("Title").GetComponent<UILabel>();
             preview = enigmaPanel.transform.FindChild("Preview").GetComponent<UI2DSprite>();
+            door = GameObject.Find("DoorLv" + doorId).GetComponent<Door>();
         }
         catch(Exception e)
         {
@@ -84,12 +84,14 @@ public class EnigmaLoader : MonoBehaviour {
             title.text = "Vide";
             preview.sprite2D = emptyImage;
             description.text = "";
+            door.SetState(Door.eDoorState.Closed);
         }
         else
         {
             title.text = data.Name;
             preview.sprite2D = data.Picture;
             description.text = data.Description;
+            door.SetState(Door.eDoorState.Open);
         }
     }
 
@@ -127,7 +129,7 @@ public class EnigmaLoader : MonoBehaviour {
     {
         ++currentPage;
 
-        if (currentPage > Enigmas.FindAll((e) => e.Difficulty == currentDifficulty).Count / 3)
+        if (currentPage >= Enigmas.FindAll((e) => e.Difficulty == currentDifficulty).Count / 3)
             currentPage = 0;
         UpdateEnigmas();
     }
@@ -143,6 +145,7 @@ public class EnigmaLoader : MonoBehaviour {
     public class EnigmaMetadata
     {
         public string Name; 
+        [TextArea]
         public string Description; 
         public Sprite Picture; 
         [Scene]

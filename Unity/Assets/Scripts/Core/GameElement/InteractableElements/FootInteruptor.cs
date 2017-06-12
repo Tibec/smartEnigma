@@ -30,26 +30,26 @@ public class FootInteruptor : InteractableElement
 
     protected override void PlayerTriggerEnter(Player p)
     {
-        SetState(eInteruptorState.Down);
         base.PlayerTriggerEnter(p);
+        SetState(eInteruptorState.Down);
     }
 
     protected override void PlayerTriggerExit(Player p)
     {
-        SetState(eInteruptorState.Up);
         base.PlayerTriggerExit(p);
+        SetState(eInteruptorState.Up);
     }
 
     protected override void GrabbableTriggerEnter(GrabbableElement p)
     {
-        SetState(eInteruptorState.Down);
         base.GrabbableTriggerEnter(p);
+        SetState(eInteruptorState.Down);
     }
 
     protected override void GrabbableTriggerExit(GrabbableElement p)
     {
-        SetState(eInteruptorState.Up);
         base.GrabbableTriggerExit(p);
+        SetState(eInteruptorState.Up);
     }
 
     private void SetState(eInteruptorState state)

@@ -63,12 +63,12 @@ public class SceneLoader : MonoBehaviour {
     {
         ProCamera2DTransitionsFX camFX = FindObjectOfType<ProCamera2DTransitionsFX>();
         loadInProgress = true;
+        sceneToLoad = scene;
         PlayerMgr.Instance().UpdatePlayerStatus(false);
         if (camFX != null)
         {
             camFX.OnTransitionExitEnded += AsynchLoadScene;
             camFX.TransitionExit();
-            sceneToLoad = scene;
         }
         else
             SceneManager.LoadScene(scene);

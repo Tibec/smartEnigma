@@ -14,9 +14,12 @@ public class SwitchTip : InteractableElementBehaviour {
 	{
 		if (o is Player) {
 			Player p = (Player)o;
-			p.SendGameTip("indice", " Jette un coup d'oeil au dessus ;)");
-		}
-	}
+            if (ie.name == "TriggerArea1")
+                p.SendGameTip("indice", " Jette un coup d'oeil au dessus :)");
+            if (ie.name == "TriggerArea2")
+                p.SendGameTip("indice", "Tout à gauche");
+        }
+    }
 
 	void Update()
 	{

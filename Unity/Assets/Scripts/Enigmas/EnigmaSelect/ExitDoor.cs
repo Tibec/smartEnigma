@@ -12,7 +12,7 @@ public class ExitDoor : InteractableElementBehaviour
         SceneLoader loader = FindObjectOfType<SceneLoader>();
         Assert.IsNotNull(loader, "Cannot found SceneLoader !");
 
-        if (ie.name == "ExitDoor")
+        if (ie.name == "MenuDoor")
             loader.LoadScene("Scene/Menu");
         else if(ie.name == "SecretDoor")
             loader.LoadScene("Test");

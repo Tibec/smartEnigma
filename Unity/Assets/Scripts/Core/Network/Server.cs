@@ -52,16 +52,23 @@ public class Server : MonoBehaviour
 
     public bool Listen(int port)
     {
-        srv = new WebSocketServer(IPAddress.Any, port);
-
-        srv.Start();
-        srv.AddWebSocketService<Connection>("/", (s) => {
-            s.SetServer(this);
-            s.OnConnectionOpened += ConnectionOpened;
-            s.OnConnectionClosed += ConnectionClosed;
-            s.OnMessageReceived += MessageReceived;
-        });
-        ListenedPort = port;
+        try
+        {
+            srv = new WebSocketServer(IPAddress.Any, port);
+            srv.Start();
+            srv.AddWebSocketService<Connection>("/", (s) =>
+            {
+                s.SetServer(this);
+                s.OnConnectionOpened += ConnectionOpened;
+                s.OnConnectionClosed += ConnectionClosed;
+                s.OnMessageReceived += MessageReceived;
+            });
+            ListenedPort = port;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
         return srv.IsListening;
     }
 

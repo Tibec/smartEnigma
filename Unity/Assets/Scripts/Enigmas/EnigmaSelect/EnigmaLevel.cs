@@ -30,9 +30,7 @@ public class EnigmaLevel : InteractableElementBehaviour
         {
             if (currentDiff == eDifficulty.Easy)
                 currentDiff = eDifficulty.Normal;
-            else if (currentDiff == eDifficulty.Normal)
-                currentDiff = eDifficulty.Hard;
-            else // (currentDiff == eDifficulty.Hard)
+            else // (currentDiff == eDifficulty.Normal)
             {
                 currentDiff = eDifficulty.Easy;
                 l.SetState(Lever.eLeverState.Left);
@@ -56,10 +54,11 @@ public class EnigmaLevel : InteractableElementBehaviour
                 diffText.text = diffData[1].name;
                 diffText.color = diffData[1].color;
                 break;
-            case eDifficulty.Hard:
+           /* case eDifficulty.Hard:
                 diffText.text = diffData[2].name;
                 diffText.color = diffData[2].color;
                 break;
+                */
         }
     }
 
