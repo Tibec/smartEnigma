@@ -18,7 +18,7 @@ public class DisconnectManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        bool noPlayer = PlayerMgr.Instance().Players.Count == 0 && !SceneLoader.Instance().CurrentScene().Contains("Menu");
+        bool noPlayer = PlayerMgr.Instance().PlayerCount() == 0 && !SceneLoader.Instance().CurrentScene().Contains("Menu");
 
         if (!countdownInitialized && noPlayer ) // start countdown
         {

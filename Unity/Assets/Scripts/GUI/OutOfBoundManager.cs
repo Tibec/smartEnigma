@@ -32,14 +32,14 @@ public class OutOfBoundManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        List<Player> p = PlayerMgr.Instance().Players;
+        Player[] p = PlayerMgr.Instance().Players;
 
         if (camMgr == null)
             Awake();
 
         for (int i = 0; i < 4 ; ++i)
         {
-            if(i >= p.Count)
+            if(p[i] == null)
             {
                 playersGO[i].SetActive(false);
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,10 +24,10 @@ public class PlayerInfoManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        List<Player> p = PlayerMgr.Instance().Players;
+        Player[] p = PlayerMgr.Instance().Players;
         for (int i = 0; i < 4 ; ++i)
         {
-            if(i >= p.Count)
+            if(p[i] == null)
             {
                 playersGO[i].SetActive(false);
             }
@@ -45,8 +46,8 @@ public class PlayerInfoManager : MonoBehaviour {
 
     public void HighlightPlayer(Player p)
     {
-        List<Player> ps = PlayerMgr.Instance().Players;
-        int pId = ps.IndexOf(p); 
+        Player[] ps = PlayerMgr.Instance().Players;
+        int pId = Array.IndexOf(ps, p); 
         UILabel label = playersLabel[pId];
         StartCoroutine("BlinkLabel", label);
     }

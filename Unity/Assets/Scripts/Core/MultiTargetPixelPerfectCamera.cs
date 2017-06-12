@@ -100,11 +100,11 @@ public class MultiTargetPixelPerfectCamera : MonoBehaviour
         PlayerMgr pmgr = FindObjectOfType<PlayerMgr>();
         if (!pmgr)
             return transform.position;
-        List<Player> players = pmgr.Players;
-        if (players.Count == 0)
+        Player[] players = pmgr.Players;
+        if (players.Length == 0)
             return transform.position;
         Vector3 middle = players[0].transform.position;
-        for(int i = 1;i<players.Count; ++i)
+        for(int i = 1;i<players.Length; ++i)
         {
             Vector3 screenPoint = Camera.WorldToViewportPoint(players[i].transform.position);
             bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;

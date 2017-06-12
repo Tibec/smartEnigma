@@ -20,7 +20,7 @@ public class MenuController : InteractableElementBehaviour
     {
         if(ie.GetType() == typeof(Lever))
         {
-            if (ie.name == "LeverStart" && PlayerMgr.Instance().Players.Count >= 2)
+            if (ie.name == "LeverStart" && PlayerMgr.Instance().Players.Length >= 2)
                 loader.LoadScene("Scene/EnigmaSelect");
             if (ie.name == "LeverTest")
                 loader.LoadScene("Scene/Test");

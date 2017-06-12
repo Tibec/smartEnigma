@@ -189,9 +189,9 @@ public class NetworkManager : MonoBehaviour
             }
             else */ if(mess is HelloMessage) // new client
             { 
-                if(playerMgr.Players.Count < PlayerLimit) // Check player limit
+                if(!playerMgr.ServerFull()) // Check player limit
                 {
-                    if (playerMgr.Players.TrueForAll(p => p.Username != ((HelloMessage)mess).Username))  // Check player name
+                    if (Array.TrueForAll(playerMgr.Players, (p => p == null || p.Username != ((HelloMessage)mess).Username)))  // Check player name
                     {
                         //TODO: Verifier si le jeu a démarrer
                         string key = playerMgr.AddPlayer(conn, ((HelloMessage)mess).Username);
