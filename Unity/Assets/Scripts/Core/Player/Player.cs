@@ -248,11 +248,11 @@ public class Player : MonoBehaviour {
 
     public void DeleteHeldItem()
     {
-        if (grabbedElement != null)
+        if (heldElement != null)
         {
-            grabbedElement.Release();
-            Destroy(grabbedElement.gameObject);
-            grabbedElement = null;
+            Destroy(heldElement.gameObject);
+            heldElement = null;
+            Socket.SendMessage(new UpdateItemMessage(0, "", ""));
             return;
         }
     }
