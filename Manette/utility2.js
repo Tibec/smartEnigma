@@ -140,9 +140,15 @@ function pressCloseSocket()
 	deleteCookie("smartEnigmaName");
 	deleteCookie("smartEnigmaConnexionKey");
 
+	
+		setVisible("connexionScreen");
+		setHidden("interfaceScreen");
+		isConnected = 0;
+
+	/*
 	document.location.href="index.html";
 	reconnect();
-
+*/
 }
 
 
@@ -154,8 +160,8 @@ function reconnect()
 	
 	if ((url!="") && (name != ""))
 	{
-		document.getElementById("url").value = url;
-		document.getElementById("name").value = name;
+		//document.getElementById("url").value = url;
+		//document.getElementById("name").value = name;
 		console.log("url "+url);
 		console.log("name"+name);
 	}	
@@ -564,10 +570,13 @@ function listenerSendMessageWhenDisconnect()
 
 		//renvoie a la page de connexion (mais les champ sont deja saisies)
 		//alert("deconnexion du serveur ! ");
-
+/*
 		document.location.href="index.html";
 		reconnect();
-		
+	*/
+		setVisible("connexionScreen");
+		setHidden("interfaceScreen");
+		isConnected = 0;
 		/*
 		createReconnexionButton(document.body, function(){
 		    highlight(this.parentNode.childNodes[1]);

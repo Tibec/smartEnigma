@@ -108,8 +108,10 @@ public class Player : MonoBehaviour {
     private void UpdateNearestInteraction()
     {
         if (availableInteraction.Count == 0)
+        {
+            SetNearestInteraction(null);
             return;
-
+        }
         GameElement nearest = availableInteraction[0];
 
         for(int i=1; i<availableInteraction.Count; ++i)
@@ -332,6 +334,9 @@ public class Player : MonoBehaviour {
     private void SetNearestInteraction(GameElement e)
     {
         nearestInteraction = e;
+        if (e == null)
+            return;
+
         if(!string.IsNullOrEmpty(e.InteractText))
         {
             ShowIndicator(true, e.InteractText);

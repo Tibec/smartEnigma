@@ -12,6 +12,7 @@ public class FootInteruptor : InteractableElement
     private eInteruptorState currentState;
     private TileData tiledata;
     public List<uint> TileId = new List<uint>();
+    private int entityIn = 0;
 
     // Use this for initialization
     protected override void Start()
@@ -31,25 +32,31 @@ public class FootInteruptor : InteractableElement
     protected override void PlayerTriggerEnter(Player p)
     {
         base.PlayerTriggerEnter(p);
+        ++entityIn;
         SetState(eInteruptorState.Down);
     }
 
     protected override void PlayerTriggerExit(Player p)
     {
         base.PlayerTriggerExit(p);
-        SetState(eInteruptorState.Up);
+        --entityIn;
+        if(entityIn == 0)
+            SetState(eInteruptorState.Up);
     }
 
     protected override void GrabbableTriggerEnter(GrabbableElement p)
     {
         base.GrabbableTriggerEnter(p);
+        ++entityIn;
         SetState(eInteruptorState.Down);
     }
 
     protected override void GrabbableTriggerExit(GrabbableElement p)
     {
         base.GrabbableTriggerExit(p);
-        SetState(eInteruptorState.Up);
+        --entityIn;
+        if (entityIn == 0)
+            SetState(eInteruptorState.Up);
     }
 
     private void SetState(eInteruptorState state)
