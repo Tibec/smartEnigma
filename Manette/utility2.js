@@ -19,7 +19,7 @@ var descriptionObject="";
 
 ////// LISTENER //////////////////////////
 
-/*
+
 $(document).on("keydown", function(evt) {
 	if(evt.key == "m")
 	{
@@ -86,7 +86,7 @@ $(document).on("keydown", function(evt) {
 	
 
 });
-*/
+
 $(document).on("keyup", function(evt) {
 	if(evt.key == " ")
 	{

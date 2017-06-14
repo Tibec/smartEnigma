@@ -10,6 +10,8 @@ public class SwitchDoor : InteractableElementBehaviour {
 	private int i = 0;
     private bool doorOpen = false;
     public Door door;
+	public GameObject key;
+
     private void Start()
     {
         door.SetState(Door.eDoorState.Closed);
@@ -47,6 +49,8 @@ public class SwitchDoor : InteractableElementBehaviour {
         {
             doorOpen = true;
             door.SetState(Door.eDoorState.Open);
+
+			key.SetActive (true);
         }
     }
 }
