@@ -1,0 +1,1 @@
+SmartEnigma est un jeu-vidéo multijoueur de résolution d'énigmes collaboratives (genre d'escape game numérique). Avec un smartphone en guise de manette et un PC en guise d'écran de jeu, on retrouve la convivialité d'une console de salon avec moins de contraintes matérielles.
