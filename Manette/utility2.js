@@ -19,7 +19,7 @@ var descriptionObject="";
 
 ////// LISTENER //////////////////////////
 
-
+/*
 $(document).on("keydown", function(evt) {
 	if(evt.key == "m")
 	{
@@ -101,6 +101,7 @@ $(document).on("keyup", function(evt) {
 		sendMsg ("111", "3");
 	}	
 });
+*/
 
 $("#button_close").on('touchstart', pressClose);
 $("#button_menu").on('touchstart', pressMenu);
