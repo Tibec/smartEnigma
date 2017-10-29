@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>NF28 - smartEnigma</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="css/grayscale.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">
+                    <i class="fa fa-play-circle"></i> <span class="light">NF28 </span> smartEnigma
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#about">A propos</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#download">Architecture</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#prototype">Prototype</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Sources</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Intro Header -->
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <br><br>
+                        <h1 class="brand-heading">smartEnigma</h1>
+                        <p class="intro-text">Escape-game numérique</p>
+                        <a href="#about" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>A propos de smartEnigma</h2>
+                <p> Le projet smartEnigma a vu le jour dans le cadre des UVs NF28 et IA04.</p>
+                <p>L'objectif : concevoir un jeu-vidéo multijoueur de résolution d'énigmes collaboratives.</p>
+                <p>Le jeu se base sur un système interactif original qui cherche à retrouver la convivialité d'une partie sur console de salon mais avec moins de contraintes techniques. Pour jouer, il suffira donc de disposer d'un ordinateur (qui fait office de console) et de smartphones (qui font office de manettes).</p>
+                <p>Outre l'importance à accorder au gameplay et à un certain aspect ludique, l'application se doit aussi d'être accesible à tous et facile d'utilisation.</p>
+
+                <h3>Technologies</h3>
+                <p>Le jeu est hébergé sur un ordinateur auquel se connectent les smartphones via un réseau WiFi. Pour cela, SmartEnigma exploite les possibilités du moteur de jeu <a href="https://unity3d.com/">Unity3D</a>. Côté smartphone, la manette se présente sous la forme d'une web-application accessible via une simple URL à entrer dans un navigateur. Cette partie fait appel à des techologies web telles que HTML 5, CSS 3 et Javascript.
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="content-section text-center">
+        <div class="download-section">
+            <div class="container">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <br><br><br><br><br><br><br><br><br>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="prototype" class="content-section text-center">
+        <div class="prototype-section">
+            <div class="container">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h2>Prototype</h2>
+                    <p>Après 2 mois de développement, nous sommes fiers de vous présenter un premier prototype de l'application smartEnigma.</p>
+                    
+                    <img src="img/proto1.jpg" width="100%" height="100%">
+                    <br><br>
+                    <img src="img/proto2.jpg" width="100%" height="100%">
+                    <br><br><br><br>
+
+                    <h3>Limites et améliorations possibles</h3>
+                    <P>
+                    Nous avons assez vite constaté que le choix de développer une web-application, malgré l'accessibilité qu'elle permet, nous rend aussi tributaires d'éventuels problèmes de réseau (perte de connexion, signal trop faible, latence...). Le choix d'une manette sur écran tactile a aussi ses limites en termes d'ergonomie, cependant les interaction possibles restent tout de même très simples.
+                    </p>
+                    <P>
+                    A l'heure actuelle, 3 énigmes simples (pour la prise en main) et 2 énigmes difficiles solvables à 2 ou 3 joueurs minimum sont implémentées. La suite du développement consisterait donc principalement en l'ajout de nouvelles énigmes pour améliorer la durée de vie du jeu. Le joueur peut intéragir avec des levier, des boutons poussoirs, des caisses et des clés/serrures, il serait intéressant d'enrichir le nombre d'objets interactifs pour proposer des expériences de jeu plus variées et des énigmes plus complexes.
+                    Enfin, comme dans tout jeu, il conviendrait de mettre en place un système de scores et de récompense lorsque les joueurs terminent une énigme.
+                    </p>
+
+                    <ul class="list-inline banner-social-buttons">
+                    <li>
+                        <a href="files/eval.pdf" class="btn btn-default btn-lg"><i class="fa fa-check-square-o fa-fw"></i> <span class="network-name">Retours utilisateur</span></a>
+                    </li>
+                </ul>
+
+                
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+
+                <h2>Sources</h2>
+                <ul class="list-inline banner-social-buttons">
+                    <li>
+                        <a href="https://github.com/loiclerat/smartEnigma" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Code source</span></a>
+                    </li>
+                    <li>
+                        <a href="files/CDC.pdf" class="btn btn-default btn-lg"><i class="fa fa-file fa-fw"></i> <span class="network-name">CDC</span></a>
+                    </li>
+                </ul>
+                <br><br><br>
+                <h2>Réalisé par</h2>
+                <p>Benjamin ROELANDT - Loïc LERAT - Thomas JEAN-LOUIS - Raphaël CHARLES</p>
+                </p>
+
+            </div>
+        </div>
+    </section>
+
+    <br><br><br>
+    <img src="img/foot.jpg" align="middle">
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+
+    <!-- Theme JavaScript -->
+    <script src="js/grayscale.min.js"></script>
+
+</body>
+
+</html>
